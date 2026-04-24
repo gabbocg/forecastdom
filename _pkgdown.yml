@@ -1,74 +1,66 @@
 url: https://gabbocg.github.io/forecastdom/
-
 template:
   bootstrap: 5
   bootswatch: default
   bslib:
-    bg: "#ffffff"
-    fg: "#1B2A3D"
-    primary: "#47A5C5"
-    link-color: "#47A5C5"
-    navbar-bg: "#47A5C5"
-    navbar-fg: "#ffffff"
-    navbar-brand-color: "#ffffff"
-    code-bg: "#f0f6fa"
-    border-color: "#47A5C5"
-
+    bg: '#ffffff'
+    fg: '#1B2A3D'
+    primary: '#47A5C5'
+    link-color: '#47A5C5'
+    navbar-bg: '#47A5C5'
+    navbar-fg: '#ffffff'
+    navbar-brand-color: '#ffffff'
+    code-bg: '#f0f6fa'
+    border-color: '#47A5C5'
 navbar:
   structure:
-    left: [intro, reference, articles]
-    right: [search, github]
+    left:
+    - intro
+    - reference
+    - articles
+    right:
+    - search
+    - github
   components:
     articles:
       text: Articles
       menu:
-        - text: Get Started
-          href: articles/forecastdom.html
-
+      - text: Get Started
+        href: articles/forecastdom.html
 reference:
-  - title: Forecast Comparison Tests
-    desc: >
-      Pairwise and multivariate tests for comparing the predictive ability
-      of forecasting methods.
-    contents:
-      - dm_test
-      - cw_test
-      - enc_new
-      - gw_test
-
-  - title: Superior Predictive Ability
-    desc: >
-      Tests for whether a benchmark method dominates all competitors,
-      unconditionally or conditionally.
-    contents:
-      - spa_test
-      - cspa_test
-      - csms
-
-  - title: Predictive Regression & Instability
-    desc: >
-      Tests for predictability with persistent regressors and parameter
-      instability.
-    contents:
-      - ivx_wald
-      - qll_hat
-
-  - title: Visualization
-    desc: Plotting tools for CSPA test results.
-    contents:
-      - cspa_test_plot
-
-  - title: Simulation
-    desc: Data generating process from Li, Liao, and Quaedvlieg (2022).
-    contents:
-      - do_sim
-
-  - title: Print & Summary Methods
-    contents:
-      - print.cspa_test
-      - summary.cspa_test
-
+- title: Forecast Comparison Tests
+  desc: |
+    Pairwise and multivariate tests for comparing the predictive ability of forecasting methods.
+  contents:
+  - dm_test
+  - cw_test
+  - enc_new
+  - gw_test
+- title: Superior Predictive Ability
+  desc: |
+    Tests for whether a benchmark method dominates all competitors, unconditionally or conditionally.
+  contents:
+  - spa_test
+  - cspa_test
+  - csms
+- title: Predictive Regression & Instability
+  desc: |
+    Tests for predictability with persistent regressors and parameter instability.
+  contents:
+  - ivx_wald
+  - qll_hat
+- title: Visualization
+  desc: Plotting tools for CSPA test results.
+  contents: cspa_test_plot
+- title: Simulation
+  desc: Data generating process from Li, Liao, and Quaedvlieg (2022).
+  contents: do_sim
+- title: Print & Summary Methods
+  contents:
+  - print.cspa_test
+  - summary.cspa_test
 footer:
   structure:
     left: developed_by
     right: built_with
+

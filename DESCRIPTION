@@ -21,5 +21,11 @@ Imports:
     stats,
     ggplot2
 Suggests:
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
+VignetteBuilder: knitr
+URL: https://gabbocg.github.io/forecastdom/,
+    https://github.com/GabboCg/forecastdom
+BugReports: https://github.com/GabboCg/forecastdom/issues
 Config/testthat/edition: 3

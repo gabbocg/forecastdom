@@ -4,7 +4,7 @@
 
 **forecastdom** provides a unified toolkit for forecast dominance
 testing in R. It covers the full taxonomy of forecast evaluation
-hypotheses — unconditional and conditional, equal and superior — plus
+hypotheses (unconditional and conditional, equal and superior) plus
 encompassing, nested-model, predictive regression, and parameter
 instability tests.
 

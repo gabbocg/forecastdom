@@ -1,4 +1,4 @@
-# Replicating Rossi (2006), Table 1: Diebold-Mariano Tests
+# Replicating Rossi (2006)
 
 This article replicates the **out-of-sample Diebold-Mariano panel of
 Table 1** in Rossi (2006), *“Are exchange rates really random walks?

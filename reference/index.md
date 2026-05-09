@@ -68,3 +68,6 @@ Datasets bundled with the package.
 - [`nrtz2014`](https://gabbocg.github.io/forecastdom/reference/nrtz2014.md)
   : Equity Premium and Technical Indicators (Neely, Rapach, Tu, & Zhou,
   2014)
+- [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
+  : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
+  2016)

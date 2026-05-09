@@ -188,14 +188,19 @@ Datasets bundled with the package.
 - [`nrtz2014`](https://gabbocg.github.io/forecastdom/reference/nrtz2014.md)
   : Equity Premium and Technical Indicators (Neely, Rapach, Tu, & Zhou,
   2014)
+- [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
+  : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
+  2016)
 
 # Articles
 
 ### All vignettes
 
-- [Clark-West Tests on Equity Premium
-  Forecasts](https://gabbocg.github.io/forecastdom/articles/cw-equity-premium.md):
+- [Replicating Rapach & Zhou (2013) and Neely et al.
+  (2014)](https://gabbocg.github.io/forecastdom/articles/cw-equity-premium.md):
 - [Get Started with
   forecastdom](https://gabbocg.github.io/forecastdom/articles/forecastdom.md):
-- [Replicating Rossi (2006), Table 1: Diebold-Mariano
-  Tests](https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.md):
+- [Replicating Rossi
+  (2006)](https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.md):
+- [Replicating Rapach et al.
+  (2016)](https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.md):

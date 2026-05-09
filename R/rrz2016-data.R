@@ -1,0 +1,35 @@
+#' Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou, 2016)
+#'
+#' Monthly U.S. log excess return on the S&P 500 and the short interest
+#' index (SII) used in Rapach, Ringgenberg, and Zhou (2016), "Short
+#' interest and aggregate stock returns" (*Journal of Financial
+#' Economics*, 121, 46-65). Sample period 1973-01 to 2014-12.
+#'
+#' SII is constructed as standardised residuals from a linear regression
+#' of \eqn{\log(\text{EWSI}_t)} on a time trend, where \eqn{\text{EWSI}_t}
+#' is the equal-weighted mean across all firms of the number of shares
+#' held short normalised by shares outstanding.
+#'
+#' @format A data frame with 504 rows and 3 variables:
+#' \describe{
+#'   \item{date}{First-of-month \code{Date}.}
+#'   \item{r}{Log excess return on the S&P 500:
+#'     \eqn{\log(1 + R_t) - \log(1 + rf_{t-1})}.}
+#'   \item{SII}{Short interest index, standardised
+#'     linearly-detrended log EWSI.}
+#' }
+#'
+#' @source Replication archive of Rapach, Ringgenberg, and Zhou (2016):
+#'   \url{https://github.com/GabboCg/rrz2016}.
+#'
+#' @references
+#' Rapach, D. E., Ringgenberg, M. C. and Zhou, G. (2016). Short interest
+#' and aggregate stock returns. \emph{Journal of Financial Economics},
+#' 121(1), 46-65.
+#'
+#' @examples
+#' data(rrz2016)
+#' head(rrz2016)
+#' plot(rrz2016$date, rrz2016$SII, type = "l",
+#'      xlab = NULL, ylab = "SII")
+"rrz2016"

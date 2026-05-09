@@ -1,0 +1,108 @@
+---
+title: "Replicating Rapach et al. (2016)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Replicating Rapach et al. (2016)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4
+)
+```
+
+This article replicates **Table A2** of the online appendix to
+Rapach, Ringgenberg, and Zhou (2016), *"Short interest and aggregate
+stock returns"* (*Journal of Financial Economics*, 121, 46-65), using
+two functions from **forecastdom**:
+
+* `ivx_wald()` -- Kostakis, Magdalinos and Stamatogiannis (2015)
+  IVX-Wald test for return predictability with persistent regressors.
+* `qll_hat()` -- Elliott and Müller (2006) \eqn{\widehat{qLL}} test
+  for time-varying coefficients.
+
+The predictive regression is
+
+\[
+r_{t:t+h} = \alpha + \beta\,\text{SII}_t + \varepsilon_{t:t+h},
+\qquad r_{t:t+h} = \frac{1}{h}\sum_{j=1}^{h} r_{t+j},
+\]
+
+at horizons \(h \in \{1, 3, 6, 12\}\). IVX-Wald tests
+\(H_0:\beta = 0\); \(\widehat{qLL}\) tests \(H_0:\beta_t = \beta\)
+for all \(t\).
+
+```{r setup, message = FALSE}
+library(forecastdom)
+data(rrz2016)
+```
+
+## The data
+
+Monthly U.S. log excess return on the S&P 500 and the standardised
+linearly-detrended log of the equal-weighted short interest index
+(EWSI), 1973-01 to 2014-12 (504 observations).
+
+```{r plot, fig.height = 3.5}
+plot(rrz2016$date, rrz2016$SII, type = "l", col = "#47A5C5",
+     xlab = NULL, ylab = "SII", main = "Short interest index, 1973-2014")
+abline(h = 0, lty = 2)
+```
+
+## Replicating Table A2
+
+The original MATLAB program (file `Compute_IVX_Wald.m` in the JFE
+data archive) calls the IVX-Wald with `beta = 0.99, M_n = 0` and
+the **negated** SII (RRZ hypothesise SII negatively predicts
+returns; sign does not affect the Wald statistic). The
+\(\widehat{qLL}\) is called with NW truncation `L = h`. We pass the
+same arguments to `ivx_wald()` and `qll_hat()`:
+
+```{r table-a2}
+horizons <- c(1, 3, 6, 12)
+
+results <- do.call(rbind, lapply(horizons, function(h) {
+  ivx <- ivx_wald(rrz2016$r, matrix(-rrz2016$SII, ncol = 1),
+                  K = h, M_n = 0L, beta = 0.99)
+
+  T_ <- nrow(rrz2016)
+  P  <- T_ - h
+  y_h <- sapply(seq_len(P), function(t) mean(rrz2016$r[(t + 1):(t + h)]))
+  X_h <- matrix(rrz2016$SII[1:P], ncol = 1)
+  Z_h <- matrix(1, P, 1)
+  qll <- qll_hat(y_h, X_h, Z = Z_h, L = h)
+
+  data.frame(h = h, IVX_Wald = ivx$statistic, qLL = qll$statistic)
+}))
+
+knitr::kable(results, digits = 3, row.names = FALSE,
+             caption = "Replication of RRZ (2016) Table A2")
+```
+
+Critical values (from RRZ 2016, online appendix):
+
+* IVX-Wald: 10% = 2.71, 5% = 3.84, 1% = 6.64.
+* \(\widehat{qLL}\): 10% = -7.14, 5% = -8.36, 1% = -11.05 (reject for small values).
+
+For comparison, the paper reports IVX-Wald = 3.38\*, 4.51\*\*,
+4.60\*\*, 3.67\* and qLL = -3.72, -4.86, -4.91, -5.02 -- our values
+match to two decimal places at every horizon. Conclusion: SII
+predicts the equity premium at all horizons (significant IVX-Wald)
+with no rejection of constant β.
+
+## References
+
+- Elliott, G. and Müller, U. K. (2006). Efficient tests for general
+  persistent time variation in regression coefficients. *Review of
+  Economic Studies*, 73(4), 907-940.
+- Kostakis, A., Magdalinos, T. and Stamatogiannis, M. P. (2015).
+  Robust econometric inference for stock return predictability.
+  *Review of Financial Studies*, 28(5), 1506-1553.
+- Rapach, D. E., Ringgenberg, M. C. and Zhou, G. (2016). Short
+  interest and aggregate stock returns. *Journal of Financial
+  Economics*, 121(1), 46-65.

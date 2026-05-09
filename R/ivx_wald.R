@@ -109,62 +109,37 @@ ivx_wald <- function(y, X, K = 1L, M_n = 0L, beta = 0.95) {
     
   }
 
-  # Multi-horizon aggregation
-  if (K == 1) {
-    
-    y_K <- y[2:TT]
-    X_K <- X[1:(TT - 1), , drop = FALSE]
-    Z_K <- Z_tilde[1:(TT - 1), , drop = FALSE]
-    n_K <- TT - 1
-    
-  } else {
-    
-    n_K <- TT - K
-    y_K <- numeric(n_K)
-    X_K <- matrix(0, n_K, r)
-    Z_K <- matrix(0, n_K, r)
-    
-    for (t in seq_len(n_K)) {
-      
-      y_K[t] <- sum(y[t:(t + K - 1)])
-      X_K[t,] <- colSums(X[t:(t + K - 1), , drop = FALSE])
-      Z_K[t,] <- colSums(Z_tilde[t:(t + K - 1), , drop = FALSE])
-      
-    }
-    
-    n_K <- n_K - 1
-    y_K <- y_K[2:length(y_K)]
-    X_K <- X_K[1:(nrow(X_K) - 1), , drop = FALSE]
-    Z_K_full <- Z_K
-    Z_K <- Z_K[1:(nrow(Z_K) - 1), , drop = FALSE]
-    
+  # K-period aggregation (faithful to Compute_IVX_Wald.m, Sec 5.1 KMS)
+  L_agg <- TT - (K - 1L)
+  y_K <- numeric(L_agg)
+  X_K <- matrix(0, L_agg, r)
+  Z_K <- matrix(0, L_agg, r)
+
+  for (t in seq_len(L_agg)) {
+
+    y_K[t]   <- sum(y[t:(t + K - 1L)])
+    X_K[t, ] <- colSums(X[t:(t + K - 1L), , drop = FALSE])
+    Z_K[t, ] <- colSums(Z_tilde[t:(t + K - 1L), , drop = FALSE])
+
   }
 
-  # Demean
-  y_bar <- mean(y_K)
-  x_bar <- colMeans(X_K)
-  Y_dm <- y_K - y_bar
-  X_dm <- sweep(X_K, 2, x_bar)
+  # Demean using MATLAB indexing: y_K(2:end), X_K(1:end-1), Z_K(1:end-K)
+  n_K        <- L_agg - 1L
+  y_bar      <- mean(y_K[2:L_agg])
+  x_bar      <- colMeans(X_K[1:(L_agg - 1L), , drop = FALSE])
+  z_bar      <- colMeans(Z_K[1:(L_agg - K), , drop = FALSE])
+  Y_dm       <- y_K[2:L_agg] - y_bar
+  X_dm       <- sweep(X_K[1:(L_agg - 1L), , drop = FALSE], 2, x_bar)
+  Z_K_use    <- Z_K[1:(L_agg - 1L), , drop = FALSE]
+  Z_use      <- Z_tilde[1:(TT - K), , drop = FALSE]
 
-  if (K == 1) {
-    
-    Z_use <- Z_K
-    
-  } else {
-    
-    Z_use <- Z_K_full[1:(nrow(Z_K_full) - K), , drop = FALSE]
-    
-  }
-
-  z_bar <- colMeans(Z_use)
-
-  # IVX coefficient estimate
+  # IVX coefficient estimate (eq. 33)
   A_ivx <- solve(crossprod(X_dm, Z_use), crossprod(Z_use, Y_dm))
 
-  # Variance of IVX estimator
+  # Variance of IVX estimator (eq. 34)
   Omega_FM <- Sigma_ee - Omega_eu %*% solve(Omega_uu) %*% t(Omega_eu)
-  M_K_mat <- crossprod(Z_K) * drop(Sigma_ee) - n_K * tcrossprod(z_bar) * drop(Omega_FM)
-  Q_H <- solve(crossprod(Z_use, X_dm)) %*% M_K_mat %*% solve(crossprod(X_dm, Z_use))
+  M_K_mat  <- crossprod(Z_K_use) * drop(Sigma_ee) - n_K * tcrossprod(z_bar) * drop(Omega_FM)
+  Q_H      <- solve(crossprod(Z_use, X_dm)) %*% M_K_mat %*% solve(crossprod(X_dm, Z_use))
 
   # Wald statistic
   W_ivx <- drop(t(A_ivx) %*% solve(Q_H) %*% A_ivx)

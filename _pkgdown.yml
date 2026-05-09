@@ -25,12 +25,12 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Get Started
-        href: articles/forecastdom.html
       - text: Replicating Rossi (2006), Table 1
         href: articles/rossi2006-dm.html
-      - text: Clark-West Tests on Equity Premium Forecasts
+      - text: Replicating Rapach & Zhou (2013) and Neely et al. (2014)
         href: articles/cw-equity-premium.html
+      - text: Replicating Rapach, Ringgenberg & Zhou (2016), Table A2
+        href: articles/rrz2016-ivx-qll.html
 reference:
 - title: Forecast Comparison Tests
   desc: |
@@ -69,6 +69,7 @@ reference:
   - rossi2006
   - rz2013
   - nrtz2014
+  - rrz2016
 footer:
   structure:
     left: developed_by

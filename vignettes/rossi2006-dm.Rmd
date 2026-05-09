@@ -1,8 +1,8 @@
 ---
-title: "Replicating Rossi (2006), Table 1: Diebold-Mariano Tests"
+title: "Replicating Rossi (2006)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Replicating Rossi (2006), Table 1: Diebold-Mariano Tests}
+  %\VignetteIndexEntry{Replicating Rossi (2006)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

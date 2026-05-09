@@ -1,4 +1,7 @@
-# forecastdom  <a href="https://github.com/GabboCg/forecastdom"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# forecastdom: Tools for (Un)conditional Forecast Dominance <img src="man/figures/logo.png" align="right" height="138" />
+
+**Author:** [Gabriel Cabrera](https://github.com/GabboCg)<br>
+**License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

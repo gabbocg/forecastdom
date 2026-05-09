@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Diebold-Mariano on Exchange Rates (Rossi, 2006) • forecastdom</title>
+<title>Replicating Rossi (2006), Table 1: Out-of-Sample Tests • forecastdom</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Diebold-Mariano on Exchange Rates (Rossi, 2006)">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Rossi (2006), Table 1: Out-of-Sample Tests">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,7 +40,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/forecastdom.html">Get Started</a></li>
-    <li><a class="dropdown-item" href="../articles/rossi2006-dm.html">Diebold-Mariano on Exchange Rates (Rossi, 2006)</a></li>
+    <li><a class="dropdown-item" href="../articles/rossi2006-dm.html">Replicating Rossi (2006), Table 1</a></li>
     <li><a class="dropdown-item" href="../articles/cw-equity-premium.html">Clark-West Tests on Equity Premium Forecasts</a></li>
   </ul>
 </li>
@@ -62,7 +62,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Diebold-Mariano on Exchange Rates (Rossi, 2006)</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Replicating Rossi (2006), Table 1: Out-of-Sample Tests</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/GabboCg/forecastdom/blob/main/vignettes/rossi2006-dm.Rmd" class="external-link"><code>vignettes/rossi2006-dm.Rmd</code></a></small>
@@ -71,15 +71,22 @@
 
     
     
-<p>This article reproduces the spirit of the out-of-sample test in Rossi
-(2006), <em>“Are exchange rates really random walks? Some evidence
-robust to parameter instability”</em> (<em>Macroeconomic Dynamics</em>,
-10(1), 20-38), using the <code><a href="../reference/dm_test.html">dm_test()</a></code> function from
-<strong>forecastdom</strong> and the bundled <code>rossi2006</code>
-dataset.</p>
-<p>The exercise asks a classical question from Meese and Rogoff (1983):
-can a linear AR model of monthly exchange-rate returns produce
-out-of-sample forecasts that beat a driftless random walk?</p>
+<p>This article replicates the <strong>out-of-sample portion of Table
+1</strong> in Rossi (2006), <em>“Are exchange rates really random walks?
+Some evidence robust to parameter instability”</em> (<em>Macroeconomic
+Dynamics</em>, 10(1), 20-38), using two functions from
+<strong>forecastdom</strong>:</p>
+<ul>
+<li>
+<code><a href="../reference/dm_test.html">dm_test()</a></code> – the Diebold-Mariano (1995) test of equal
+predictive accuracy.</li>
+<li>
+<code><a href="../reference/enc_new.html">enc_new()</a></code> – the Clark-McCracken (2001) ENC-NEW
+encompassing test for nested models.</li>
+</ul>
+<p>The exercise is the classical Meese-Rogoff (1983) question: at the
+monthly horizon, can a small linear AR model of exchange-rate returns
+beat a driftless random walk out of sample?</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -95,7 +102,7 @@ out-of-sample forecasts that beat a driftless random walk?</p>
 </h2>
 <p>Five bilateral nominal exchange rates against the U.S. dollar
 (Canada, France, Germany, Italy, Japan), monthly from March 1973 to
-December 1998 — 310 observations per country.</p>
+December 1998 – 310 observations per country.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#47A5C5"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -106,7 +113,7 @@ December 1998 — 310 observations per country.</p>
 <p><img src="rossi2006-dm_files/figure-html/plot-fx-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level2">
-<h2 id="the-forecasting-exercise">The forecasting exercise<a class="anchor" aria-label="anchor" href="#the-forecasting-exercise"></a>
+<h2 id="forecasting-setup">Forecasting setup<a class="anchor" aria-label="anchor" href="#forecasting-setup"></a>
 </h2>
 <p>Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>t</mi></msub><annotation encoding="application/x-tex">e_t</annotation></semantics></math>
@@ -116,149 +123,408 @@ its monthly return. Two competing one-step-ahead forecasts of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><msub><mi>e</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\Delta e_{t+1}</annotation></semantics></math>:</p>
 <ul>
 <li>
-<strong>Benchmark — driftless random walk:</strong>
+<strong>Benchmark – driftless random walk:</strong>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mrow><mi>Δ</mi><mi>e</mi></mrow><mo accent="true">̂</mo></mover><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>R</mi><mi>W</mi></mrow></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\widehat{\Delta e}^{RW}_{t+1} = 0</annotation></semantics></math>.</li>
 <li>
-<strong>Competitor — AR(1):</strong>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mrow><mi>Δ</mi><mi>e</mi></mrow><mo accent="true">̂</mo></mover><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>=</mo><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mo>+</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mspace width="0.167em"></mspace><mi>Δ</mi><msub><mi>e</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">\widehat{\Delta e}^{AR}_{t+1} = \hat\alpha_t + \hat\beta_t \, \Delta e_t</annotation></semantics></math>,
-with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mo>,</mo><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\hat\alpha_t, \hat\beta_t)</annotation></semantics></math>
-re-estimated by OLS on an expanding (recursive) window.</li>
+<strong>Alternative – AR(<em>p</em>):</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mrow><mi>Δ</mi><mi>e</mi></mrow><mo accent="true">̂</mo></mover><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>=</mo><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mo>+</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></msubsup><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mrow><mi>k</mi><mo>,</mo><mi>t</mi></mrow></msub><mspace width="0.167em"></mspace><mi>Δ</mi><msub><mi>e</mi><mrow><mi>t</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\widehat{\Delta e}^{AR}_{t+1} = \hat\alpha_t + \sum_{k=1}^{p} \hat\beta_{k,t}\, \Delta e_{t-k+1}</annotation></semantics></math>,
+with coefficients re-estimated each period.</li>
 </ul>
-<p>Following Rossi (2006), the first
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">⌊</mo><mi>T</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">R = \lfloor T/2 \rfloor</annotation></semantics></math>
-observations are used as the initial estimation window, and the test is
-run on the remaining
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>T</mi><mo>−</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">P = T - R</annotation></semantics></math>
-periods.</p>
+<p>Following Rossi, both AR(1) and AR(2) start from the same usable
+sample: dropping the first three observations of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>t</mi></msub><annotation encoding="application/x-tex">e_t</annotation></semantics></math>
+gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo>=</mo><mi>T</mi><mo>−</mo><mn>3</mn><mo>=</mo><mn>307</mn></mrow><annotation encoding="application/x-tex">n_{obs} = T - 3 = 307</annotation></semantics></math>
+usable monthly returns. The first
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌉</mo><mo>=</mo><mn>154</mn></mrow><annotation encoding="application/x-tex">R = \lceil n_{obs}/2 \rceil = 154</annotation></semantics></math>
+are used to fit the initial model and the remaining
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>153</mn></mrow><annotation encoding="application/x-tex">P = 153</annotation></semantics></math>
+are evaluated out of sample.</p>
+<p>The paper considers three estimation schemes:</p>
+<ul>
+<li>
+<strong>Split (fixed window)</strong> – coefficients estimated once
+on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>:</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">1:R</annotation></semantics></math>
+and held fixed.</li>
+<li>
+<strong>Recursive (expanding window)</strong> – coefficients
+re-estimated each period using all available data.</li>
+<li>
+<strong>Rolling (fixed-width window)</strong> – coefficients
+re-estimated each period using the most recent
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+observations.</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">forecast_ar1_vs_rw</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">dlog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span></span>
-<span>  <span class="va">T_</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dlog</span><span class="op">)</span></span>
-<span>  <span class="va">R</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">T_</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
-<span>  <span class="va">P</span>    <span class="op">&lt;-</span> <span class="va">T_</span> <span class="op">-</span> <span class="va">R</span></span>
+<code class="sourceCode R"><span><span class="va">forecast_oos</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">log_fx</span>, <span class="va">p</span>, <span class="va">scheme</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"split"</span>, <span class="st">"recursive"</span>, <span class="st">"rolling"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">scheme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg</a></span><span class="op">(</span><span class="va">scheme</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">e_ar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span></span>
-<span>  <span class="va">e_rw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span></span>
+<span>  <span class="va">T_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span></span>
+<span>  <span class="va">dy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">train</span> <span class="op">&lt;-</span> <span class="va">dlog</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span></span>
-<span>    <span class="va">fit</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">train</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">train</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">f_ar</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">train</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">realised</span> <span class="op">&lt;-</span> <span class="va">dlog</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span></span>
+<span>  <span class="co"># Align AR(1) and AR(2) on the same usable sample (drop first 3 obs of e):</span></span>
+<span>  <span class="va">Y</span>  <span class="op">&lt;-</span> <span class="va">dy</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="op">(</span><span class="va">T_full</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span>              <span class="co"># length n_obs = T_full - 3</span></span>
+<span>  <span class="va">L1</span> <span class="op">&lt;-</span> <span class="va">dy</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="va">T_full</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">L2</span> <span class="op">&lt;-</span> <span class="va">dy</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">T_full</span> <span class="op">-</span> <span class="fl">3</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">Xm</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">p</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">L1</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="kw">else</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">L1</span>, <span class="va">L2</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="va">e_ar</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">realised</span> <span class="op">-</span> <span class="va">f_ar</span></span>
-<span>    <span class="va">e_rw</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">realised</span> <span class="op">-</span> <span class="fl">0</span></span>
+<span>  <span class="va">n_obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
+<span>  <span class="va">R</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="va">n_obs</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">P_oos</span> <span class="op">&lt;-</span> <span class="va">n_obs</span> <span class="op">-</span> <span class="va">R</span></span>
+<span></span>
+<span>  <span class="va">e_alt</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P_oos</span><span class="op">)</span></span>
+<span>  <span class="va">e_bench</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P_oos</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">P_oos</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="va">scheme</span>,</span>
+<span>      split     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span>,</span>
+<span>      recursive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>      rolling   <span class="op">=</span> <span class="va">j</span><span class="op">:</span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">Xm</span><span class="op">[</span><span class="va">idx</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">Z</span>, <span class="va">Y</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">Xm</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span>, <span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">b</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">e_alt</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>   <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span> <span class="op">-</span> <span class="va">pred</span></span>
+<span>    <span class="va">e_bench</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span>              <span class="co"># driftless RW: forecast = 0</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>e_ar <span class="op">=</span> <span class="va">e_ar</span>, e_rw <span class="op">=</span> <span class="va">e_rw</span>, P <span class="op">=</span> <span class="va">P</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>e_bench <span class="op">=</span> <span class="va">e_bench</span>, e_alt <span class="op">=</span> <span class="va">e_alt</span>, R <span class="op">=</span> <span class="va">R</span>, P <span class="op">=</span> <span class="va">P_oos</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="country-by-country-dm-test">Country-by-country DM test<a class="anchor" aria-label="anchor" href="#country-by-country-dm-test"></a>
+<h2 id="replicating-the-oos-panel-of-table-1">Replicating the OOS panel of Table 1<a class="anchor" aria-label="anchor" href="#replicating-the-oos-panel-of-table-1"></a>
 </h2>
-<p><code><a href="../reference/dm_test.html">dm_test()</a></code> takes the two error series and returns the
-Diebold-Mariano statistic with the Harvey-Leybourne-Newbold (1997)
-small-sample correction by default. The benchmark is the random walk
-(<code>e1</code>); the competitor is the AR(1) (<code>e2</code>).</p>
+<p>For every combination of country, AR order, and estimation scheme, we
+compute:</p>
+<ul>
+<li>The Diebold-Mariano statistic via <code><a href="../reference/dm_test.html">dm_test()</a></code> with
+<code>correction = FALSE</code> to match Rossi’s asymptotic
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>χ</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\chi^2(1)</annotation></semantics></math>
+reference distribution (a two-sided normal in this case).</li>
+<li>The ENC-NEW statistic via <code><a href="../reference/enc_new.html">enc_new()</a></code>. ENC-NEW critical
+values are non-standard; Clark-McCracken (2001, Table 2) gives 1%, 5%,
+and 10% values around 2.65, 1.59, and 0.98 for the AR(1) setup
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>−</mo><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mi>π</mi><mo>=</mo><mi>R</mi><mi>/</mi><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo>≈</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">k_2-k_1=1,\, \pi=R/n_{obs}\approx 0.5</annotation></semantics></math>)
+and slightly higher for AR(2). We mark the package’s statistic at those
+thresholds.</li>
+</ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">country</span><span class="op">)</span></span>
+<span><span class="va">schemes</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"split"</span>, <span class="st">"recursive"</span>, <span class="st">"rolling"</span><span class="op">)</span></span>
+<span><span class="va">orders</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dm_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">countries</span>, <span class="kw">function</span><span class="op">(</span><span class="va">co</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">log_fx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="va">co</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
-<span>  <span class="va">fc</span>     <span class="op">&lt;-</span> <span class="fu">forecast_ar1_vs_rw</span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span></span>
-<span>  <span class="va">res</span>    <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_rw</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_ar</span>, h <span class="op">=</span> <span class="fl">1</span>, loss <span class="op">=</span> <span class="st">"SE"</span>,</span>
-<span>                    alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>    country   <span class="op">=</span> <span class="va">co</span>,</span>
-<span>    P         <span class="op">=</span> <span class="va">fc</span><span class="op">$</span><span class="va">P</span>,</span>
-<span>    dm_stat   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
-<span>    p_value   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span></span>
+<span><span class="co"># Approximate Clark-McCracken (2001, Table 2) 5% critical values</span></span>
+<span><span class="co"># (k1 = 1, k2 - k1 = p, pi = R/n_obs near 0.5)</span></span>
+<span><span class="va">enc_cv5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`1` <span class="op">=</span> <span class="fl">1.59</span>, `2` <span class="op">=</span> <span class="fl">2.31</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>  country <span class="op">=</span> <span class="va">countries</span>,</span>
+<span>  p       <span class="op">=</span> <span class="va">orders</span>,</span>
+<span>  scheme  <span class="op">=</span> <span class="va">schemes</span>,</span>
+<span>  KEEP.OUT.ATTRS <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">grid</span><span class="op">$</span><span class="va">DM</span>      <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span><span class="va">grid</span><span class="op">$</span><span class="va">DM_p</span>    <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span><span class="va">grid</span><span class="op">$</span><span class="va">ENC</span>     <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span><span class="va">grid</span><span class="op">$</span><span class="va">ENC_sig</span> <span class="op">&lt;-</span> <span class="st">""</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">log_fx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="va">grid</span><span class="op">$</span><span class="va">country</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
+<span>  <span class="va">fc</span> <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx</span>, p <span class="op">=</span> <span class="va">grid</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, scheme <span class="op">=</span> <span class="va">grid</span><span class="op">$</span><span class="va">scheme</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">dm</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span>,</span>
+<span>                 alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enc_new.html">enc_new</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">grid</span><span class="op">$</span><span class="va">DM</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>      <span class="op">&lt;-</span> <span class="va">dm</span><span class="op">$</span><span class="va">statistic</span></span>
+<span>  <span class="va">grid</span><span class="op">$</span><span class="va">DM_p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>    <span class="op">&lt;-</span> <span class="va">dm</span><span class="op">$</span><span class="va">pvalue</span></span>
+<span>  <span class="va">grid</span><span class="op">$</span><span class="va">ENC</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>     <span class="op">&lt;-</span> <span class="va">enc</span><span class="op">$</span><span class="va">statistic</span></span>
+<span>  <span class="va">grid</span><span class="op">$</span><span class="va">ENC_sig</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
+<span>    <span class="va">enc</span><span class="op">$</span><span class="va">statistic</span> <span class="op">&gt;</span> <span class="va">enc_cv5</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">grid</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">]</span>, <span class="st">"*"</span>, <span class="st">""</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="ar1-results">AR(1) results<a class="anchor" aria-label="anchor" href="#ar1-results"></a>
+</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ar1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">p</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">ar1</span><span class="op">$</span><span class="va">DM_str</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f (%.2f)"</span>, <span class="va">ar1</span><span class="op">$</span><span class="va">DM</span>, <span class="va">ar1</span><span class="op">$</span><span class="va">DM_p</span><span class="op">)</span></span>
+<span><span class="va">ar1</span><span class="op">$</span><span class="va">ENC_str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f"</span>, <span class="va">ar1</span><span class="op">$</span><span class="va">ENC</span><span class="op">)</span>, <span class="va">ar1</span><span class="op">$</span><span class="va">ENC_sig</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dm_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">dm_results</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dm_table</span>, digits <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>             caption <span class="op">=</span> <span class="st">"Modified DM test, AR(1) vs. driftless random walk"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">dm_ar1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span></span>
+<span>  <span class="va">ar1</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"scheme"</span>, <span class="st">"DM_str"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  idvar <span class="op">=</span> <span class="st">"scheme"</span>, timevar <span class="op">=</span> <span class="st">"country"</span>, direction <span class="op">=</span> <span class="st">"wide"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dm_ar1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"^DM_str\\."</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dm_ar1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dm_ar1</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"DM_T statistic (p-value), AR(1) vs. RW"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Modified DM test, AR(1) vs. driftless random walk</caption>
+<caption>DM_T statistic (p-value), AR(1) vs. RW</caption>
+<colgroup>
+<col width="13%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+</colgroup>
 <thead><tr class="header">
-<th align="left">country</th>
-<th align="right">P</th>
-<th align="right">dm_stat</th>
-<th align="right">p_value</th>
+<th align="left">scheme</th>
+<th align="left">Canada</th>
+<th align="left">France</th>
+<th align="left">Germany</th>
+<th align="left">Italy</th>
+<th align="left">Japan</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Canada</td>
-<td align="right">155</td>
-<td align="right">-1.3378</td>
-<td align="right">0.1829</td>
+<td align="left">split</td>
+<td align="left">-0.87 (0.38)</td>
+<td align="left">-1.38 (0.17)</td>
+<td align="left">0.89 (0.38)</td>
+<td align="left">-0.80 (0.42)</td>
+<td align="left">0.53 (0.60)</td>
 </tr>
 <tr class="even">
-<td align="left">France</td>
-<td align="right">155</td>
-<td align="right">-2.2106</td>
-<td align="right">0.0285</td>
+<td align="left">recursive</td>
+<td align="left">-1.16 (0.25)</td>
+<td align="left">-2.24 (0.03)</td>
+<td align="left">-0.14 (0.89)</td>
+<td align="left">-0.77 (0.44)</td>
+<td align="left">-0.00 (1.00)</td>
 </tr>
 <tr class="odd">
-<td align="left">Germany</td>
-<td align="right">155</td>
-<td align="right">-0.1731</td>
-<td align="right">0.8628</td>
-</tr>
-<tr class="even">
-<td align="left">Italy</td>
-<td align="right">155</td>
-<td align="right">-0.9478</td>
-<td align="right">0.3447</td>
-</tr>
-<tr class="odd">
-<td align="left">Japan</td>
-<td align="right">155</td>
-<td align="right">0.1184</td>
-<td align="right">0.9059</td>
+<td align="left">rolling</td>
+<td align="left">-2.15 (0.03)</td>
+<td align="left">-1.77 (0.08)</td>
+<td align="left">-0.93 (0.35)</td>
+<td align="left">-0.60 (0.55)</td>
+<td align="left">-0.39 (0.69)</td>
 </tr>
 </tbody>
 </table>
-<p>A negative <code>dm_stat</code> would indicate the AR(1) has
-<em>lower</em> squared-error loss than the random walk; a positive one
-favours the random walk. Under the two-sided alternative, p-values close
-to 1 are consistent with the Meese-Rogoff result that the random walk is
-hard to beat at short horizons.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">enc_ar1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span></span>
+<span>  <span class="va">ar1</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"scheme"</span>, <span class="st">"ENC_str"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  idvar <span class="op">=</span> <span class="st">"scheme"</span>, timevar <span class="op">=</span> <span class="st">"country"</span>, direction <span class="op">=</span> <span class="st">"wide"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">enc_ar1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"^ENC_str\\."</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">enc_ar1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">enc_ar1</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"ENC_T statistic, AR(1) vs. RW. * = exceeds 5% Clark-McCracken critical value"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>ENC_T statistic, AR(1) vs. RW. * = exceeds 5% Clark-McCracken
+critical value</caption>
+<thead><tr class="header">
+<th align="left">scheme</th>
+<th align="left">Canada</th>
+<th align="left">France</th>
+<th align="left">Germany</th>
+<th align="left">Italy</th>
+<th align="left">Japan</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">split</td>
+<td align="left">1.50</td>
+<td align="left">-0.99</td>
+<td align="left">0.59</td>
+<td align="left">1.03</td>
+<td align="left">1.68*</td>
+</tr>
+<tr class="even">
+<td align="left">recursive</td>
+<td align="left">-0.45</td>
+<td align="left">-1.20</td>
+<td align="left">0.26</td>
+<td align="left">0.17</td>
+<td align="left">1.19</td>
+</tr>
+<tr class="odd">
+<td align="left">rolling</td>
+<td align="left">-2.17</td>
+<td align="left">-1.29</td>
+<td align="left">-0.35</td>
+<td align="left">0.23</td>
+<td align="left">0.95</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="ar2-results">AR(2) results<a class="anchor" aria-label="anchor" href="#ar2-results"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ar2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">p</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">ar2</span><span class="op">$</span><span class="va">DM_str</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f (%.2f)"</span>, <span class="va">ar2</span><span class="op">$</span><span class="va">DM</span>, <span class="va">ar2</span><span class="op">$</span><span class="va">DM_p</span><span class="op">)</span></span>
+<span><span class="va">ar2</span><span class="op">$</span><span class="va">ENC_str</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f"</span>, <span class="va">ar2</span><span class="op">$</span><span class="va">ENC</span><span class="op">)</span>, <span class="va">ar2</span><span class="op">$</span><span class="va">ENC_sig</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dm_ar2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span></span>
+<span>  <span class="va">ar2</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"scheme"</span>, <span class="st">"DM_str"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  idvar <span class="op">=</span> <span class="st">"scheme"</span>, timevar <span class="op">=</span> <span class="st">"country"</span>, direction <span class="op">=</span> <span class="st">"wide"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dm_ar2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"^DM_str\\."</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dm_ar2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">dm_ar2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"DM_T statistic (p-value), AR(2) vs. RW"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>DM_T statistic (p-value), AR(2) vs. RW</caption>
+<colgroup>
+<col width="13%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">scheme</th>
+<th align="left">Canada</th>
+<th align="left">France</th>
+<th align="left">Germany</th>
+<th align="left">Italy</th>
+<th align="left">Japan</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">split</td>
+<td align="left">-1.97 (0.05)</td>
+<td align="left">-1.91 (0.06)</td>
+<td align="left">0.03 (0.98)</td>
+<td align="left">-0.72 (0.47)</td>
+<td align="left">0.64 (0.52)</td>
+</tr>
+<tr class="even">
+<td align="left">recursive</td>
+<td align="left">-1.94 (0.05)</td>
+<td align="left">-1.71 (0.09)</td>
+<td align="left">-0.37 (0.71)</td>
+<td align="left">-0.73 (0.47)</td>
+<td align="left">-0.04 (0.97)</td>
+</tr>
+<tr class="odd">
+<td align="left">rolling</td>
+<td align="left">-2.29 (0.02)</td>
+<td align="left">-1.74 (0.08)</td>
+<td align="left">-0.79 (0.43)</td>
+<td align="left">-0.75 (0.45)</td>
+<td align="left">-0.41 (0.68)</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">enc_ar2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span></span>
+<span>  <span class="va">ar2</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"scheme"</span>, <span class="st">"ENC_str"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  idvar <span class="op">=</span> <span class="st">"scheme"</span>, timevar <span class="op">=</span> <span class="st">"country"</span>, direction <span class="op">=</span> <span class="st">"wide"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">enc_ar2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"^ENC_str\\."</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">enc_ar2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">enc_ar2</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"ENC_T statistic, AR(2) vs. RW. * = exceeds 5% Clark-McCracken critical value"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>ENC_T statistic, AR(2) vs. RW. * = exceeds 5% Clark-McCracken
+critical value</caption>
+<thead><tr class="header">
+<th align="left">scheme</th>
+<th align="left">Canada</th>
+<th align="left">France</th>
+<th align="left">Germany</th>
+<th align="left">Italy</th>
+<th align="left">Japan</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">split</td>
+<td align="left">-0.67</td>
+<td align="left">-1.25</td>
+<td align="left">0.86</td>
+<td align="left">1.67</td>
+<td align="left">1.92</td>
+</tr>
+<tr class="even">
+<td align="left">recursive</td>
+<td align="left">-2.29</td>
+<td align="left">-1.34</td>
+<td align="left">0.67</td>
+<td align="left">0.92</td>
+<td align="left">1.22</td>
+</tr>
+<tr class="odd">
+<td align="left">rolling</td>
+<td align="left">-3.75</td>
+<td align="left">-1.37</td>
+<td align="left">0.29</td>
+<td align="left">0.70</td>
+<td align="left">1.00</td>
+</tr>
+</tbody>
+</table>
+<p>The DM statistics are typically small in absolute value with
+two-sided p-values well above conventional thresholds: the random walk
+and the AR are about equally accurate by squared-error loss. ENC-NEW
+occasionally exceeds the 5% critical value, especially in the rolling
+and recursive schemes – consistent with Rossi’s finding that small
+predictability does show up under the encompassing test once parameter
+instability is allowed.</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="a-single-country-deep-dive-japan">A single-country deep dive: Japan<a class="anchor" aria-label="anchor" href="#a-single-country-deep-dive-japan"></a>
+<h2 id="single-country-deep-dive-japan-ar1-recursive">Single-country deep dive: Japan, AR(1), recursive<a class="anchor" aria-label="anchor" href="#single-country-deep-dive-japan-ar1-recursive"></a>
 </h2>
-<p>Inspecting one country in more detail. The print method shows the
-test configuration and a t-distribution reference (because HLN is on by
-default).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>The print methods give a compact, fully-formatted summary of each
+test:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log_fx_jp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="st">"Japan"</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
-<span><span class="va">fc_jp</span>     <span class="op">&lt;-</span> <span class="fu">forecast_ar1_vs_rw</span><span class="op">(</span><span class="va">log_fx_jp</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_rw</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_ar</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span></span>
+<span><span class="va">fc_jp</span>     <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx_jp</span>, p <span class="op">=</span> <span class="fl">1</span>, scheme <span class="op">=</span> <span class="st">"recursive"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
+<span>        correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
-<span><span class="co">#&gt; │     Modified Diebold-Mariano Test (HLN, 1997)      │</span></span>
+<span><span class="co">#&gt; │            Diebold-Mariano Test (1995)             │</span></span>
 <span><span class="co">#&gt; ├────────────────────────────────────────────────────┤</span></span>
 <span><span class="co">#&gt; │ H0: Equal predictive ability                       │</span></span>
 <span><span class="co">#&gt; │ H1: Methods have different predictive ability      │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Test Results:                                      │</span></span>
-<span><span class="co">#&gt; │  DM statistic: 0.1184                              │</span></span>
-<span><span class="co">#&gt; │  P-value: 0.9059                                   │</span></span>
+<span><span class="co">#&gt; │  DM statistic: -0.0001                             │</span></span>
+<span><span class="co">#&gt; │  P-value: 0.9999                                   │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Details:                                           │</span></span>
-<span><span class="co">#&gt; │  Observations (n): 155                             │</span></span>
+<span><span class="co">#&gt; │  Observations (n): 153                             │</span></span>
 <span><span class="co">#&gt; │  Forecast horizon (h): 1                           │</span></span>
 <span><span class="co">#&gt; │  Loss function: SE                                 │</span></span>
-<span><span class="co">#&gt; │  Reference distribution: t(154)                    │</span></span>
+<span><span class="co">#&gt; │  Reference distribution: N(0,1)                    │</span></span>
+<span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span>
+<span><span class="fu"><a href="../reference/enc_new.html">enc_new</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
+<span><span class="co">#&gt; │             ENC-NEW Encompassing Test              │</span></span>
+<span><span class="co">#&gt; │            (Clark and McCracken, 2001)             │</span></span>
+<span><span class="co">#&gt; ├────────────────────────────────────────────────────┤</span></span>
+<span><span class="co">#&gt; │ H0: Benchmark encompasses the alternative          │</span></span>
+<span><span class="co">#&gt; │ H1: Alternative adds predictive content            │</span></span>
+<span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
+<span><span class="co">#&gt; │ Test Results:                                      │</span></span>
+<span><span class="co">#&gt; │  ENC-NEW statistic: 1.1867                         │</span></span>
+<span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
+<span><span class="co">#&gt; │ Details:                                           │</span></span>
+<span><span class="co">#&gt; │  Observations (n): 153                             │</span></span>
+<span><span class="co">#&gt; │ Note: Critical values are non-standard.            │</span></span>
+<span><span class="co">#&gt; │ See Clark &amp; McCracken (2001, Table 2).             │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The cumulative loss differential is a useful diagnostic: it tracks
-whether either method dominates persistently or only over short
-sub-samples.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">loss_diff</span> <span class="op">&lt;-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_rw</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_ar</span><span class="op">^</span><span class="fl">2</span></span>
+<p>The cumulative squared-error differential – positive when AR(1) is
+beating the random walk – shows that any predictability is concentrated
+in narrow sub-samples rather than uniform across the 1986-1998 OOS
+period:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">loss_diff</span> <span class="op">&lt;-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span><span class="op">^</span><span class="fl">2</span></span>
 <span><span class="va">oos_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">P</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="va">oos_dates</span>, cum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">loss_diff</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -277,25 +543,27 @@ sub-samples.</p>
 </h2>
 <ul>
 <li>
-<code><a href="../reference/dm_test.html">dm_test()</a></code> plugs straight into a standard recursive
-forecasting loop and returns the HLN-corrected statistic with
-t-distribution p-values out of the box.</li>
-<li>For these five rates and this sample, the test typically fails to
-reject equal predictive accuracy — consistent with Meese and Rogoff
-<ol start="1983" style="list-style-type: decimal">
-<li>and the broader exchange-rate forecasting literature.</li>
-</ol>
-</li>
-<li>The cumulative loss-differential plot complements the single number,
-showing <em>when</em> the relative performance of the two models shifts
-— the kind of instability that motivates Rossi’s parameter-instability
-tests in the original paper.</li>
+<code><a href="../reference/dm_test.html">dm_test()</a></code> reproduces the OOS DM panel of Rossi (2006)
+Table 1 with <code>correction = FALSE</code> to match the asymptotic
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>χ</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\chi^2(1)</annotation></semantics></math>
+reference distribution used in the paper.</li>
+<li>
+<code><a href="../reference/enc_new.html">enc_new()</a></code> returns the Clark-McCracken statistic;
+significance must be assessed against tabulated non-standard critical
+values (the package documents this in <code><a href="../reference/enc_new.html">?enc_new</a></code>).</li>
+<li>The “RW is hard to beat” finding emerges clearly in the DM panel,
+while ENC-NEW can pick up the kind of weak, time-varying predictability
+that motivates the parameter-instability tests in the rest of the
+paper.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
+<li>Clark, T. E. and McCracken, M. W. (2001). Tests of equal forecast
+accuracy and encompassing for nested models. <em>Journal of
+Econometrics</em>, 105(1), 85-110.</li>
 <li>Diebold, F. X. and Mariano, R. S. (1995). Comparing predictive
 accuracy. <em>Journal of Business &amp; Economic Statistics</em>, 13(3),
 253-263.</li>

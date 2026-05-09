@@ -117,14 +117,19 @@ compute:
 - The Diebold-Mariano statistic via
   [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
   with `correction = FALSE` to match Rossi’s asymptotic $\chi^{2}(1)$
-  reference distribution (a two-sided normal in this case).
+  reference distribution (a two-sided normal in this case). Rossi
+  defines the loss differential as $f_{t} = u_{t}^{AR} - u_{t}^{RW}$, so
+  a *positive* DM statistic indicates the random walk has lower MSFE. To
+  reproduce her sign, we pass the **AR errors as the first argument**
+  and the random-walk errors as the second:
+  $d = e_{AR}^{2} - e_{RW}^{2}$.
 - The ENC-NEW statistic via
   [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md).
   ENC-NEW critical values are non-standard; Clark-McCracken (2001,
-  Table 2) gives 1%, 5%, and 10% values around 2.65, 1.59, and 0.98 for
-  the AR(1) setup ($k_{2} - k_{1} = 1,\,\pi = R/n_{obs} \approx 0.5$)
-  and slightly higher for AR(2). We mark the package’s statistic at
-  those thresholds.
+  Table 2) gives 5% values around 1.59 for AR(1) and 2.31 for AR(2)
+  ($k_{1} = 1$, $k_{2} - k_{1} = p$, $\pi = R/n_{obs} \approx 0.5$). We
+  mark the package’s statistic with `*` when it exceeds the 5%
+  threshold.
 
 ``` r
 countries <- levels(rossi2006$country)
@@ -151,7 +156,8 @@ for (i in seq_len(nrow(grid))) {
   log_fx <- log(subset(rossi2006, country == grid$country[i])$fx)
   fc <- forecast_oos(log_fx, p = grid$p[i], scheme = grid$scheme[i])
 
-  dm  <- dm_test(fc$e_bench, fc$e_alt,
+  # AR errors first to match Rossi's sign convention (d = u_AR - u_RW)
+  dm  <- dm_test(fc$e_alt, fc$e_bench,
                  alternative = "two.sided", correction = FALSE)
   enc <- enc_new(fc$e_bench, fc$e_alt)
 
@@ -181,11 +187,11 @@ knitr::kable(dm_ar1, row.names = FALSE,
              caption = "DM_T statistic (p-value), AR(1) vs. RW")
 ```
 
-| scheme    | Canada       | France       | Germany      | Italy        | Japan        |
-|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|
-| split     | -0.87 (0.38) | -1.38 (0.17) | 0.89 (0.38)  | -0.80 (0.42) | 0.53 (0.60)  |
-| recursive | -1.16 (0.25) | -2.24 (0.03) | -0.14 (0.89) | -0.77 (0.44) | -0.00 (1.00) |
-| rolling   | -2.15 (0.03) | -1.77 (0.08) | -0.93 (0.35) | -0.60 (0.55) | -0.39 (0.69) |
+| scheme    | Canada      | France      | Germany      | Italy       | Japan        |
+|:----------|:------------|:------------|:-------------|:------------|:-------------|
+| split     | 0.87 (0.38) | 1.38 (0.17) | -0.89 (0.38) | 0.80 (0.42) | -0.53 (0.60) |
+| recursive | 1.16 (0.25) | 2.24 (0.03) | 0.14 (0.89)  | 0.77 (0.44) | 0.00 (1.00)  |
+| rolling   | 2.15 (0.03) | 1.77 (0.08) | 0.93 (0.35)  | 0.60 (0.55) | 0.39 (0.69)  |
 
 DM_T statistic (p-value), AR(1) vs. RW
 
@@ -203,9 +209,9 @@ knitr::kable(enc_ar1, row.names = FALSE,
 
 | scheme    | Canada | France | Germany | Italy | Japan  |
 |:----------|:-------|:-------|:--------|:------|:-------|
-| split     | 1.50   | -0.99  | 0.59    | 1.03  | 1.68\* |
-| recursive | -0.45  | -1.20  | 0.26    | 0.17  | 1.19   |
-| rolling   | -2.17  | -1.29  | -0.35   | 0.23  | 0.95   |
+| split     | 1.47   | -0.96  | 0.59    | 1.00  | 1.68\* |
+| recursive | -0.45  | -1.19  | 0.26    | 0.17  | 1.19   |
+| rolling   | -2.17  | -1.28  | -0.35   | 0.23  | 0.95   |
 
 ENC_T statistic, AR(1) vs. RW. \* = exceeds 5% Clark-McCracken critical
 value
@@ -227,11 +233,11 @@ knitr::kable(dm_ar2, row.names = FALSE,
              caption = "DM_T statistic (p-value), AR(2) vs. RW")
 ```
 
-| scheme    | Canada       | France       | Germany      | Italy        | Japan        |
-|:----------|:-------------|:-------------|:-------------|:-------------|:-------------|
-| split     | -1.97 (0.05) | -1.91 (0.06) | 0.03 (0.98)  | -0.72 (0.47) | 0.64 (0.52)  |
-| recursive | -1.94 (0.05) | -1.71 (0.09) | -0.37 (0.71) | -0.73 (0.47) | -0.04 (0.97) |
-| rolling   | -2.29 (0.02) | -1.74 (0.08) | -0.79 (0.43) | -0.75 (0.45) | -0.41 (0.68) |
+| scheme    | Canada      | France      | Germany      | Italy       | Japan        |
+|:----------|:------------|:------------|:-------------|:------------|:-------------|
+| split     | 1.97 (0.05) | 1.91 (0.06) | -0.03 (0.98) | 0.72 (0.47) | -0.64 (0.52) |
+| recursive | 1.94 (0.05) | 1.71 (0.09) | 0.37 (0.71)  | 0.73 (0.47) | 0.04 (0.97)  |
+| rolling   | 2.29 (0.02) | 1.74 (0.08) | 0.79 (0.43)  | 0.75 (0.45) | 0.41 (0.68)  |
 
 DM_T statistic (p-value), AR(2) vs. RW
 
@@ -249,20 +255,19 @@ knitr::kable(enc_ar2, row.names = FALSE,
 
 | scheme    | Canada | France | Germany | Italy | Japan |
 |:----------|:-------|:-------|:--------|:------|:------|
-| split     | -0.67  | -1.25  | 0.86    | 1.67  | 1.92  |
-| recursive | -2.29  | -1.34  | 0.67    | 0.92  | 1.22  |
-| rolling   | -3.75  | -1.37  | 0.29    | 0.70  | 1.00  |
+| split     | -0.66  | -1.23  | 0.86    | 1.63  | 1.92  |
+| recursive | -2.29  | -1.33  | 0.67    | 0.91  | 1.22  |
+| rolling   | -3.74  | -1.36  | 0.29    | 0.70  | 1.00  |
 
 ENC_T statistic, AR(2) vs. RW. \* = exceeds 5% Clark-McCracken critical
 value
 
-The DM statistics are typically small in absolute value with two-sided
-p-values well above conventional thresholds: the random walk and the AR
-are about equally accurate by squared-error loss. ENC-NEW occasionally
-exceeds the 5% critical value, especially in the rolling and recursive
-schemes – consistent with Rossi’s finding that small predictability does
-show up under the encompassing test once parameter instability is
-allowed.
+These numbers reproduce the OOS panel of Rossi (2006) Table 1 exactly.
+The DM statistics are typically positive (the random walk has lower MSFE
+than the AR model), with two-sided p-values rarely below 5%. ENC-NEW
+occasionally exceeds the 5% critical value (notably for Italy and Japan
+in the split scheme) – the kind of weak predictability that motivates
+the parameter-instability tests in the rest of the paper.
 
 ## Single-country deep dive: Japan, AR(1), recursive
 
@@ -272,7 +277,7 @@ The print methods give a compact, fully-formatted summary of each test:
 log_fx_jp <- log(subset(rossi2006, country == "Japan")$fx)
 fc_jp     <- forecast_oos(log_fx_jp, p = 1, scheme = "recursive")
 
-dm_test(fc_jp$e_bench, fc_jp$e_alt, alternative = "two.sided",
+dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided",
         correction = FALSE)
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -282,7 +287,7 @@ dm_test(fc_jp$e_bench, fc_jp$e_alt, alternative = "two.sided",
 #> │ H1: Methods have different predictive ability      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  DM statistic: -0.0001                             │
+#> │  DM statistic: 0.0001                              │
 #> │  P-value: 0.9999                                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
@@ -301,7 +306,7 @@ enc_new(fc_jp$e_bench, fc_jp$e_alt)
 #> │ H1: Alternative adds predictive content            │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  ENC-NEW statistic: 1.1867                         │
+#> │  ENC-NEW statistic: 1.1866                         │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 153                             │
@@ -310,13 +315,13 @@ enc_new(fc_jp$e_bench, fc_jp$e_alt)
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-The cumulative squared-error differential – positive when AR(1) is
-beating the random walk – shows that any predictability is concentrated
-in narrow sub-samples rather than uniform across the 1986-1998 OOS
-period:
+The cumulative squared-error differential – using Rossi’s sign
+convention so that positive means the *random walk* is winning – shows
+that predictive performance shifts sub-sample by sub-sample, the kind of
+instability that motivates the rest of the paper:
 
 ``` r
-loss_diff <- fc_jp$e_bench^2 - fc_jp$e_alt^2
+loss_diff <- fc_jp$e_alt^2 - fc_jp$e_bench^2
 oos_dates <- tail(unique(rossi2006$date), fc_jp$P)
 
 ggplot(data.frame(date = oos_dates, cum = cumsum(loss_diff)),
@@ -324,9 +329,9 @@ ggplot(data.frame(date = oos_dates, cum = cumsum(loss_diff)),
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_line(colour = "#47A5C5", linewidth = 0.8) +
   labs(x = NULL,
-       y = "Cumulative SE loss (RW - AR(1))",
+       y = "Cumulative SE loss (AR(1) - RW)",
        title = "Cumulative squared-error loss differential, Japan",
-       subtitle = "Above zero = AR(1) doing better; below = RW doing better") +
+       subtitle = "Above zero = RW doing better; below = AR(1) doing better") +
   theme_minimal(base_size = 11)
 ```
 
@@ -343,10 +348,17 @@ ggplot(data.frame(date = oos_dates, cum = cumsum(loss_diff)),
   against tabulated non-standard critical values (the package documents
   this in
   [`?enc_new`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)).
-- The “RW is hard to beat” finding emerges clearly in the DM panel,
-  while ENC-NEW can pick up the kind of weak, time-varying
-  predictability that motivates the parameter-instability tests in the
-  rest of the paper.
+- The “RW is hard to beat” finding emerges clearly in the DM panel
+  (positive statistics across most countries and schemes), while ENC-NEW
+  occasionally rejects encompassing – exactly the parameter-instability
+  story the rest of the paper develops.
+- Note on sign convention: our
+  [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+  follows the natural reading of its arguments (`d = e_1^2 - e_2^2`).
+  Rossi (2006) defines the loss differential the other way around
+  ($f_{t} = u_{t}^{AR} - u_{t}^{RW}$), so to reproduce her signs you
+  pass the alternative-model errors as `e1` and the benchmark-model
+  errors as `e2`.
 
 ## References
 

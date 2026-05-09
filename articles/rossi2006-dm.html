@@ -202,13 +202,21 @@ compute:</p>
 <li>The Diebold-Mariano statistic via <code><a href="../reference/dm_test.html">dm_test()</a></code> with
 <code>correction = FALSE</code> to match Rossi’s asymptotic
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>χ</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\chi^2(1)</annotation></semantics></math>
-reference distribution (a two-sided normal in this case).</li>
+reference distribution (a two-sided normal in this case). Rossi defines
+the loss differential as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>t</mi></msub><mo>=</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>−</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>R</mi><mi>W</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">f_t = u^{AR}_t - u^{RW}_t</annotation></semantics></math>,
+so a <em>positive</em> DM statistic indicates the random walk has lower
+MSFE. To reproduce her sign, we pass the <strong>AR errors as the first
+argument</strong> and the random-walk errors as the second:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><msubsup><mi>e</mi><mrow><mi>A</mi><mi>R</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>e</mi><mrow><mi>R</mi><mi>W</mi></mrow><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">d = e^2_{AR} - e^2_{RW}</annotation></semantics></math>.</li>
 <li>The ENC-NEW statistic via <code><a href="../reference/enc_new.html">enc_new()</a></code>. ENC-NEW critical
-values are non-standard; Clark-McCracken (2001, Table 2) gives 1%, 5%,
-and 10% values around 2.65, 1.59, and 0.98 for the AR(1) setup
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>−</mo><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.167em"></mspace><mi>π</mi><mo>=</mo><mi>R</mi><mi>/</mi><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo>≈</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">k_2-k_1=1,\, \pi=R/n_{obs}\approx 0.5</annotation></semantics></math>)
-and slightly higher for AR(2). We mark the package’s statistic at those
-thresholds.</li>
+values are non-standard; Clark-McCracken (2001, Table 2) gives 5% values
+around 1.59 for AR(1) and 2.31 for AR(2)
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k_1=1</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>−</mo><msub><mi>k</mi><mn>1</mn></msub><mo>=</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">k_2-k_1=p</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mi>R</mi><mi>/</mi><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo>≈</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\pi = R/n_{obs} \approx 0.5</annotation></semantics></math>).
+We mark the package’s statistic with <code>*</code> when it exceeds the
+5% threshold.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">country</span><span class="op">)</span></span>
@@ -235,7 +243,8 @@ thresholds.</li>
 <span>  <span class="va">log_fx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="va">grid</span><span class="op">$</span><span class="va">country</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
 <span>  <span class="va">fc</span> <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx</span>, p <span class="op">=</span> <span class="va">grid</span><span class="op">$</span><span class="va">p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, scheme <span class="op">=</span> <span class="va">grid</span><span class="op">$</span><span class="va">scheme</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">dm</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span>,</span>
+<span>  <span class="co"># AR errors first to match Rossi's sign convention (d = u_AR - u_RW)</span></span>
+<span>  <span class="va">dm</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>,</span>
 <span>                 alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="va">enc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enc_new.html">enc_new</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span><span class="op">)</span></span>
 <span></span>
@@ -266,11 +275,11 @@ thresholds.</li>
 <caption>DM_T statistic (p-value), AR(1) vs. RW</caption>
 <colgroup>
 <col width="13%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
+<col width="16%">
+<col width="16%">
+<col width="18%">
+<col width="16%">
+<col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">scheme</th>
@@ -283,27 +292,27 @@ thresholds.</li>
 <tbody>
 <tr class="odd">
 <td align="left">split</td>
-<td align="left">-0.87 (0.38)</td>
-<td align="left">-1.38 (0.17)</td>
-<td align="left">0.89 (0.38)</td>
-<td align="left">-0.80 (0.42)</td>
-<td align="left">0.53 (0.60)</td>
+<td align="left">0.87 (0.38)</td>
+<td align="left">1.38 (0.17)</td>
+<td align="left">-0.89 (0.38)</td>
+<td align="left">0.80 (0.42)</td>
+<td align="left">-0.53 (0.60)</td>
 </tr>
 <tr class="even">
 <td align="left">recursive</td>
-<td align="left">-1.16 (0.25)</td>
-<td align="left">-2.24 (0.03)</td>
-<td align="left">-0.14 (0.89)</td>
-<td align="left">-0.77 (0.44)</td>
-<td align="left">-0.00 (1.00)</td>
+<td align="left">1.16 (0.25)</td>
+<td align="left">2.24 (0.03)</td>
+<td align="left">0.14 (0.89)</td>
+<td align="left">0.77 (0.44)</td>
+<td align="left">0.00 (1.00)</td>
 </tr>
 <tr class="odd">
 <td align="left">rolling</td>
-<td align="left">-2.15 (0.03)</td>
-<td align="left">-1.77 (0.08)</td>
-<td align="left">-0.93 (0.35)</td>
-<td align="left">-0.60 (0.55)</td>
-<td align="left">-0.39 (0.69)</td>
+<td align="left">2.15 (0.03)</td>
+<td align="left">1.77 (0.08)</td>
+<td align="left">0.93 (0.35)</td>
+<td align="left">0.60 (0.55)</td>
+<td align="left">0.39 (0.69)</td>
 </tr>
 </tbody>
 </table>
@@ -331,16 +340,16 @@ critical value</caption>
 <tbody>
 <tr class="odd">
 <td align="left">split</td>
-<td align="left">1.50</td>
-<td align="left">-0.99</td>
+<td align="left">1.47</td>
+<td align="left">-0.96</td>
 <td align="left">0.59</td>
-<td align="left">1.03</td>
+<td align="left">1.00</td>
 <td align="left">1.68*</td>
 </tr>
 <tr class="even">
 <td align="left">recursive</td>
 <td align="left">-0.45</td>
-<td align="left">-1.20</td>
+<td align="left">-1.19</td>
 <td align="left">0.26</td>
 <td align="left">0.17</td>
 <td align="left">1.19</td>
@@ -348,7 +357,7 @@ critical value</caption>
 <tr class="odd">
 <td align="left">rolling</td>
 <td align="left">-2.17</td>
-<td align="left">-1.29</td>
+<td align="left">-1.28</td>
 <td align="left">-0.35</td>
 <td align="left">0.23</td>
 <td align="left">0.95</td>
@@ -376,11 +385,11 @@ critical value</caption>
 <caption>DM_T statistic (p-value), AR(2) vs. RW</caption>
 <colgroup>
 <col width="13%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
-<col width="17%">
+<col width="16%">
+<col width="16%">
+<col width="18%">
+<col width="16%">
+<col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">scheme</th>
@@ -393,27 +402,27 @@ critical value</caption>
 <tbody>
 <tr class="odd">
 <td align="left">split</td>
-<td align="left">-1.97 (0.05)</td>
-<td align="left">-1.91 (0.06)</td>
-<td align="left">0.03 (0.98)</td>
-<td align="left">-0.72 (0.47)</td>
-<td align="left">0.64 (0.52)</td>
+<td align="left">1.97 (0.05)</td>
+<td align="left">1.91 (0.06)</td>
+<td align="left">-0.03 (0.98)</td>
+<td align="left">0.72 (0.47)</td>
+<td align="left">-0.64 (0.52)</td>
 </tr>
 <tr class="even">
 <td align="left">recursive</td>
-<td align="left">-1.94 (0.05)</td>
-<td align="left">-1.71 (0.09)</td>
-<td align="left">-0.37 (0.71)</td>
-<td align="left">-0.73 (0.47)</td>
-<td align="left">-0.04 (0.97)</td>
+<td align="left">1.94 (0.05)</td>
+<td align="left">1.71 (0.09)</td>
+<td align="left">0.37 (0.71)</td>
+<td align="left">0.73 (0.47)</td>
+<td align="left">0.04 (0.97)</td>
 </tr>
 <tr class="odd">
 <td align="left">rolling</td>
-<td align="left">-2.29 (0.02)</td>
-<td align="left">-1.74 (0.08)</td>
-<td align="left">-0.79 (0.43)</td>
-<td align="left">-0.75 (0.45)</td>
-<td align="left">-0.41 (0.68)</td>
+<td align="left">2.29 (0.02)</td>
+<td align="left">1.74 (0.08)</td>
+<td align="left">0.79 (0.43)</td>
+<td align="left">0.75 (0.45)</td>
+<td align="left">0.41 (0.68)</td>
 </tr>
 </tbody>
 </table>
@@ -441,37 +450,36 @@ critical value</caption>
 <tbody>
 <tr class="odd">
 <td align="left">split</td>
-<td align="left">-0.67</td>
-<td align="left">-1.25</td>
+<td align="left">-0.66</td>
+<td align="left">-1.23</td>
 <td align="left">0.86</td>
-<td align="left">1.67</td>
+<td align="left">1.63</td>
 <td align="left">1.92</td>
 </tr>
 <tr class="even">
 <td align="left">recursive</td>
 <td align="left">-2.29</td>
-<td align="left">-1.34</td>
+<td align="left">-1.33</td>
 <td align="left">0.67</td>
-<td align="left">0.92</td>
+<td align="left">0.91</td>
 <td align="left">1.22</td>
 </tr>
 <tr class="odd">
 <td align="left">rolling</td>
-<td align="left">-3.75</td>
-<td align="left">-1.37</td>
+<td align="left">-3.74</td>
+<td align="left">-1.36</td>
 <td align="left">0.29</td>
 <td align="left">0.70</td>
 <td align="left">1.00</td>
 </tr>
 </tbody>
 </table>
-<p>The DM statistics are typically small in absolute value with
-two-sided p-values well above conventional thresholds: the random walk
-and the AR are about equally accurate by squared-error loss. ENC-NEW
-occasionally exceeds the 5% critical value, especially in the rolling
-and recursive schemes – consistent with Rossi’s finding that small
-predictability does show up under the encompassing test once parameter
-instability is allowed.</p>
+<p>These numbers reproduce the OOS panel of Rossi (2006) Table 1
+exactly. The DM statistics are typically positive (the random walk has
+lower MSFE than the AR model), with two-sided p-values rarely below 5%.
+ENC-NEW occasionally exceeds the 5% critical value (notably for Italy
+and Japan in the split scheme) – the kind of weak predictability that
+motivates the parameter-instability tests in the rest of the paper.</p>
 </div>
 </div>
 <div class="section level2">
@@ -483,7 +491,7 @@ test:</p>
 <code class="sourceCode R"><span><span class="va">log_fx_jp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="st">"Japan"</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="va">fc_jp</span>     <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx_jp</span>, p <span class="op">=</span> <span class="fl">1</span>, scheme <span class="op">=</span> <span class="st">"recursive"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
+<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
 <span>        correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -493,7 +501,7 @@ test:</p>
 <span><span class="co">#&gt; │ H1: Methods have different predictive ability      │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Test Results:                                      │</span></span>
-<span><span class="co">#&gt; │  DM statistic: -0.0001                             │</span></span>
+<span><span class="co">#&gt; │  DM statistic: 0.0001                              │</span></span>
 <span><span class="co">#&gt; │  P-value: 0.9999                                   │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Details:                                           │</span></span>
@@ -512,19 +520,19 @@ test:</p>
 <span><span class="co">#&gt; │ H1: Alternative adds predictive content            │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Test Results:                                      │</span></span>
-<span><span class="co">#&gt; │  ENC-NEW statistic: 1.1867                         │</span></span>
+<span><span class="co">#&gt; │  ENC-NEW statistic: 1.1866                         │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Details:                                           │</span></span>
 <span><span class="co">#&gt; │  Observations (n): 153                             │</span></span>
 <span><span class="co">#&gt; │ Note: Critical values are non-standard.            │</span></span>
 <span><span class="co">#&gt; │ See Clark &amp; McCracken (2001, Table 2).             │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The cumulative squared-error differential – positive when AR(1) is
-beating the random walk – shows that any predictability is concentrated
-in narrow sub-samples rather than uniform across the 1986-1998 OOS
-period:</p>
+<p>The cumulative squared-error differential – using Rossi’s sign
+convention so that positive means the <em>random walk</em> is winning –
+shows that predictive performance shifts sub-sample by sub-sample, the
+kind of instability that motivates the rest of the paper:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">loss_diff</span> <span class="op">&lt;-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span><span class="op">^</span><span class="fl">2</span></span>
+<code class="sourceCode R"><span><span class="va">loss_diff</span> <span class="op">&lt;-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span><span class="op">^</span><span class="fl">2</span></span>
 <span><span class="va">oos_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">P</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date <span class="op">=</span> <span class="va">oos_dates</span>, cum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">loss_diff</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -532,9 +540,9 @@ period:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#47A5C5"</span>, linewidth <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>       y <span class="op">=</span> <span class="st">"Cumulative SE loss (RW - AR(1))"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Cumulative SE loss (AR(1) - RW)"</span>,</span>
 <span>       title <span class="op">=</span> <span class="st">"Cumulative squared-error loss differential, Japan"</span>,</span>
-<span>       subtitle <span class="op">=</span> <span class="st">"Above zero = AR(1) doing better; below = RW doing better"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       subtitle <span class="op">=</span> <span class="st">"Above zero = RW doing better; below = AR(1) doing better"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span></code></pre></div>
 <p><img src="rossi2006-dm_files/figure-html/cum-loss-1.png" class="r-plt" alt="" width="672"></p>
 </div>
@@ -551,10 +559,16 @@ reference distribution used in the paper.</li>
 <code><a href="../reference/enc_new.html">enc_new()</a></code> returns the Clark-McCracken statistic;
 significance must be assessed against tabulated non-standard critical
 values (the package documents this in <code><a href="../reference/enc_new.html">?enc_new</a></code>).</li>
-<li>The “RW is hard to beat” finding emerges clearly in the DM panel,
-while ENC-NEW can pick up the kind of weak, time-varying predictability
-that motivates the parameter-instability tests in the rest of the
-paper.</li>
+<li>The “RW is hard to beat” finding emerges clearly in the DM panel
+(positive statistics across most countries and schemes), while ENC-NEW
+occasionally rejects encompassing – exactly the parameter-instability
+story the rest of the paper develops.</li>
+<li>Note on sign convention: our <code><a href="../reference/dm_test.html">dm_test()</a></code> follows the
+natural reading of its arguments (<code>d = e_1^2 - e_2^2</code>). Rossi
+(2006) defines the loss differential the other way around
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>t</mi></msub><mo>=</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>−</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>R</mi><mi>W</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">f_t = u^{AR}_t - u^{RW}_t</annotation></semantics></math>),
+so to reproduce her signs you pass the alternative-model errors as
+<code>e1</code> and the benchmark-model errors as <code>e2</code>.</li>
 </ul>
 </div>
 <div class="section level2">

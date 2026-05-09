@@ -65,7 +65,7 @@ enc_new(e1, e2)
 #> │ H1: Alternative adds predictive content            │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  ENC-NEW statistic: 160.3100                       │
+#> │  ENC-NEW statistic: 158.8083                       │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 100                             │

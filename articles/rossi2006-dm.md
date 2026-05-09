@@ -1,15 +1,11 @@
-# Replicating Rossi (2006), Table 1: Out-of-Sample Tests
+# Replicating Rossi (2006), Table 1: Diebold-Mariano Tests
 
-This article replicates the **out-of-sample portion of Table 1** in
-Rossi (2006), *“Are exchange rates really random walks? Some evidence
-robust to parameter instability”* (*Macroeconomic Dynamics*, 10(1),
-20-38), using two functions from **forecastdom**:
-
-- [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
-  – the Diebold-Mariano (1995) test of equal predictive accuracy.
-- [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
-  – the Clark-McCracken (2001) ENC-NEW encompassing test for nested
-  models.
+This article replicates the **out-of-sample Diebold-Mariano panel of
+Table 1** in Rossi (2006), *“Are exchange rates really random walks?
+Some evidence robust to parameter instability”* (*Macroeconomic
+Dynamics*, 10(1), 20-38), using
+[`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+from **forecastdom** and the bundled `rossi2006` dataset.
 
 The exercise is the classical Meese-Rogoff (1983) question: at the
 monthly horizon, can a small linear AR model of exchange-rate returns
@@ -20,11 +16,6 @@ library(forecastdom)
 library(ggplot2)
 
 data(rossi2006)
-str(rossi2006)
-#> 'data.frame':    1550 obs. of  3 variables:
-#>  $ date   : Date, format: "1973-03-01" "1973-04-01" ...
-#>  $ country: Factor w/ 5 levels "Canada","France",..: 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ fx     : num  100.1 99.7 100.5 100.2 99.8 ...
 ```
 
 ## The data
@@ -56,20 +47,16 @@ one-step-ahead forecasts of $\Delta e_{t + 1}$:
   ${\widehat{\Delta e}}_{t + 1}^{AR} = {\widehat{\alpha}}_{t} + \sum_{k = 1}^{p}{\widehat{\beta}}_{k,t}\,\Delta e_{t - k + 1}$,
   with coefficients re-estimated each period.
 
-Following Rossi, both AR(1) and AR(2) start from the same usable sample:
-dropping the first three observations of $e_{t}$ gives
-$n_{obs} = T - 3 = 307$ usable monthly returns. The first
-$R = \lceil n_{obs}/2\rceil = 154$ are used to fit the initial model and
-the remaining $P = 153$ are evaluated out of sample.
+Following Rossi, both AR(1) and AR(2) start from the same usable sample
+of $n_{obs} = 307$ returns. The first $R = \lceil n_{obs}/2\rceil = 154$
+are used to fit the initial model and the remaining $P = 153$ are
+evaluated out of sample. Three estimation schemes are considered:
 
-The paper considers three estimation schemes:
-
-- **Split (fixed window)** – coefficients estimated once on $1:R$ and
-  held fixed.
-- **Recursive (expanding window)** – coefficients re-estimated each
-  period using all available data.
-- **Rolling (fixed-width window)** – coefficients re-estimated each
-  period using the most recent $R$ observations.
+- **Split** – coefficients estimated once on $1:R$ and held fixed.
+- **Recursive** – coefficients re-estimated each period using all
+  available data.
+- **Rolling** – coefficients re-estimated each period using the most
+  recent $R$ observations.
 
 ``` r
 forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling")) {
@@ -77,9 +64,7 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
 
   T_full <- length(log_fx)
   dy <- diff(log_fx)
-
-  # Align AR(1) and AR(2) on the same usable sample (drop first 3 obs of e):
-  Y  <- dy[3:(T_full - 1)]              # length n_obs = T_full - 3
+  Y  <- dy[3:(T_full - 1)]
   L1 <- dy[2:(T_full - 2)]
   L2 <- dy[1:(T_full - 3)]
   Xm <- if (p == 1) matrix(L1, ncol = 1) else cbind(L1, L2)
@@ -102,88 +87,54 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
     pred <- as.numeric(c(1, Xm[R + j, ]) %*% b)
 
     e_alt[j]   <- Y[R + j] - pred
-    e_bench[j] <- Y[R + j]              # driftless RW: forecast = 0
+    e_bench[j] <- Y[R + j]
   }
 
-  list(e_bench = e_bench, e_alt = e_alt, R = R, P = P_oos)
+  list(e_bench = e_bench, e_alt = e_alt, P = P_oos)
 }
 ```
 
-## Replicating the OOS panel of Table 1
+## Replicating the OOS DM panel of Table 1
 
-For every combination of country, AR order, and estimation scheme, we
-compute:
-
-- The Diebold-Mariano statistic via
-  [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
-  with `correction = FALSE` to match Rossi’s asymptotic $\chi^{2}(1)$
-  reference distribution (a two-sided normal in this case). Rossi
-  defines the loss differential as $f_{t} = u_{t}^{AR} - u_{t}^{RW}$, so
-  a *positive* DM statistic indicates the random walk has lower MSFE. To
-  reproduce her sign, we pass the **AR errors as the first argument**
-  and the random-walk errors as the second:
-  $d = e_{AR}^{2} - e_{RW}^{2}$.
-- The ENC-NEW statistic via
-  [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md).
-  ENC-NEW critical values are non-standard; Clark-McCracken (2001,
-  Table 2) gives 5% values around 1.59 for AR(1) and 2.31 for AR(2)
-  ($k_{1} = 1$, $k_{2} - k_{1} = p$, $\pi = R/n_{obs} \approx 0.5$). We
-  mark the package’s statistic with `*` when it exceeds the 5%
-  threshold.
+We use
+[`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+with `correction = FALSE` to match Rossi’s asymptotic $\chi^{2}(1)$
+reference distribution. Rossi defines the loss differential as
+$f_{t} = u_{t}^{AR} - u_{t}^{RW}$, so a *positive* DM statistic means
+the random walk has lower MSFE. To reproduce her sign we pass the AR
+errors as `e1` and the random-walk errors as `e2`.
 
 ``` r
 countries <- levels(rossi2006$country)
 schemes   <- c("split", "recursive", "rolling")
-orders    <- c(1, 2)
 
-# Approximate Clark-McCracken (2001, Table 2) 5% critical values
-# (k1 = 1, k2 - k1 = p, pi = R/n_obs near 0.5)
-enc_cv5 <- c(`1` = 1.59, `2` = 2.31)
+run_panel <- function(p) {
+  out <- expand.grid(country = countries, scheme = schemes,
+                     stringsAsFactors = FALSE)
+  out$DM   <- NA_real_
+  out$DM_p <- NA_real_
 
-grid <- expand.grid(
-  country = countries,
-  p       = orders,
-  scheme  = schemes,
-  KEEP.OUT.ATTRS = FALSE,
-  stringsAsFactors = FALSE
-)
-grid$DM      <- NA_real_
-grid$DM_p    <- NA_real_
-grid$ENC     <- NA_real_
-grid$ENC_sig <- ""
+  for (i in seq_len(nrow(out))) {
+    log_fx <- log(subset(rossi2006, country == out$country[i])$fx)
+    fc     <- forecast_oos(log_fx, p = p, scheme = out$scheme[i])
+    res    <- dm_test(fc$e_alt, fc$e_bench,
+                      alternative = "two.sided", correction = FALSE)
+    out$DM[i]   <- res$statistic
+    out$DM_p[i] <- res$pvalue
+  }
 
-for (i in seq_len(nrow(grid))) {
-  log_fx <- log(subset(rossi2006, country == grid$country[i])$fx)
-  fc <- forecast_oos(log_fx, p = grid$p[i], scheme = grid$scheme[i])
-
-  # AR errors first to match Rossi's sign convention (d = u_AR - u_RW)
-  dm  <- dm_test(fc$e_alt, fc$e_bench,
-                 alternative = "two.sided", correction = FALSE)
-  enc <- enc_new(fc$e_bench, fc$e_alt)
-
-  grid$DM[i]      <- dm$statistic
-  grid$DM_p[i]    <- dm$pvalue
-  grid$ENC[i]     <- enc$statistic
-  grid$ENC_sig[i] <- ifelse(
-    enc$statistic > enc_cv5[as.character(grid$p[i])], "*", ""
-  )
+  out$cell <- sprintf("%.2f (%.2f)", out$DM, out$DM_p)
+  wide <- reshape(out[, c("country", "scheme", "cell")],
+                  idvar = "scheme", timevar = "country", direction = "wide")
+  names(wide) <- gsub("^cell\\.", "", names(wide))
+  wide
 }
 ```
 
-### AR(1) results
+### AR(1)
 
 ``` r
-ar1 <- subset(grid, p == 1)
-ar1$DM_str  <- sprintf("%.2f (%.2f)", ar1$DM, ar1$DM_p)
-ar1$ENC_str <- paste0(sprintf("%.2f", ar1$ENC), ar1$ENC_sig)
-
-dm_ar1 <- reshape(
-  ar1[, c("country", "scheme", "DM_str")],
-  idvar = "scheme", timevar = "country", direction = "wide"
-)
-names(dm_ar1) <- gsub("^DM_str\\.", "", names(dm_ar1))
-
-knitr::kable(dm_ar1, row.names = FALSE,
+knitr::kable(run_panel(1), row.names = FALSE,
              caption = "DM_T statistic (p-value), AR(1) vs. RW")
 ```
 
@@ -195,41 +146,10 @@ knitr::kable(dm_ar1, row.names = FALSE,
 
 DM_T statistic (p-value), AR(1) vs. RW
 
-``` r
-
-enc_ar1 <- reshape(
-  ar1[, c("country", "scheme", "ENC_str")],
-  idvar = "scheme", timevar = "country", direction = "wide"
-)
-names(enc_ar1) <- gsub("^ENC_str\\.", "", names(enc_ar1))
-
-knitr::kable(enc_ar1, row.names = FALSE,
-             caption = "ENC_T statistic, AR(1) vs. RW. * = exceeds 5% Clark-McCracken critical value")
-```
-
-| scheme    | Canada | France | Germany | Italy | Japan  |
-|:----------|:-------|:-------|:--------|:------|:-------|
-| split     | 1.47   | -0.96  | 0.59    | 1.00  | 1.68\* |
-| recursive | -0.45  | -1.19  | 0.26    | 0.17  | 1.19   |
-| rolling   | -2.17  | -1.28  | -0.35   | 0.23  | 0.95   |
-
-ENC_T statistic, AR(1) vs. RW. \* = exceeds 5% Clark-McCracken critical
-value
-
-### AR(2) results
+### AR(2)
 
 ``` r
-ar2 <- subset(grid, p == 2)
-ar2$DM_str  <- sprintf("%.2f (%.2f)", ar2$DM, ar2$DM_p)
-ar2$ENC_str <- paste0(sprintf("%.2f", ar2$ENC), ar2$ENC_sig)
-
-dm_ar2 <- reshape(
-  ar2[, c("country", "scheme", "DM_str")],
-  idvar = "scheme", timevar = "country", direction = "wide"
-)
-names(dm_ar2) <- gsub("^DM_str\\.", "", names(dm_ar2))
-
-knitr::kable(dm_ar2, row.names = FALSE,
+knitr::kable(run_panel(2), row.names = FALSE,
              caption = "DM_T statistic (p-value), AR(2) vs. RW")
 ```
 
@@ -241,44 +161,19 @@ knitr::kable(dm_ar2, row.names = FALSE,
 
 DM_T statistic (p-value), AR(2) vs. RW
 
-``` r
-
-enc_ar2 <- reshape(
-  ar2[, c("country", "scheme", "ENC_str")],
-  idvar = "scheme", timevar = "country", direction = "wide"
-)
-names(enc_ar2) <- gsub("^ENC_str\\.", "", names(enc_ar2))
-
-knitr::kable(enc_ar2, row.names = FALSE,
-             caption = "ENC_T statistic, AR(2) vs. RW. * = exceeds 5% Clark-McCracken critical value")
-```
-
-| scheme    | Canada | France | Germany | Italy | Japan |
-|:----------|:-------|:-------|:--------|:------|:------|
-| split     | -0.66  | -1.23  | 0.86    | 1.63  | 1.92  |
-| recursive | -2.29  | -1.33  | 0.67    | 0.91  | 1.22  |
-| rolling   | -3.74  | -1.36  | 0.29    | 0.70  | 1.00  |
-
-ENC_T statistic, AR(2) vs. RW. \* = exceeds 5% Clark-McCracken critical
-value
-
-These numbers reproduce the OOS panel of Rossi (2006) Table 1 exactly.
-The DM statistics are typically positive (the random walk has lower MSFE
-than the AR model), with two-sided p-values rarely below 5%. ENC-NEW
-occasionally exceeds the 5% critical value (notably for Italy and Japan
-in the split scheme) – the kind of weak predictability that motivates
-the parameter-instability tests in the rest of the paper.
+These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly.
+The statistics are typically positive – the random walk has lower MSFE
+than the AR model – with two-sided p-values rarely below 5%, the
+classical Meese-Rogoff finding.
 
 ## Single-country deep dive: Japan, AR(1), recursive
-
-The print methods give a compact, fully-formatted summary of each test:
 
 ``` r
 log_fx_jp <- log(subset(rossi2006, country == "Japan")$fx)
 fc_jp     <- forecast_oos(log_fx_jp, p = 1, scheme = "recursive")
 
-dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided",
-        correction = FALSE)
+dm_test(fc_jp$e_alt, fc_jp$e_bench,
+        alternative = "two.sided", correction = FALSE)
 #> 
 #> ╭────────────────────────────────────────────────────╮
 #> │            Diebold-Mariano Test (1995)             │
@@ -296,29 +191,12 @@ dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided",
 #> │  Loss function: SE                                 │
 #> │  Reference distribution: N(0,1)                    │
 #> ╰────────────────────────────────────────────────────╯
-enc_new(fc_jp$e_bench, fc_jp$e_alt)
-#> 
-#> ╭────────────────────────────────────────────────────╮
-#> │             ENC-NEW Encompassing Test              │
-#> │            (Clark and McCracken, 2001)             │
-#> ├────────────────────────────────────────────────────┤
-#> │ H0: Benchmark encompasses the alternative          │
-#> │ H1: Alternative adds predictive content            │
-#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
-#> │ Test Results:                                      │
-#> │  ENC-NEW statistic: 1.1866                         │
-#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
-#> │ Details:                                           │
-#> │  Observations (n): 153                             │
-#> │ Note: Critical values are non-standard.            │
-#> │ See Clark & McCracken (2001, Table 2).             │
-#> ╰────────────────────────────────────────────────────╯
 ```
 
 The cumulative squared-error differential – using Rossi’s sign
 convention so that positive means the *random walk* is winning – shows
-that predictive performance shifts sub-sample by sub-sample, the kind of
-instability that motivates the rest of the paper:
+the AR’s edge is concentrated in narrow sub-samples rather than uniform
+across the OOS period:
 
 ``` r
 loss_diff <- fc_jp$e_alt^2 - fc_jp$e_bench^2
@@ -337,39 +215,10 @@ ggplot(data.frame(date = oos_dates, cum = cumsum(loss_diff)),
 
 ![](rossi2006-dm_files/figure-html/cum-loss-1.png)
 
-## Takeaways
-
-- [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
-  reproduces the OOS DM panel of Rossi (2006) Table 1 with
-  `correction = FALSE` to match the asymptotic $\chi^{2}(1)$ reference
-  distribution used in the paper.
-- [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
-  returns the Clark-McCracken statistic; significance must be assessed
-  against tabulated non-standard critical values (the package documents
-  this in
-  [`?enc_new`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)).
-- The “RW is hard to beat” finding emerges clearly in the DM panel
-  (positive statistics across most countries and schemes), while ENC-NEW
-  occasionally rejects encompassing – exactly the parameter-instability
-  story the rest of the paper develops.
-- Note on sign convention: our
-  [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
-  follows the natural reading of its arguments (`d = e_1^2 - e_2^2`).
-  Rossi (2006) defines the loss differential the other way around
-  ($f_{t} = u_{t}^{AR} - u_{t}^{RW}$), so to reproduce her signs you
-  pass the alternative-model errors as `e1` and the benchmark-model
-  errors as `e2`.
-
 ## References
 
-- Clark, T. E. and McCracken, M. W. (2001). Tests of equal forecast
-  accuracy and encompassing for nested models. *Journal of
-  Econometrics*, 105(1), 85-110.
 - Diebold, F. X. and Mariano, R. S. (1995). Comparing predictive
   accuracy. *Journal of Business & Economic Statistics*, 13(3), 253-263.
-- Harvey, D., Leybourne, S., and Newbold, P. (1997). Testing the
-  equality of prediction mean squared errors. *International Journal of
-  Forecasting*, 13(2), 281-291.
 - Meese, R. A. and Rogoff, K. (1983). Empirical exchange rate models of
   the seventies: Do they fit out of sample? *Journal of International
   Economics*, 14(1-2), 3-24.

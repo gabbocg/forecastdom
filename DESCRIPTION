@@ -1,5 +1,5 @@
 Package: forecastdom
-Title: Conditional and Unconditional Forecast Dominance Testing
+Title: Tools for (Un)conditional Forecast Dominance
 Version: 0.1.0
 Authors@R:
     person("Gabriel", "Cabrera", , "gcabrerag@fen.uchile.cl", role = c("aut", "cre"))

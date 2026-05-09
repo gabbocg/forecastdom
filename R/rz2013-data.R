@@ -1,0 +1,49 @@
+#' Equity Premium and Macro Predictors (Rapach & Zhou, 2013)
+#'
+#' Monthly U.S. log equity premium and the 14 Goyal-Welch macroeconomic
+#' predictors used in Rapach and Zhou (2013), "Forecasting Stock
+#' Returns," Handbook of Economic Forecasting, Vol. 2A, Chapter 6.
+#' Sourced from the replication archive at
+#' \url{https://github.com/GabboCg/rz2013}.
+#'
+#' @format A data frame with 1,009 rows and 16 variables. Sample period
+#' is 1926-12 to 2010-12 (monthly).
+#' \describe{
+#'   \item{date}{First-of-month \code{Date}.}
+#'   \item{eq_prem}{Log equity premium: \eqn{\log(1+r_t) - \log(1+rf_{t-1})},
+#'     where \eqn{r_t} is the CRSP value-weighted S&P 500 return.}
+#'   \item{DP}{Log dividend-price ratio.}
+#'   \item{DY}{Log dividend yield.}
+#'   \item{EP}{Log earnings-price ratio.}
+#'   \item{DE}{Log dividend-payout ratio.}
+#'   \item{SVAR}{Stock variance: monthly sum of squared daily S&P 500 returns.}
+#'   \item{BM}{DJIA book-to-market ratio.}
+#'   \item{NTIS}{Net equity expansion.}
+#'   \item{TBL}{3-month Treasury bill yield (decimal).}
+#'   \item{LTY}{Long-term government bond yield (decimal).}
+#'   \item{LTR}{Long-term government bond return (decimal).}
+#'   \item{TMS}{Term spread: \code{LTY - TBL}.}
+#'   \item{DFY}{Default yield spread: BAA minus AAA corporate yields.}
+#'   \item{DFR}{Default return spread: long-term corporate minus government bond return.}
+#'   \item{INFL_lag}{Inflation rate, lagged one month (decimal).}
+#' }
+#'
+#' @source Replication archive of Rapach and Zhou (2013):
+#'   \url{https://github.com/GabboCg/rz2013}. The underlying data are from
+#'   Amit Goyal's website
+#'   (\url{http://www.hec.unil.ch/agoyal/}).
+#'
+#' @references
+#' Rapach, D. E. and Zhou, G. (2013). Forecasting stock returns. In
+#' G. Elliott and A. Timmermann (Eds.), \emph{Handbook of Economic
+#' Forecasting}, Vol. 2A, pp. 328-383. Elsevier.
+#'
+#' Goyal, A. and Welch, I. (2008). A comprehensive look at the empirical
+#' performance of equity premium prediction.
+#' \emph{Review of Financial Studies}, 21(4), 1455-1508.
+#'
+#' @examples
+#' data(rz2013)
+#' head(rz2013)
+#' summary(rz2013$eq_prem)
+"rz2013"

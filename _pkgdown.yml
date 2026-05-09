@@ -27,6 +27,10 @@ navbar:
       menu:
       - text: Get Started
         href: articles/forecastdom.html
+      - text: Diebold-Mariano on Exchange Rates (Rossi, 2006)
+        href: articles/rossi2006-dm.html
+      - text: Clark-West Tests on Equity Premium Forecasts
+        href: articles/cw-equity-premium.html
 reference:
 - title: Forecast Comparison Tests
   desc: |
@@ -59,6 +63,12 @@ reference:
   contents:
   - print.cspa_test
   - summary.cspa_test
+- title: Datasets
+  desc: Datasets bundled with the package.
+  contents:
+  - rossi2006
+  - rz2013
+  - nrtz2014
 footer:
   structure:
     left: developed_by

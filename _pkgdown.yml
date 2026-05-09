@@ -27,7 +27,7 @@ navbar:
       menu:
       - text: Get Started
         href: articles/forecastdom.html
-      - text: Diebold-Mariano on Exchange Rates (Rossi, 2006)
+      - text: Replicating Rossi (2006), Table 1
         href: articles/rossi2006-dm.html
       - text: Clark-West Tests on Equity Premium Forecasts
         href: articles/cw-equity-premium.html

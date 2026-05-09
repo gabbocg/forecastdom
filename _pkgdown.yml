@@ -25,11 +25,11 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Replicating Rossi (2006), Table 1
+      - text: Replicating Rossi (2006)
         href: articles/rossi2006-dm.html
       - text: Replicating Rapach & Zhou (2013) and Neely et al. (2014)
         href: articles/cw-equity-premium.html
-      - text: Replicating Rapach, Ringgenberg & Zhou (2016), Table A2
+      - text: Replicating Rapach et al. (2016)
         href: articles/rrz2016-ivx-qll.html
 reference:
 - title: Forecast Comparison Tests

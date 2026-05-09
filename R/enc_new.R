@@ -47,7 +47,7 @@ enc_new <- function(e1, e2) {
   n <- length(e1)
 
   c_bar <- mean(e1 ^ 2 - e2 * e1)
-  msfe2 <- mean((e2 - mean(e2)) ^ 2)
+  msfe2 <- mean(e2 ^ 2)
 
   enc_stat <- n * c_bar / msfe2
 

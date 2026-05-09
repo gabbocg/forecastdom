@@ -1,4 +1,8 @@
-# forecastdom
+# forecastdom: Tools for (Un)conditional Forecast Dominance
+
+**Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
+**License:** [MIT](https://opensource.org/licenses/MIT) + file
+[LICENSE](https://gabbocg.github.io/forecastdom/LICENSE)
 
 ## Overview
 

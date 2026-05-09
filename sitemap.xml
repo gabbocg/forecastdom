@@ -1,8 +1,10 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://gabbocg.github.io/forecastdom/404.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/LICENSE-text.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/articles/cw-equity-premium.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/forecastdom.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/authors.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/index.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/covnw.html</loc></url>
@@ -19,8 +21,11 @@
 <url><loc>https://gabbocg.github.io/forecastdom/reference/gw_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/index.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/ivx_wald.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/nrtz2014.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/print.cspa_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/qll_hat.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/rossi2006.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/rz2013.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/spa_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/summary.cspa_test.html</loc></url>
 </urlset>

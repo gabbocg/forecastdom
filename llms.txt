@@ -177,9 +177,25 @@ Data generating process from Li, Liao, and Quaedvlieg (2022).
 - [`summary(`*`<cspa_test>`*`)`](https://gabbocg.github.io/forecastdom/reference/summary.cspa_test.md)
   : Summary Method for CSPA Test Results
 
+## Datasets
+
+Datasets bundled with the package.
+
+- [`rossi2006`](https://gabbocg.github.io/forecastdom/reference/rossi2006.md)
+  : Bilateral Nominal Exchange Rates (Rossi, 2006)
+- [`rz2013`](https://gabbocg.github.io/forecastdom/reference/rz2013.md)
+  : Equity Premium and Macro Predictors (Rapach & Zhou, 2013)
+- [`nrtz2014`](https://gabbocg.github.io/forecastdom/reference/nrtz2014.md)
+  : Equity Premium and Technical Indicators (Neely, Rapach, Tu, & Zhou,
+  2014)
+
 # Articles
 
 ### All vignettes
 
+- [Clark-West Tests on Equity Premium
+  Forecasts](https://gabbocg.github.io/forecastdom/articles/cw-equity-premium.md):
 - [Get Started with
   forecastdom](https://gabbocg.github.io/forecastdom/articles/forecastdom.md):
+- [Diebold-Mariano on Exchange Rates (Rossi,
+  2006)](https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.md):

@@ -56,3 +56,15 @@ Data generating process from Li, Liao, and Quaedvlieg (2022).
   : Print Method for CSPA Test Results
 - [`summary(`*`<cspa_test>`*`)`](https://gabbocg.github.io/forecastdom/reference/summary.cspa_test.md)
   : Summary Method for CSPA Test Results
+
+## Datasets
+
+Datasets bundled with the package.
+
+- [`rossi2006`](https://gabbocg.github.io/forecastdom/reference/rossi2006.md)
+  : Bilateral Nominal Exchange Rates (Rossi, 2006)
+- [`rz2013`](https://gabbocg.github.io/forecastdom/reference/rz2013.md)
+  : Equity Premium and Macro Predictors (Rapach & Zhou, 2013)
+- [`nrtz2014`](https://gabbocg.github.io/forecastdom/reference/nrtz2014.md)
+  : Equity Premium and Technical Indicators (Neely, Rapach, Tu, & Zhou,
+  2014)

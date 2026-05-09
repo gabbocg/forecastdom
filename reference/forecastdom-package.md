@@ -1,4 +1,4 @@
-# forecastdom: Conditional and Unconditional Forecast Dominance Testing
+# forecastdom: Tools for (Un)conditional Forecast Dominance
 
 Tools for testing conditional superior predictive ability (CSPA) of
 forecasting methods with respect to a benchmark, based on Li, Liao, and

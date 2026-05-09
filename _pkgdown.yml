@@ -3,6 +3,8 @@ template:
   bootstrap: 5
   bootswatch: default
   bslib:
+    base_font: {google: "Source Sans Pro"}
+    heading_font: {google: "Source Sans Pro"}
     bg: '#ffffff'
     fg: '#1B2A3D'
     primary: '#47A5C5'

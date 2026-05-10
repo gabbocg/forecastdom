@@ -1,0 +1,191 @@
+---
+title: "Replicating Quaedvlieg (2021)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Replicating Quaedvlieg (2021)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4
+)
+```
+
+This article demonstrates the two multi-horizon superior predictive
+ability tests from Quaedvlieg (2021), implemented in **forecastdom**
+as `uspa_mh_test()` and `aspa_mh_test()`. Both tests compare a
+*path* of forecasts at horizons \(h = 1, \dots, H\) rather than each
+horizon in isolation, and use a moving-block bootstrap to obtain
+critical values that account for serial dependence in the
+loss-differential path.
+
+* **Uniform SPA** (\(\mathrm{uSPA}\)) — null: the benchmark is at
+  least as good as the competitor at *every* horizon. Test statistic
+  is the minimum of horizon-wise standardized loss differentials.
+* **Average SPA** (\(\mathrm{aSPA}\)) — null: the benchmark is at
+  least as good as the competitor on a (user-specified) weighted
+  average of horizons. Test statistic is the standardized weighted
+  average loss differential.
+
+Throughout, the loss differential is defined as
+\(d_{h,t} = L_{\text{bench},h,t} - L_{\text{comp},h,t}\), so positive
+entries indicate the benchmark has *higher* loss (is worse) at that
+horizon, and rejection of either null requires the benchmark to be
+uniformly (or on average) worse.
+
+```{r setup, message = FALSE}
+library(forecastdom)
+data(quaedvlieg2021)
+str(quaedvlieg2021, max.level = 1)
+```
+
+The bundled `quaedvlieg2021` object holds the two
+loss-differential matrices distributed with the paper's replication
+archive: `$uspa` and `$aspa`, each \(1000 \times 20\).
+
+## Per-horizon picture
+
+Before running the tests, it's worth looking at the per-horizon
+mean loss differentials. The two example matrices are constructed
+so that they discriminate between the tests.
+
+```{r mean-table}
+H <- ncol(quaedvlieg2021$uspa)
+means <- rbind(
+  uspa_dataset = colMeans(quaedvlieg2021$uspa),
+  aspa_dataset = colMeans(quaedvlieg2021$aspa)
+)
+colnames(means) <- paste0("h", seq_len(H))
+knitr::kable(round(means, 3))
+```
+
+`$uspa` shows positive mean loss differentials at *every* horizon
+— the benchmark is worse uniformly. `$aspa` shows positive means
+at most horizons but a near-zero mean at the shortest horizon,
+so the benchmark is worse on average but not uniformly.
+
+```{r mean-plot, fig.height = 3.5, fig.alt = "Mean loss differential by horizon for the uspa and aspa example matrices"}
+library(ggplot2)
+df <- data.frame(
+  horizon = rep(seq_len(H), 2),
+  d_bar   = c(colMeans(quaedvlieg2021$uspa),
+              colMeans(quaedvlieg2021$aspa)),
+  dataset = rep(c("uspa", "aspa"), each = H)
+)
+ggplot(df, aes(horizon, d_bar, colour = dataset)) +
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey60") +
+  geom_line() + geom_point() +
+  labs(x = "Horizon h", y = expression(bar(d)[h]),
+       title = "Mean loss differential by horizon") +
+  theme_minimal()
+```
+
+## Uniform multi-horizon SPA
+
+```{r uspa, results = "hold"}
+set.seed(1)
+uspa_uspa <- uspa_mh_test(quaedvlieg2021$uspa, L = 3, B = 999)
+set.seed(1)
+uspa_aspa <- uspa_mh_test(quaedvlieg2021$aspa, L = 3, B = 999)
+uspa_uspa
+uspa_aspa
+```
+
+The uSPA test rejects on `$uspa` (all horizons show the benchmark
+losing) but fails to reject on `$aspa` at the 5% level, because
+the shortest horizon's mean is essentially zero — the `min` of
+standardized horizon-wise means is pulled down by that single
+horizon.
+
+## Average multi-horizon SPA
+
+With uniform weights \(w_h = 1/H\) the aSPA statistic is the
+standardized unweighted average loss differential:
+
+```{r aspa-uniform, results = "hold"}
+w_unif <- rep(1 / H, H)
+set.seed(1)
+aspa_uspa <- aspa_mh_test(quaedvlieg2021$uspa, weights = w_unif, L = 3, B = 999)
+set.seed(1)
+aspa_aspa <- aspa_mh_test(quaedvlieg2021$aspa, weights = w_unif, L = 3, B = 999)
+aspa_uspa
+aspa_aspa
+```
+
+The aSPA test rejects on *both* datasets — the negative h=1 mean
+of `$aspa` is more than compensated by positive means at longer
+horizons, so the weighted average favours rejection. This is the
+power gain Quaedvlieg (2021) emphasises: by aggregating across the
+forecast path, the average test detects model-level differences
+that the per-horizon Diebold-Mariano machinery would miss because
+of the multiple-testing burden.
+
+### Custom weights
+
+Down-weighting short horizons makes the aSPA test even more
+decisive against `$aspa`:
+
+```{r aspa-down, results = "hold"}
+w_down <- c(rep(0, 4), rep(1, 16)) / 16   # zero weight on h = 1..4
+set.seed(1)
+aspa_mh_test(quaedvlieg2021$aspa, weights = w_down, L = 3, B = 999)
+```
+
+Up-weighting the shortest horizons pulls the statistic back toward
+zero:
+
+```{r aspa-up, results = "hold"}
+w_up <- c(rep(4, 4), rep(0, 16)) / 16     # all weight on h = 1..4
+set.seed(1)
+aspa_mh_test(quaedvlieg2021$aspa, weights = w_up, L = 3, B = 999)
+```
+
+## Block-length sensitivity
+
+The moving-block bootstrap depends on the block length `L`. The
+p-value is robust over a reasonable range — small enough to keep
+many blocks, large enough to capture the path's serial dependence:
+
+```{r L-sensitivity}
+Ls <- c(2, 3, 5, 8, 12)
+sens <- do.call(rbind, lapply(Ls, function(L) {
+  set.seed(1)
+  u <- uspa_mh_test(quaedvlieg2021$uspa, L = L, B = 499)
+  set.seed(1)
+  a <- aspa_mh_test(quaedvlieg2021$uspa, weights = w_unif, L = L, B = 499)
+  data.frame(L = L,
+             uspa_stat = u$statistic, uspa_p = u$pvalue,
+             aspa_stat = a$statistic, aspa_p = a$pvalue)
+}))
+knitr::kable(sens, digits = 3, row.names = FALSE)
+```
+
+The statistics are independent of `L` (they depend only on the QS
+HAC long-run variance, not on the bootstrap), and the p-values are
+stable across `L` for this dataset.
+
+## Takeaways
+
+* `uspa_mh_test()` rejects only when the benchmark loses at *every*
+  horizon — strong power against uniform underperformance, limited
+  power against horizon-specific failures.
+* `aspa_mh_test()` rejects when the *weighted-average* differential
+  favours the competitor, even if performance at individual horizons
+  is mixed. The choice of weights determines which segment of the
+  forecast path drives the decision.
+* The moving-block bootstrap is essential: forecast paths exhibit
+  natural serial dependence, especially when the same model is
+  evaluated at successive horizons.
+
+## References
+
+- Andrews, D. W. K. (1991). Heteroskedasticity and autocorrelation
+  consistent covariance matrix estimation. *Econometrica*, 59(3),
+  817-858.
+- Quaedvlieg, R. (2021). Multi-horizon forecast comparison.
+  *Journal of Business & Economic Statistics*, 39(1), 40-53.

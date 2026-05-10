@@ -32,6 +32,8 @@ devtools::install_github("GabboCg/forecastdom")
 | `gw_test()` | Giacomini-White (CEPA) | Giacomini & White (2006) |
 | `spa_test()` | Hansen's SPA (USPA) | Hansen (2005) |
 | `cspa_test()` | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022) |
+| `uspa_mh_test()` | Uniform Multi-Horizon SPA  | Quaedvlieg (2021) |
+| `aspa_mh_test()` | Average Multi-Horizon SPA  | Quaedvlieg (2021) |
 | `csms()` | Confidence Set for the Most Superior | Li, Liao & Quaedvlieg (2022) |
 
 ### Predictive Regression & Parameter Instability
@@ -105,4 +107,5 @@ The CSPA test uses Rcpp-accelerated C++ code for the computationally intensive o
 - Harvey, D., Leybourne, S., and Newbold, P. (1997). Testing the Equality of Prediction Mean Squared Errors. *International Journal of Forecasting*, 13(2), 281-291.
 - Kostakis, A., Magdalinos, T., and Stamatogiannis, M.P. (2015). Robust Econometric Inference for Stock Return Predictability. *Review of Financial Studies*, 28(5), 1506-1553.
 - Li, J., Liao, Z., and Quaedvlieg, R. (2022). Conditional Superior Predictive Ability. *Review of Economic Studies*, 89(2), 843-875.
+- Quaedvlieg, R. (2021). Multi-Horizon Forecast Comparison. *Journal of Business & Economic Statistics*, 39(1), 40-53.
 

@@ -93,25 +93,25 @@ aspa_mh_test <- function(loss_diff, weights, L, B = 999L, level = 0.05) {
 print.aspa_mh_test <- function(x, digits = 4, ...) {
 
   w <- 52
-  dash <- strrep("─", w)
-  dot  <- strrep("┄", w)
+  dash <- strrep("\u2500", w)
+  dot  <- strrep("\u2504", w)
   decision <- if (x$reject) "Rejected ***" else "Not rejected"
 
   cat("\n")
-  cat("╭", dash, "╮\n", sep = "")
+  cat("\u256D", dash, "\u256E\n", sep = "")
   .center_line("Average Multi-Horizon SPA Test", w)
   .center_line("(Quaedvlieg, 2021)", w)
-  cat("├", dash, "┤\n", sep = "")
+  cat("\u251C", dash, "\u2524\n", sep = "")
 
   .padded_line("H0: Benchmark has aSPA (weighted avg superior)", w)
   .padded_line("H1: Benchmark worse on weighted average", w)
-  cat("├", dot, "┤\n", sep = "")
+  cat("\u251C", dot, "\u2524\n", sep = "")
 
   .padded_line("Test Results:", w)
   .kv_line("aSPA statistic",  formatC(x$statistic, digits = digits, format = "f"), w)
   .kv_line("P-value (MBB)",   formatC(x$pvalue,    digits = digits, format = "f"), w)
   .kv_line("Decision",        decision, w)
-  cat("├", dot, "┤\n", sep = "")
+  cat("\u251C", dot, "\u2524\n", sep = "")
 
   .padded_line("Details:", w)
   .kv_line("Observations (T)",      x$T, w)
@@ -120,7 +120,7 @@ print.aspa_mh_test <- function(x, digits = 4, ...) {
   .kv_line("Bootstrap replications", x$B, w)
   .kv_line("Significance level",    formatC(x$level, digits = digits, format = "f"), w)
 
-  cat("╰", dash, "╯\n", sep = "")
+  cat("\u2570", dash, "\u256F\n", sep = "")
   cat("\n")
   invisible(x)
 

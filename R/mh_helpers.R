@@ -54,3 +54,42 @@
   omega
 
 }
+
+# Quadratic-Spectral kernel weights (Andrews, 1991; QS_Weights.m).
+.qs_weights <- function(x) {
+
+  a <- 6 * pi * x / 5
+  out <- (3 / a^2) * (sin(a) / a - cos(a))
+  out[x == 0] <- 1
+  out
+
+}
+
+# Column-wise Quadratic-Spectral HAC long-run variance.
+# Translation of QS.m. Bandwidth bw = 1.3 * T^(1/5). y is T x N.
+.qs_lrvar <- function(y) {
+
+  y <- as.matrix(y)
+  T_ <- nrow(y)
+  N  <- ncol(y)
+  bw <- 1.3 * T_^(1 / 5)
+  w  <- .qs_weights(seq_len(T_ - 1L) / bw)
+
+  omega <- numeric(N)
+  for (i in seq_len(N)) {
+
+    z <- y[, i] - mean(y[, i])
+    g0 <- sum(z * z) / T_
+    cross <- 0
+    for (j in seq_len(T_ - 1L)) {
+
+      cross <- cross + 2 * w[j] * sum(z[seq_len(T_ - j)] * z[(j + 1L):T_]) / T_
+
+    }
+    omega[i] <- g0 + cross
+
+  }
+
+  omega
+
+}

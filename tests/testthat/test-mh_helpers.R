@@ -31,3 +31,38 @@ test_that(".mbb_variance matches a closed-form Matlab translation on a fixed inp
   expect_equal(out, expect, tolerance = 1e-12)
   expect_length(out, N)
 })
+
+test_that(".qs_lrvar returns one variance per column and reduces to var(.) at lag 0", {
+  set.seed(11)
+  y <- matrix(rnorm(120), 120, 3)
+  v <- forecastdom:::.qs_lrvar(y)
+  expect_length(v, 3)
+  expect_true(all(v > 0))
+})
+
+test_that(".qs_lrvar matches independent QS reimplementation on white noise", {
+  set.seed(13)
+  y <- matrix(rnorm(200), 200, 2)
+
+  T_ <- nrow(y); N <- ncol(y)
+  bw <- 1.3 * T_^(1 / 5)
+  qs_w <- function(x) {
+    a <- 6 * pi * x / 5
+    out <- (3 / a^2) * (sin(a) / a - cos(a))
+    out[x == 0] <- 1
+    out
+  }
+  w <- qs_w(seq_len(T_ - 1L) / bw)
+  expect <- numeric(N)
+  for (i in seq_len(N)) {
+    z <- y[, i] - mean(y[, i])
+    g0 <- sum(z * z) / T_
+    s <- 0
+    for (j in seq_len(T_ - 1L)) {
+      s <- s + 2 * w[j] * sum(z[seq_len(T_ - j)] * z[(j + 1):T_]) / T_
+    }
+    expect[i] <- g0 + s
+  }
+
+  expect_equal(forecastdom:::.qs_lrvar(y), expect, tolerance = 1e-10)
+})

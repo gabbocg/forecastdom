@@ -40,7 +40,9 @@
 #' "natural variance" estimator recomputed within each bootstrap replication.
 #' The resulting p-value is upper-tail: large positive values of the statistic
 #' (i.e. the benchmark has higher loss \emph{uniformly} across horizons)
-#' lead to rejection.
+#' lead to rejection. Equivalently, rejection requires \eqn{\bar d_h > 0} at
+#' every horizon; the test has limited power against alternatives where the
+#' benchmark is worse at only some horizons.
 #'
 #' This is a port of the Matlab reference implementation accompanying
 #' Quaedvlieg (2021); the helpers \code{.mbb_indices}, \code{.mbb_variance},
@@ -53,10 +55,9 @@
 #'
 #' @examples
 #' set.seed(1)
-#' ld <- matrix(rnorm(200 * 4), 200, 4)
+#' ld <- matrix(rnorm(200 * 4, mean = 0.3), 200, 4)
 #' uspa_mh_test(ld, L = 3, B = 199, level = 0.10)
 #'
-#' @importFrom stats rnorm
 #' @export
 uspa_mh_test <- function(loss_diff, L, B = 999L, level = 0.05) {
 
@@ -119,8 +120,8 @@ print.uspa_mh_test <- function(x, digits = 4, ...) {
   .center_line("(Quaedvlieg, 2021)", w)
   cat("├", dash, "┤\n", sep = "")
 
-  .padded_line("H0: Benchmark is superior at every horizon", w)
-  .padded_line("H1: Benchmark is worse at some horizon", w)
+  .padded_line("H0: Benchmark has uSPA (weakly dominates)", w)
+  .padded_line("H1: Benchmark uniformly worse than competitor", w)
   cat("├", dot, "┤\n", sep = "")
 
   .padded_line("Test Results:", w)

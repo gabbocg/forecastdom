@@ -10,7 +10,7 @@
 #'   \code{L_bench - L_comp} at each horizon \code{h = 1, ..., H}. Positive
 #'   values indicate the benchmark has higher loss (i.e. is worse) than the
 #'   competitor at that horizon.
-#' @param L Integer; moving-block-bootstrap block length. Default \code{3}.
+#' @param L Integer; moving-block-bootstrap block length.
 #' @param B Integer; number of bootstrap replications. Default \code{999}.
 #' @param level Significance level (e.g. \code{0.05}). Default \code{0.05}.
 #'
@@ -21,12 +21,11 @@
 #'     \eqn{B^{-1}\sum_b \mathbf{1}\{t < t_b^*\}} (upper tail).}
 #'   \item{reject}{Logical; whether the null is rejected at \code{level}.}
 #'   \item{level}{Significance level used.}
-#'   \item{d_bar}{Sample mean of loss differentials at each horizon (length \code{H}).}
-#'   \item{omega}{MBB "natural variance" estimate at each horizon (length \code{H}).}
-#'   \item{T}{Number of time periods.}
-#'   \item{H}{Number of forecast horizons.}
 #'   \item{L}{Block length used.}
 #'   \item{B}{Number of bootstrap replications.}
+#'   \item{T}{Number of time periods.}
+#'   \item{H}{Number of forecast horizons.}
+#'   \item{d_bar}{Sample mean of loss differentials at each horizon (length \code{H}).}
 #'
 #' @details
 #' The uniform multi-horizon SPA test statistic is
@@ -34,17 +33,19 @@
 #'   \frac{\sqrt{T}\, \bar d_h}{\sqrt{\hat\omega_h}},}
 #' where \eqn{\bar d_h} is the sample mean of the loss differential
 #' \code{L_bench - L_comp} at horizon \code{h}, and \eqn{\hat\omega_h} is its
-#' moving-block-bootstrap "natural variance" estimate at block length \code{L}.
+#' Quadratic-Spectral HAC long-run variance estimate (Andrews, 1991).
 #'
 #' Critical values are obtained from a moving-block bootstrap that recenters
-#' the loss differentials so the null is imposed (Quaedvlieg, 2021). The
-#' resulting p-value is upper-tail: large positive values of the statistic
+#' the loss differentials so the null is imposed (Quaedvlieg, 2021), with the
+#' "natural variance" estimator recomputed within each bootstrap replication.
+#' The resulting p-value is upper-tail: large positive values of the statistic
 #' (i.e. the benchmark has higher loss \emph{uniformly} across horizons)
 #' lead to rejection.
 #'
 #' This is a port of the Matlab reference implementation accompanying
-#' Quaedvlieg (2021); the helpers \code{.mbb_indices} and \code{.mbb_variance}
-#' translate \code{Get_MBB_ID.m} and \code{MBB_Variance.m} respectively.
+#' Quaedvlieg (2021); the helpers \code{.mbb_indices}, \code{.mbb_variance},
+#' and \code{.qs_lrvar} translate \code{Get_MBB_ID.m}, \code{MBB_Variance.m},
+#' and \code{QS.m} respectively.
 #'
 #' @references
 #' Quaedvlieg, R. (2021). Multi-Horizon Forecast Comparison.
@@ -57,26 +58,31 @@
 #'
 #' @importFrom stats rnorm
 #' @export
-uspa_mh_test <- function(loss_diff, L = 3L, B = 999L, level = 0.05) {
+uspa_mh_test <- function(loss_diff, L, B = 999L, level = 0.05) {
 
   ld <- as.matrix(loss_diff)
   T_ <- nrow(ld)
   H  <- ncol(ld)
 
+  if (!is.numeric(L) || length(L) != 1L || L < 1L || L > T_) {
+    stop("L must be a positive integer with L <= nrow(loss_diff).")
+  }
+
   d_bar <- colMeans(ld)
-  omega <- .mbb_variance(ld, L)
+  omega <- .qs_lrvar(ld)
 
   # uSPA statistic: minimum standardized horizon-wise mean
   t_uspa <- min(sqrt(T_) * d_bar / sqrt(omega))
 
   # Moving-block bootstrap with recentering under H0
+  demeaned <- sweep(ld, 2, d_bar)
   t_boot <- numeric(B)
   for (b in seq_len(B)) {
 
-    idx <- .mbb_indices(T_, L)
-    ld_star <- ld[idx, , drop = FALSE]
-    d_star <- colMeans(ld_star) - d_bar  # recenter
-    t_boot[b] <- min(sqrt(T_) * d_star / sqrt(omega))
+    idx       <- .mbb_indices(T_, L)
+    ld_b      <- demeaned[idx, , drop = FALSE]
+    omega_b   <- .mbb_variance(ld_b, L)
+    t_boot[b] <- min(sqrt(T_) * colMeans(ld_b) / sqrt(omega_b))
 
   }
 
@@ -87,12 +93,11 @@ uspa_mh_test <- function(loss_diff, L = 3L, B = 999L, level = 0.05) {
     pvalue    = pvalue,
     reject    = pvalue < level,
     level     = level,
-    d_bar     = d_bar,
-    omega     = omega,
+    L         = as.integer(L),
+    B         = as.integer(B),
     T         = T_,
     H         = H,
-    L         = L,
-    B         = B
+    d_bar     = d_bar
   )
   class(result) <- "uspa_mh_test"
 

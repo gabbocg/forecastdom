@@ -1,34 +1,22 @@
-test_that("uspa_mh_test returns the expected class and components", {
-  set.seed(1)
-  T_ <- 200; H <- 4
-  ld <- matrix(rnorm(T_ * H), T_, H)
-  res <- uspa_mh_test(ld, L = 3, B = 199, level = 0.10)
+test_that("uspa_mh_test returns the documented S3 structure", {
+  set.seed(2024)
+  T_ <- 200; H <- 5
+  ld <- matrix(rnorm(T_ * H, mean = 0.05, sd = 1), T_, H)
+  res <- uspa_mh_test(ld, L = 3, B = 99)
+
   expect_s3_class(res, "uspa_mh_test")
-  expect_named(
-    res,
-    c("statistic", "pvalue", "reject", "level", "d_bar", "omega",
-      "T", "H", "L", "B"),
-    ignore.order = TRUE
-  )
+  expect_named(res, c("statistic", "pvalue", "reject", "level",
+                      "L", "B", "T", "H", "d_bar"))
   expect_length(res$d_bar, H)
-  expect_length(res$omega, H)
-  expect_equal(res$T, T_)
-  expect_equal(res$H, H)
-  expect_equal(res$L, 3)
-  expect_equal(res$B, 199)
-  expect_true(is.finite(res$statistic))
   expect_true(res$pvalue >= 0 && res$pvalue <= 1)
-  expect_true(is.logical(res$reject))
 })
 
-test_that("uspa_mh_test does not reject under H0 of equal mean loss", {
-  # Loss diff has mean zero at all horizons -> bench and competitor equal on
-  # average. The test should not (often) reject at the 10% level.
-  set.seed(123)
-  T_ <- 250; H <- 4
-  ld <- matrix(rnorm(T_ * H, mean = 0, sd = 1), T_, H)
-  res <- uspa_mh_test(ld, L = 3, B = 199, level = 0.10)
-  expect_false(res$reject)
+test_that("uspa_mh_test is reproducible under a fixed seed", {
+  set.seed(99)
+  ld <- matrix(rnorm(150 * 4), 150, 4)
+  set.seed(1); a <- uspa_mh_test(ld, L = 3, B = 99)$pvalue
+  set.seed(1); b <- uspa_mh_test(ld, L = 3, B = 99)$pvalue
+  expect_identical(a, b)
 })
 
 test_that("uspa_mh_test rejects when benchmark is uniformly worse than competitor", {

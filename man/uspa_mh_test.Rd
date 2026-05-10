@@ -4,7 +4,7 @@
 \alias{uspa_mh_test}
 \title{Uniform Multi-Horizon Superior Predictive Ability Test}
 \usage{
-uspa_mh_test(loss_diff, L = 3L, B = 999L, level = 0.05)
+uspa_mh_test(loss_diff, L, B = 999L, level = 0.05)
 }
 \arguments{
 \item{loss_diff}{A \code{T x H} matrix of loss differentials, defined as
@@ -12,7 +12,7 @@ uspa_mh_test(loss_diff, L = 3L, B = 999L, level = 0.05)
 values indicate the benchmark has higher loss (i.e. is worse) than the
 competitor at that horizon.}
 
-\item{L}{Integer; moving-block-bootstrap block length. Default \code{3}.}
+\item{L}{Integer; moving-block-bootstrap block length.}
 
 \item{B}{Integer; number of bootstrap replications. Default \code{999}.}
 
@@ -26,12 +26,11 @@ A list with class \code{"uspa_mh_test"} containing:
 \eqn{B^{-1}\sum_b \mathbf{1}\{t < t_b^*\}} (upper tail).}
 \item{reject}{Logical; whether the null is rejected at \code{level}.}
 \item{level}{Significance level used.}
-\item{d_bar}{Sample mean of loss differentials at each horizon (length \code{H}).}
-\item{omega}{MBB "natural variance" estimate at each horizon (length \code{H}).}
-\item{T}{Number of time periods.}
-\item{H}{Number of forecast horizons.}
 \item{L}{Block length used.}
 \item{B}{Number of bootstrap replications.}
+\item{T}{Number of time periods.}
+\item{H}{Number of forecast horizons.}
+\item{d_bar}{Sample mean of loss differentials at each horizon (length \code{H}).}
 }
 \description{
 Tests the null hypothesis that a benchmark forecasting method has
@@ -46,17 +45,19 @@ The uniform multi-horizon SPA test statistic is
   \frac{\sqrt{T}\, \bar d_h}{\sqrt{\hat\omega_h}},}
 where \eqn{\bar d_h} is the sample mean of the loss differential
 \code{L_bench - L_comp} at horizon \code{h}, and \eqn{\hat\omega_h} is its
-moving-block-bootstrap "natural variance" estimate at block length \code{L}.
+Quadratic-Spectral HAC long-run variance estimate (Andrews, 1991).
 
 Critical values are obtained from a moving-block bootstrap that recenters
-the loss differentials so the null is imposed (Quaedvlieg, 2021). The
-resulting p-value is upper-tail: large positive values of the statistic
+the loss differentials so the null is imposed (Quaedvlieg, 2021), with the
+"natural variance" estimator recomputed within each bootstrap replication.
+The resulting p-value is upper-tail: large positive values of the statistic
 (i.e. the benchmark has higher loss \emph{uniformly} across horizons)
 lead to rejection.
 
 This is a port of the Matlab reference implementation accompanying
-Quaedvlieg (2021); the helpers \code{.mbb_indices} and \code{.mbb_variance}
-translate \code{Get_MBB_ID.m} and \code{MBB_Variance.m} respectively.
+Quaedvlieg (2021); the helpers \code{.mbb_indices}, \code{.mbb_variance},
+and \code{.qs_lrvar} translate \code{Get_MBB_ID.m}, \code{MBB_Variance.m},
+and \code{QS.m} respectively.
 }
 \examples{
 set.seed(1)

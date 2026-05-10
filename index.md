@@ -1,4 +1,4 @@
-# forecastdom: Tools for (Un)conditional Forecast Dominance
+# forecastdom
 
 **Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
 **License:** [MIT](https://opensource.org/licenses/MIT) + file
@@ -6,7 +6,7 @@
 
 ## Overview
 
-**forecastdom** provides a unified toolkit for forecast dominance
+**forecastdom** is a toolkit for (un)conditional forecast dominance
 testing in R. It covers the full taxonomy of forecast evaluation
 hypotheses (unconditional and conditional, equal and superior) plus
 encompassing, nested-model, predictive regression, and parameter

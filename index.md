@@ -23,15 +23,17 @@ devtools::install_github("GabboCg/forecastdom")
 
 ### Forecast Comparison
 
-| Function                                                                      | Test                                    | Reference                                                    |
-|-------------------------------------------------------------------------------|-----------------------------------------|--------------------------------------------------------------|
-| [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)     | Diebold-Mariano (+ HLN correction)      | Diebold & Mariano (1995); Harvey, Leybourne & Newbold (1997) |
-| [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)     | Clark-West MSFE-adjusted                | Clark & West (2007)                                          |
-| [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)     | ENC-NEW Encompassing                    | Clark & McCracken (2001)                                     |
-| [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)     | Giacomini-White (CEPA)                  | Giacomini & White (2006)                                     |
-| [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)   | Hansen’s SPA (USPA)                     | Hansen (2005)                                                |
-| [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022)                                 |
-| [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md)           | Confidence Set for the Most Superior    | Li, Liao & Quaedvlieg (2022)                                 |
+| Function                                                                            | Test                                    | Reference                                                    |
+|-------------------------------------------------------------------------------------|-----------------------------------------|--------------------------------------------------------------|
+| [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)           | Diebold-Mariano (+ HLN correction)      | Diebold & Mariano (1995); Harvey, Leybourne & Newbold (1997) |
+| [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)           | Clark-West MSFE-adjusted                | Clark & West (2007)                                          |
+| [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)           | ENC-NEW Encompassing                    | Clark & McCracken (2001)                                     |
+| [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)           | Giacomini-White (CEPA)                  | Giacomini & White (2006)                                     |
+| [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)         | Hansen’s SPA (USPA)                     | Hansen (2005)                                                |
+| [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md)       | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022)                                 |
+| [`uspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.md) | Uniform Multi-Horizon SPA               | Quaedvlieg (2021)                                            |
+| [`aspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.md) | Average Multi-Horizon SPA               | Quaedvlieg (2021)                                            |
+| [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md)                 | Confidence Set for the Most Superior    | Li, Liao & Quaedvlieg (2022)                                 |
 
 ### Predictive Regression & Parameter Instability
 
@@ -121,3 +123,5 @@ p-value computation).
   Financial Studies*, 28(5), 1506-1553.
 - Li, J., Liao, Z., and Quaedvlieg, R. (2022). Conditional Superior
   Predictive Ability. *Review of Economic Studies*, 89(2), 843-875.
+- Quaedvlieg, R. (2021). Multi-Horizon Forecast Comparison. *Journal of
+  Business & Economic Statistics*, 39(1), 40-53.

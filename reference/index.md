@@ -17,7 +17,7 @@ forecasting methods.
 ## Superior Predictive Ability
 
 Tests for whether a benchmark method dominates all competitors,
-unconditionally or conditionally.
+unconditionally, conditionally, or jointly across forecast horizons.
 
 - [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)
   : Unconditional Superior Predictive Ability (USPA/SPA) Test
@@ -25,6 +25,10 @@ unconditionally or conditionally.
   : Conditional Superior Predictive Ability (CSPA) Test
 - [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md) :
   Confidence Set for the Most Superior (CSMS) Forecasting Method
+- [`uspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.md)
+  : Uniform Multi-Horizon Superior Predictive Ability Test
+- [`aspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.md)
+  : Average Multi-Horizon Superior Predictive Ability Test
 
 ## Predictive Regression & Instability
 
@@ -71,3 +75,5 @@ Datasets bundled with the package.
 - [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
   : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
   2016)
+- [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
+  : Loss-Differential Path Forecasts from Quaedvlieg (2021)

@@ -1,13 +1,17 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://gabbocg.github.io/forecastdom/404.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/LICENSE-text.html</loc></url>
-<url><loc>https://gabbocg.github.io/forecastdom/articles/cw-equity-premium.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/forecastdom.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/articles/nrtz2014-cw-technical.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/articles/quaedvlieg2021-mh-spa.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/articles/rz2013-cw-macro.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/authors.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/news/index.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/covnw.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/csms.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/cspa_test.html</loc></url>
@@ -25,10 +29,12 @@
 <url><loc>https://gabbocg.github.io/forecastdom/reference/nrtz2014.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/print.cspa_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/qll_hat.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/rossi2006.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/rrz2016.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/rz2013.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/spa_test.html</loc></url>
 <url><loc>https://gabbocg.github.io/forecastdom/reference/summary.cspa_test.html</loc></url>
+<url><loc>https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.html</loc></url>
 </urlset>
 

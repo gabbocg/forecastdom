@@ -29,3 +29,28 @@
   idx
 
 }
+
+# MBB "natural variance" estimator (Quaedvlieg, 2021; MBB_Variance.m).
+# y is T x N. Returns a length-N vector. Mirrors the Matlab reshape:
+# columns are unrolled into K x L matrices (K rows, L cols), then we take
+# the mean of squared row-sums divided by L.
+.mbb_variance <- function(y, L) {
+
+  y <- as.matrix(y)
+  T_ <- nrow(y)
+  N  <- ncol(y)
+  K  <- T_ %/% L
+
+  ydem <- sweep(y, 2, colMeans(y))
+  omega <- numeric(N)
+
+  for (n in seq_len(N)) {
+
+    blocks <- matrix(ydem[seq_len(K * L), n], nrow = K, ncol = L, byrow = FALSE)
+    omega[n] <- mean(rowSums(blocks)^2) / L
+
+  }
+
+  omega
+
+}

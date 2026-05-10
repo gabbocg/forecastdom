@@ -13,3 +13,21 @@ test_that(".mbb_indices returns T integers in 1:T with contiguous L-blocks", {
   # inside-block diffs are either +1 or -(T-1) (the wrap)
   expect_true(all(diffs[in_block] %in% c(1L, -(T_ - 1L))))
 })
+
+test_that(".mbb_variance matches a closed-form Matlab translation on a fixed input", {
+  set.seed(7)
+  y <- matrix(rnorm(60), 60, 2)
+  L <- 3
+  out <- forecastdom:::.mbb_variance(y, L)
+
+  # Independent reimplementation of MBB_Variance.m
+  T_ <- nrow(y); N <- ncol(y); K <- floor(T_ / L)
+  ydem <- sweep(y, 2, colMeans(y))
+  expect <- numeric(N)
+  for (n in seq_len(N)) {
+    blocks <- matrix(ydem[seq_len(K * L), n], nrow = K, ncol = L, byrow = FALSE)
+    expect[n] <- mean(rowSums(blocks)^2) / L
+  }
+  expect_equal(out, expect, tolerance = 1e-12)
+  expect_length(out, N)
+})

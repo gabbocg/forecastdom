@@ -2,7 +2,8 @@ Package: forecastdom
 Title: Tools for (Un)conditional Forecast Dominance
 Version: 0.1.0
 Authors@R:
-    person("Gabriel", "Cabrera", , "gcabrerag@fen.uchile.cl", role = c("aut", "cre"))
+    person("Gabriel", "Cabrera", , "gcabrerag@fen.uchile.cl", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8803-2338"))
 Description: Tools for testing conditional superior predictive ability (CSPA)
     of forecasting methods with respect to a benchmark, based on Li, Liao, and
     Quaedvlieg (2022) <doi:10.1093/restud/rdab056>. Implements the CSPA test

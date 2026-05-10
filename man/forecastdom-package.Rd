@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Gabriel Cabrera \email{gcabrerag@fen.uchile.cl}
+\strong{Maintainer}: Gabriel Cabrera \email{gcabrerag@fen.uchile.cl} (\href{https://orcid.org/0000-0001-8803-2338}{ORCID})
 
 }
 \keyword{internal}

@@ -1,3 +1,6 @@
+# Reference value from running Test_aSPA(LossDiff_uSPA, ones(1,20)/20, 3) in Matlab/Octave.
+MATLAB_ASPA_STAT <- NULL
+
 test_that("aspa_mh_test returns the documented S3 structure", {
   set.seed(7)
   ld <- matrix(rnorm(200 * 5, mean = -0.1), 200, 5)
@@ -42,4 +45,26 @@ test_that("at H=1 the aSPA statistic has the same sign as the DM statistic", {
   asp <- aspa_mh_test(ld, weights = 1, L = 3, B = 99)
 
   expect_equal(sign(dm$statistic), sign(asp$statistic))
+})
+
+test_that("aspa_mh_test statistic matches a direct helper computation on the bundled dataset", {
+  ld <- quaedvlieg2021$uspa
+  H <- ncol(ld)
+  weights <- rep(1 / H, H)
+  weighted <- as.matrix(ld %*% weights)
+  T_ <- nrow(weighted)
+  expected <- as.numeric(sqrt(T_) * mean(weighted) / sqrt(forecastdom:::.qs_lrvar(weighted)))
+
+  set.seed(2024)
+  res <- aspa_mh_test(ld, weights = weights, L = 3, B = 99)
+  expect_equal(res$statistic, expected, tolerance = 1e-12)
+})
+
+test_that("aspa_mh_test statistic matches the Matlab reference (gated)", {
+  skip_if_not(!is.null(MATLAB_ASPA_STAT),
+              "Set MATLAB_ASPA_STAT at the top of this file to enable Matlab parity check.")
+  H <- ncol(quaedvlieg2021$uspa)
+  set.seed(1)
+  res <- aspa_mh_test(quaedvlieg2021$uspa, weights = rep(1 / H, H), L = 3, B = 99)
+  expect_equal(res$statistic, MATLAB_ASPA_STAT, tolerance = 1e-8)
 })

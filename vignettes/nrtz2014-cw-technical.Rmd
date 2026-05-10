@@ -1,0 +1,84 @@
+---
+title: "Replicating Neely et al. (2014)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Replicating Neely et al. (2014)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4
+)
+```
+
+This article applies `cw_test()` to the `nrtz2014` bundled dataset:
+the 14 binary technical indicators used in Neely, Rapach, Tu and
+Zhou (2014). The benchmark is the prevailing historical mean and
+the alternative is a bivariate predictive regression on a single
+technical indicator.
+
+```{r setup, message = FALSE}
+library(forecastdom)
+data(nrtz2014)
+```
+
+## Helpers
+
+```{r helper}
+recursive_forecasts <- function(y, x, R) {
+  P <- length(y) - R
+  e1 <- e2 <- f1 <- f2 <- numeric(P)
+  for (j in seq_len(P)) {
+    ty <- y[1:(R + j - 1)]
+    tx <- x[1:(R + j - 1)]
+    f1[j] <- mean(ty)
+    fit   <- lm(yt ~ xlag, data = data.frame(yt = ty[-1], xlag = tx[-length(tx)]))
+    f2[j] <- as.numeric(predict(fit, newdata = data.frame(xlag = tx[length(tx)])))
+    e1[j] <- y[R + j] - f1[j]
+    e2[j] <- y[R + j] - f2[j]
+  }
+  list(e1 = e1, e2 = e2, f1 = f1, f2 = f2)
+}
+
+run_cw <- function(data, predictors, R) {
+  do.call(rbind, lapply(predictors, function(p) {
+    fc  <- recursive_forecasts(data$eq_prem, data[[p]], R = R)
+    res <- cw_test(fc$e1, fc$e2, fc$f1, fc$f2)
+    data.frame(predictor = p,
+               R2OS_pct  = unname(res$r2os),
+               CW_stat   = unname(res$statistic),
+               p_value   = unname(res$pvalue))
+  }))
+}
+```
+
+## Technical indicators
+
+Initial window of 181 months (1950-12 to 1965-12); out-of-sample
+period 1966-01 to 2011-12.
+
+```{r nrtz}
+preds_nr <- c("MA_1_9", "MA_2_12", "MOM_9", "MOM_12", "VOL_2_12")
+knitr::kable(run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE)
+```
+
+## Takeaway
+
+Technical indicators deliver positive \(R^2_{OS}\) with Clark-West
+statistics significant at conventional levels — the central
+finding of Neely et al. (2014) that technical signals carry
+information beyond what macro variables provide.
+
+## References
+
+- Clark, T. E. and West, K. D. (2007). Approximately normal tests
+  for equal predictive accuracy in nested models. *Journal of
+  Econometrics*, 138(1), 291-311.
+- Neely, C. J., Rapach, D. E., Tu, J. and Zhou, G. (2014).
+  Forecasting the equity risk premium: The role of technical
+  indicators. *Management Science*, 60(7), 1772-1791.

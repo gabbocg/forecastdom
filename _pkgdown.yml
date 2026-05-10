@@ -30,10 +30,14 @@ navbar:
       menu:
       - text: Replicating Rossi (2006)
         href: articles/rossi2006-dm.html
-      - text: Replicating Rapach & Zhou (2013) and Neely et al. (2014)
-        href: articles/cw-equity-premium.html
+      - text: Replicating Rapach & Zhou (2013)
+        href: articles/rz2013-cw-macro.html
+      - text: Replicating Neely et al. (2014)
+        href: articles/nrtz2014-cw-technical.html
       - text: Replicating Rapach et al. (2016)
         href: articles/rrz2016-ivx-qll.html
+      - text: Replicating Quaedvlieg (2021)
+        href: articles/quaedvlieg2021-mh-spa.html
 reference:
 - title: Forecast Comparison Tests
   desc: |

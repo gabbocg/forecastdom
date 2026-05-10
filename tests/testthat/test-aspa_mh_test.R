@@ -25,3 +25,21 @@ test_that("aspa_mh_test rejects when the weighted average favors the competitor"
   res <- aspa_mh_test(ld, weights = rep(1 / H, H), L = 3, B = 199, level = 0.10)
   expect_true(res$reject)
 })
+
+test_that("at H=1 the aSPA statistic has the same sign as the DM statistic", {
+  set.seed(31)
+  T_ <- 400
+  d <- rnorm(T_, mean = -0.3)
+  # Build pseudo-error vectors so dm_test can consume them.
+  # Trick: pass d as e1^2 - e2^2 directly via squared-error reconstruction.
+  # Easier: use the formula e1 = 0, e2 such that e1^2 - e2^2 = d  =>  e2 = sqrt(-d).
+  # That requires d <= 0, which holds in expectation here. Use abs to keep real:
+  e1 <- rep(0, T_)
+  e2 <- sqrt(pmax(-d, .Machine$double.eps))
+  dm <- dm_test(e1, e2, h = 1, correction = FALSE)
+
+  ld <- matrix(d, T_, 1)
+  asp <- aspa_mh_test(ld, weights = 1, L = 3, B = 99)
+
+  expect_equal(sign(dm$statistic), sign(asp$statistic))
+})

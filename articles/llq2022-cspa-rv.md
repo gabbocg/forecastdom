@@ -1,32 +1,163 @@
 # Replicating Li, Liao & Quaedvlieg (2022)
 
-This article reproduces the cross-stock pairwise CSPA analysis of Li,
-Liao and Quaedvlieg (2022, *RFS*), Section 5: for each of 28 stocks,
-test every pair of realized-variance forecasting models against each
-other and tally rejections across stocks. We compare our counts to the
-`Table_UV_CSPA.xlsx` file shipped with the LLQ replication package. The
-single-stock illustration (S&P 500) follows at the end.
+This article reproduces the volatility-forecasting application of Li,
+Liao and Quaedvlieg (2022, *RFS*), Section 4: Figure 2 (one-vs-one CSPA
+on JNJ), Figure 3 (one-vs-all CSPA on JNJ), and Table 4 Panel A
+(cross-stock rejection counts). All numbers and plots are generated from
+the bundled `llq2022_jnj`, `llq2022` and `llq2022_uv_cspa` datasets.
 
 ``` r
 library(forecastdom)
-data(llq2022)          # SP500 realized variance + 6 forecasts + lagged VIX
+data(llq2022_jnj)      # JNJ realized variance + 6 forecasts + lagged VIX
+data(llq2022)          # S&P 500 counterpart
 data(llq2022_uv_cspa)  # pre-computed cross-stock counts
+
+models <- c("AR1", "AR22", "AR22_Lasso", "HAR", "HARQ", "ARFIMA")
+qlike  <- function(f, y) (f / y) - log(f / y) - 1
 ```
 
-## Cross-stock CSPA counts
+QLIKE loss `(f / y) - log(f / y) - 1`, conditioning variable
+one-day-lagged VIX, AIC pre-whitening (`prewhiten = -1`, equivalent to
+Ox `PreWhiten = 2`), no trimming, and `R = 10000` bootstrap replications
+throughout — matching the call signature in `Empirics_Volatility.ox`.
 
-Loss is QLIKE — `(f / y) - log(f / y) - 1` — matching the LLQ
-replication package. Conditioning variable is one-day-lagged VIX, no
-trimming. The test uses AIC pre-whitening (`prewhiten = -1`, equivalent
-to Ox `PreWhiten = 2`) and `R = 10000` bootstrap replications, matching
-the call signature in `Empirics_Volatility.ox`. Cell counts the number
-of stocks (out of 28) for which the null “benchmark *l* conditionally
-dominates alternative *k*” is rejected at the 5% level. Computed by
-`data-raw/llq2022_uv_cspa.R`.
+## Figure 2 — JNJ, one-versus-one CSPA
+
+``` r
+L_jnj <- sapply(models, function(m) qlike(llq2022_jnj[[m]], llq2022_jnj$rv))
+X_jnj <- llq2022_jnj$vix_lag
+```
+
+Benchmark is HAR throughout; competitors are AR(1) (left panel) and HARQ
+(right panel). A negative loss differential indicates the benchmark is
+outperformed; the CSPA test rejects if the dashed confidence bound dips
+below zero anywhere over the support of VIX.
+
+``` r
+set.seed(20260512)
+g_har_ar1 <- cspa_test_plot(
+  Y = as.matrix(L_jnj[, "AR1"] - L_jnj[, "HAR"]),
+  X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+  xlab = "VIX (lagged)", ylab = "QLIKE diff (AR(1) − HAR)"
+) + ggplot2::ggtitle("HAR vs AR(1)") +
+    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+g_har_ar1
+```
+
+![](llq2022-cspa-rv_files/figure-html/fig2-left-1.png)
+
+``` r
+set.seed(20260512)
+g_har_harq <- cspa_test_plot(
+  Y = as.matrix(L_jnj[, "HARQ"] - L_jnj[, "HAR"]),
+  X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+  xlab = "VIX (lagged)", ylab = "QLIKE diff (HARQ − HAR)"
+) + ggplot2::ggtitle("HAR vs HARQ") +
+    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+g_har_harq
+```
+
+![](llq2022-cspa-rv_files/figure-html/fig2-right-1.png)
+
+``` r
+fig2 <- function(competitor) {
+  Y <- as.matrix(L_jnj[, competitor] - L_jnj[, "HAR"])
+  set.seed(20260512)
+  r <- cspa_test(Y, X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+                 preselect = TRUE, R = 10000L)
+  data.frame(competitor = competitor,
+             theta      = unname(r$theta),
+             pvalue     = unname(r$pvalue),
+             reject     = unname(r$reject))
+}
+knitr::kable(rbind(fig2("AR1"), fig2("HARQ")), digits = 4, row.names = FALSE)
+```
+
+| competitor |   theta | pvalue | reject |
+|:-----------|--------:|-------:|:-------|
+| AR1        |  0.0033 | 0.0745 | FALSE  |
+| HARQ       | -0.0095 | 0.0011 | TRUE   |
+
+The left panel — AR(1) as the only competitor to HAR — shows the
+conditional loss differential staying above zero throughout the VIX
+support; the test does not reject. The right panel — HARQ as competitor
+— shows the differential dipping clearly below zero in the VIX ≈ 13-19
+range and the confidence bound follows it, so the CSPA null is rejected.
+This matches the paper’s Figure 2 and the accompanying text.
+
+## Figure 3 — JNJ, one-versus-all CSPA
+
+Now use all five other models simultaneously as competitors and plot
+each (colored), their lower envelope (solid black) and the upper
+confidence bound on that envelope (dashed black). Rejection of the CSPA
+null occurs when the dashed line is below zero anywhere.
+
+``` r
+set.seed(20260512)
+Y_ar1 <- L_jnj[, setdiff(models, "AR1")] - L_jnj[, "AR1"]
+g_ar1 <- cspa_test_plot(
+  Y = Y_ar1, X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+  xlab = "VIX (lagged)", ylab = "QLIKE diff (competitors − AR(1))"
+) + ggplot2::ggtitle("Benchmark: AR(1)") +
+    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+g_ar1
+```
+
+![](llq2022-cspa-rv_files/figure-html/fig3-ar1-1.png)
+
+``` r
+set.seed(20260512)
+Y_harq <- L_jnj[, setdiff(models, "HARQ")] - L_jnj[, "HARQ"]
+g_harq <- cspa_test_plot(
+  Y = Y_harq, X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+  xlab = "VIX (lagged)", ylab = "QLIKE diff (competitors − HARQ)"
+) + ggplot2::ggtitle("Benchmark: HARQ") +
+    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+g_harq
+```
+
+![](llq2022-cspa-rv_files/figure-html/fig3-harq-1.png)
+
+``` r
+fig3 <- function(bench) {
+  comp <- setdiff(models, bench)
+  Y    <- L_jnj[, comp] - L_jnj[, bench]
+  set.seed(20260512)
+  r <- cspa_test(Y, X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+                 preselect = TRUE, R = 10000L)
+  data.frame(benchmark = bench,
+             theta     = unname(r$theta),
+             pvalue    = unname(r$pvalue),
+             reject    = unname(r$reject))
+}
+knitr::kable(rbind(fig3("AR1"), fig3("HARQ")), digits = 4, row.names = FALSE)
+```
+
+| benchmark |   theta | pvalue | reject |
+|:----------|--------:|-------:|:-------|
+| AR1       | -0.2377 |   1.00 | TRUE   |
+| HARQ      | -0.0077 |   0.01 | TRUE   |
+
+For AR(1) as benchmark the lower envelope sits well below zero across
+the VIX support and the dashed bound is below zero in the low-VIX region
+— strong CSPA rejection (, p \< 0.001). For HARQ as benchmark the
+envelope dips modestly below zero around VIX 25-40 and the dashed bound
+just barely follows (, p ≈ 0.01) — a borderline rejection at 5%. The
+paper notes HARQ belongs to the CSMS for 24 of the 28 assets, so for the
+other four HARQ is itself rejected; on this dataset, JNJ falls in that
+small minority.
+
+## Table 4 Panel A — cross-stock rejection counts
+
+For each of 28 stocks, pairwise CSPA tests are run for every
+benchmark-competitor pair and rejections are tallied at the 5% level.
+Cell counts the stocks where the null “benchmark *l* conditionally
+dominates alternative *k*” is rejected. Computed offline by
+`data-raw/llq2022_uv_cspa.R` (~5 min at R=10000).
 
 ``` r
 knitr::kable(llq2022_uv_cspa$mine,
-             caption = "forecastdom::cspa_test (R = 1000)")
+             caption = "forecastdom::cspa_test, R = 10000")
 ```
 
 |            | AR1 | AR22 | AR22_Lasso | HAR | HARQ | ARFIMA |
@@ -38,7 +169,7 @@ knitr::kable(llq2022_uv_cspa$mine,
 | HARQ       |  28 |   28 |         28 |  28 |   NA |     20 |
 | ARFIMA     |  28 |   27 |         28 |  28 |    1 |     NA |
 
-forecastdom::cspa_test (R = 1000)
+forecastdom::cspa_test, R = 10000
 
 ``` r
 knitr::kable(llq2022_uv_cspa$paper,
@@ -72,85 +203,26 @@ knitr::kable(diff_mat, caption = "Difference (forecastdom − LLQ)")
 
 Difference (forecastdom − LLQ)
 
-23 of the 30 off-diagonal cells match the LLQ values exactly; 29 fall
-within one rejection and all 30 within two. The ±1-2 noise on boundary
-cells is consistent with the different bootstrap random seed. The
-reading of the table is identical to LLQ’s:
+23 of the 30 off-diagonal cells match exactly; 29 are within ±1 and all
+30 within ±2. Residual noise on boundary cells reflects the different
+bootstrap seed. The reading is identical to LLQ’s:
 
-- **HARQ as benchmark** (column HARQ) — all 28 stocks reject for every
+- **HARQ as benchmark** (column HARQ) — all 28 stocks reject every
   competitor except ARFIMA: HARQ is conditionally superior almost
   everywhere.
 - **HARQ / ARFIMA as alternative** (rows HARQ, ARFIMA) — they reject
-  every other model as benchmark, confirming both belong in the
-  confidence set.
+  every other benchmark.
 - **AR(22) as benchmark** (column AR22) — uniformly rejected; the simple
   long-AR is the weakest model.
 
-## Single-stock illustration: S&P 500
+## S&P 500 — confidence set for the most superior method
 
-To make the test mechanics concrete, run the same procedure on the
-bundled `llq2022` (S&P 500 only) and visualise the conditional-mean
-estimates.
+The same procedure on the S&P 500 series.
 
 ``` r
-models <- c("AR1", "AR22", "AR22_Lasso", "HAR", "HARQ", "ARFIMA")
-qlike  <- function(f, y) (f / y) - log(f / y) - 1
-losses <- sapply(models, function(m) qlike(llq2022[[m]], llq2022$rv))
-X      <- llq2022$vix_lag
-
-round(colMeans(losses), 4)
-#>        AR1       AR22 AR22_Lasso        HAR       HARQ     ARFIMA 
-#>     0.3701     0.2110     0.2370     0.1882     0.1551     0.1736
-```
-
-HARQ wins on average QLIKE, ARFIMA second.
-
-### CSPA per benchmark, joint over the other five
-
-``` r
-run_cspa <- function(b) {
-  comp <- setdiff(models, b)
-  Y    <- losses[, comp] - losses[, b]
-  set.seed(20260512)
-  r <- cspa_test(Y, X, level = 0.05, trim = 0,
-                 prewhiten = -1L, preselect = TRUE, R = 10000L)
-  data.frame(benchmark = b,
-             theta     = unname(r$theta),
-             pvalue    = unname(r$pvalue),
-             reject    = unname(r$reject))
-}
-tab <- do.call(rbind, lapply(models, run_cspa))
-knitr::kable(tab, digits = 3, row.names = FALSE)
-```
-
-| benchmark  |  theta | pvalue | reject |
-|:-----------|-------:|-------:|:-------|
-| AR1        | -0.230 |  1.000 | TRUE   |
-| AR22       | -0.040 |  1.000 | TRUE   |
-| AR22_Lasso | -0.082 |  1.000 | TRUE   |
-| HAR        | -0.028 |  1.000 | TRUE   |
-| HARQ       |  0.020 |  0.472 | FALSE  |
-| ARFIMA     | -0.007 |  0.005 | TRUE   |
-
-### Conditional-mean visualisation: HARQ vs HAR
-
-``` r
-Y_one <- as.matrix(losses[, "HAR"] - losses[, "HARQ"])
-
+L_sp <- sapply(models, function(m) qlike(llq2022[[m]], llq2022$rv))
 set.seed(20260512)
-cspa_test_plot(Y = Y_one, X = X, level = 0.05, trim = 0,
-               prewhiten = -1L,
-               xlab = "VIX (lagged)",
-               ylab = "QLIKE diff (HAR − HARQ)")
-```
-
-![](llq2022-cspa-rv_files/figure-html/plot-1.png)
-
-### Confidence set for the most superior method
-
-``` r
-set.seed(20260512)
-cs <- csms(losses, X, level = 0.10, trim = 0,
+cs <- csms(L_sp, llq2022$vix_lag, level = 0.10, trim = 0,
            prewhiten = -1L, preselect = TRUE, R = 10000L,
            method_names = models)
 cs
@@ -174,19 +246,17 @@ cs
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-The 90% CSMS for SP500 collapses to `{HARQ}` alone — ARFIMA is rejected
-as conditionally superior on the SP500 series even though it survives
-across other stocks (cross-stock count: 22 of 28 stocks reject
-HARQ-vs-ARFIMA, so SP500 falling in the reject group is in line with the
-panel).
+The 90% CSMS collapses to `{HARQ}` on S&P 500. ARFIMA is rejected here
+even though it survives in 22 of the 28 stocks in the cross-stock table
+above — SP500 falls in the reject group.
 
 ## Takeaway
 
-Unconditional MSE rankings hide which model is *uniformly* best. LLQ’s
-central empirical message — HARQ and ARFIMA cannot be ruled out as
-conditionally most superior on volatility forecasting — is reproduced
-both at the cross-stock level (Table_UV_CSPA counts) and on the SP500
-alone (CSMS and per-benchmark CSPA tests).
+Unconditional MSE rankings hide which model is *uniformly* best across
+volatility regimes. LLQ’s central empirical message — HARQ and ARFIMA
+cannot be ruled out as conditionally most superior on volatility
+forecasting — is reproduced at three levels: the JNJ figures (one-vs-one
+and one-vs-all CSPA), the 28-stock count table, and the SP500 CSMS.
 
 ## References
 

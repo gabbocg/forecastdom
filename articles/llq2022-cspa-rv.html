@@ -41,8 +41,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/rossi2006-dm.html">Replicating Rossi (2006)</a></li>
+    <li><a class="dropdown-item" href="../articles/gw2006-spf-cepa.html">Replicating Giacomini &amp; White (2006)</a></li>
+    <li><a class="dropdown-item" href="../articles/hl2005-spa-garch.html">Replicating Hansen &amp; Lunde (2005)</a></li>
     <li><a class="dropdown-item" href="../articles/rz2013-cw-macro.html">Replicating Rapach &amp; Zhou (2013)</a></li>
-    <li><a class="dropdown-item" href="../articles/rsz2010-enc-combination.html">Replicating Rapach, Strauss &amp; Zhou (2010)</a></li>
     <li><a class="dropdown-item" href="../articles/nrtz2014-cw-technical.html">Replicating Neely et al. (2014)</a></li>
     <li><a class="dropdown-item" href="../articles/rrz2016-ivx-qll.html">Replicating Rapach et al. (2016)</a></li>
     <li><a class="dropdown-item" href="../articles/quaedvlieg2021-mh-spa.html">Replicating Quaedvlieg (2021)</a></li>
@@ -76,34 +77,182 @@
 
     
     
-<p>This article reproduces the cross-stock pairwise CSPA analysis of Li,
-Liao and Quaedvlieg (2022, <em>RFS</em>), Section 5: for each of 28
-stocks, test every pair of realized-variance forecasting models against
-each other and tally rejections across stocks. We compare our counts to
-the <code>Table_UV_CSPA.xlsx</code> file shipped with the LLQ
-replication package. The single-stock illustration (S&amp;P 500) follows
-at the end.</p>
+<p>This article reproduces the volatility-forecasting application of Li,
+Liao and Quaedvlieg (2022, <em>RFS</em>), Section 4: Figure 2
+(one-vs-one CSPA on JNJ), Figure 3 (one-vs-all CSPA on JNJ), and Table 4
+Panel A (cross-stock rejection counts). All numbers and plots are
+generated from the bundled <code>llq2022_jnj</code>,
+<code>llq2022</code> and <code>llq2022_uv_cspa</code> datasets.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022</span><span class="op">)</span>          <span class="co"># SP500 realized variance + 6 forecasts + lagged VIX</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">)</span>  <span class="co"># pre-computed cross-stock counts</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022_jnj</span><span class="op">)</span>      <span class="co"># JNJ realized variance + 6 forecasts + lagged VIX</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022</span><span class="op">)</span>          <span class="co"># S&amp;P 500 counterpart</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">)</span>  <span class="co"># pre-computed cross-stock counts</span></span>
+<span></span>
+<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"AR22"</span>, <span class="st">"AR22_Lasso"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"ARFIMA"</span><span class="op">)</span></span>
+<span><span class="va">qlike</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">y</span><span class="op">)</span> <span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span></code></pre></div>
+<p>QLIKE loss <code>(f / y) - log(f / y) - 1</code>, conditioning
+variable one-day-lagged VIX, AIC pre-whitening
+(<code>prewhiten = -1</code>, equivalent to Ox
+<code>PreWhiten = 2</code>), no trimming, and <code>R = 10000</code>
+bootstrap replications throughout — matching the call signature in
+<code>Empirics_Volatility.ox</code>.</p>
 <div class="section level2">
-<h2 id="cross-stock-cspa-counts">Cross-stock CSPA counts<a class="anchor" aria-label="anchor" href="#cross-stock-cspa-counts"></a>
+<h2 id="figure-2-jnj-one-versus-one-cspa">Figure 2 — JNJ, one-versus-one CSPA<a class="anchor" aria-label="anchor" href="#figure-2-jnj-one-versus-one-cspa"></a>
 </h2>
-<p>Loss is QLIKE — <code>(f / y) - log(f / y) - 1</code> — matching the
-LLQ replication package. Conditioning variable is one-day-lagged VIX, no
-trimming. The test uses AIC pre-whitening (<code>prewhiten = -1</code>,
-equivalent to Ox <code>PreWhiten = 2</code>) and <code>R = 10000</code>
-bootstrap replications, matching the call signature in
-<code>Empirics_Volatility.ox</code>. Cell counts the number of stocks
-(out of 28) for which the null “benchmark <em>l</em> conditionally
-dominates alternative <em>k</em>” is rejected at the 5% level. Computed
-by <code>data-raw/llq2022_uv_cspa.R</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span>,</span>
-<span>             caption <span class="op">=</span> <span class="st">"forecastdom::cspa_test (R = 1000)"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">L_jnj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="fu">qlike</span><span class="op">(</span><span class="va">llq2022_jnj</span><span class="op">[[</span><span class="va">m</span><span class="op">]</span><span class="op">]</span>, <span class="va">llq2022_jnj</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">X_jnj</span> <span class="op">&lt;-</span> <span class="va">llq2022_jnj</span><span class="op">$</span><span class="va">vix_lag</span></span></code></pre></div>
+<p>Benchmark is HAR throughout; competitors are AR(1) (left panel) and
+HARQ (right panel). A negative loss differential indicates the benchmark
+is outperformed; the CSPA test rejects if the dashed confidence bound
+dips below zero anywhere over the support of VIX.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span><span class="va">g_har_ar1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"AR1"</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"HAR"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  X <span class="op">=</span> <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"VIX (lagged)"</span>, ylab <span class="op">=</span> <span class="st">"QLIKE diff (AR(1) − HAR)"</span></span>
+<span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"HAR vs AR(1)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">g_har_ar1</span></span></code></pre></div>
+<p><img src="llq2022-cspa-rv_files/figure-html/fig2-left-1.png" class="r-plt" alt="" width="624"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span><span class="va">g_har_harq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"HARQ"</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"HAR"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  X <span class="op">=</span> <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"VIX (lagged)"</span>, ylab <span class="op">=</span> <span class="st">"QLIKE diff (HARQ − HAR)"</span></span>
+<span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"HAR vs HARQ"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">g_har_harq</span></span></code></pre></div>
+<p><img src="llq2022-cspa-rv_files/figure-html/fig2-right-1.png" class="r-plt" alt="" width="624"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fig2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">competitor</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">L_jnj</span><span class="op">[</span>, <span class="va">competitor</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"HAR"</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>                 preselect <span class="op">=</span> <span class="cn">TRUE</span>, R <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>competitor <span class="op">=</span> <span class="va">competitor</span>,</span>
+<span>             theta      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">theta</span><span class="op">)</span>,</span>
+<span>             pvalue     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
+<span>             reject     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig2</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig2</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>forecastdom::cspa_test (R = 1000)</caption>
+<thead><tr class="header">
+<th align="left">competitor</th>
+<th align="right">theta</th>
+<th align="right">pvalue</th>
+<th align="left">reject</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">AR1</td>
+<td align="right">0.0033</td>
+<td align="right">0.0745</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">HARQ</td>
+<td align="right">-0.0095</td>
+<td align="right">0.0011</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+<p>The left panel — AR(1) as the only competitor to HAR — shows the
+conditional loss differential staying above zero throughout the VIX
+support; the test does not reject. The right panel — HARQ as competitor
+— shows the differential dipping clearly below zero in the VIX ≈ 13-19
+range and the confidence bound follows it, so the CSPA null is rejected.
+This matches the paper’s Figure 2 and the accompanying text.</p>
+</div>
+<div class="section level2">
+<h2 id="figure-3-jnj-one-versus-all-cspa">Figure 3 — JNJ, one-versus-all CSPA<a class="anchor" aria-label="anchor" href="#figure-3-jnj-one-versus-all-cspa"></a>
+</h2>
+<p>Now use all five other models simultaneously as competitors and plot
+each (colored), their lower envelope (solid black) and the upper
+confidence bound on that envelope (dashed black). Rejection of the CSPA
+null occurs when the dashed line is below zero anywhere.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span><span class="va">Y_ar1</span> <span class="op">&lt;-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">models</span>, <span class="st">"AR1"</span><span class="op">)</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"AR1"</span><span class="op">]</span></span>
+<span><span class="va">g_ar1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="va">Y_ar1</span>, X <span class="op">=</span> <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"VIX (lagged)"</span>, ylab <span class="op">=</span> <span class="st">"QLIKE diff (competitors − AR(1))"</span></span>
+<span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Benchmark: AR(1)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">g_ar1</span></span></code></pre></div>
+<p><img src="llq2022-cspa-rv_files/figure-html/fig3-ar1-1.png" class="r-plt" alt="" width="624"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span><span class="va">Y_harq</span> <span class="op">&lt;-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">models</span>, <span class="st">"HARQ"</span><span class="op">)</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"HARQ"</span><span class="op">]</span></span>
+<span><span class="va">g_harq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span></span>
+<span>  Y <span class="op">=</span> <span class="va">Y_harq</span>, X <span class="op">=</span> <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"VIX (lagged)"</span>, ylab <span class="op">=</span> <span class="st">"QLIKE diff (competitors − HARQ)"</span></span>
+<span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Benchmark: HARQ"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">g_harq</span></span></code></pre></div>
+<p><img src="llq2022-cspa-rv_files/figure-html/fig3-harq-1.png" class="r-plt" alt="" width="624"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fig3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bench</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">models</span>, <span class="va">bench</span><span class="op">)</span></span>
+<span>  <span class="va">Y</span>    <span class="op">&lt;-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="va">comp</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="va">bench</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X_jnj</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>, prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>                 preselect <span class="op">=</span> <span class="cn">TRUE</span>, R <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>benchmark <span class="op">=</span> <span class="va">bench</span>,</span>
+<span>             theta     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">theta</span><span class="op">)</span>,</span>
+<span>             pvalue    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
+<span>             reject    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig3</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig3</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">benchmark</th>
+<th align="right">theta</th>
+<th align="right">pvalue</th>
+<th align="left">reject</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">AR1</td>
+<td align="right">-0.2377</td>
+<td align="right">1.00</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">HARQ</td>
+<td align="right">-0.0077</td>
+<td align="right">0.01</td>
+<td align="left">TRUE</td>
+</tr>
+</tbody>
+</table>
+<p>For AR(1) as benchmark the lower envelope sits well below zero across
+the VIX support and the dashed bound is below zero in the low-VIX region
+— strong CSPA rejection (, p &lt; 0.001). For HARQ as benchmark the
+envelope dips modestly below zero around VIX 25-40 and the dashed bound
+just barely follows (, p ≈ 0.01) — a borderline rejection at 5%. The
+paper notes HARQ belongs to the CSMS for 24 of the 28 assets, so for the
+other four HARQ is itself rejected; on this dataset, JNJ falls in that
+small minority.</p>
+</div>
+<div class="section level2">
+<h2 id="table-4-panel-a-cross-stock-rejection-counts">Table 4 Panel A — cross-stock rejection counts<a class="anchor" aria-label="anchor" href="#table-4-panel-a-cross-stock-rejection-counts"></a>
+</h2>
+<p>For each of 28 stocks, pairwise CSPA tests are run for every
+benchmark-competitor pair and rejections are tallied at the 5% level.
+Cell counts the stocks where the null “benchmark <em>l</em>
+conditionally dominates alternative <em>k</em>” is rejected. Computed
+offline by <code>data-raw/llq2022_uv_cspa.R</code> (~5 min at
+R=10000).</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span>,</span>
+<span>             caption <span class="op">=</span> <span class="st">"forecastdom::cspa_test, R = 10000"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>forecastdom::cspa_test, R = 10000</caption>
 <thead><tr class="header">
 <th align="left"></th>
 <th align="right">AR1</th>
@@ -170,7 +319,7 @@ by <code>data-raw/llq2022_uv_cspa.R</code>.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">paper</span>,</span>
 <span>             caption <span class="op">=</span> <span class="st">"Published Table_UV_CSPA.xlsx (LLQ 2022)"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -241,7 +390,7 @@ by <code>data-raw/llq2022_uv_cspa.R</code>.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_mat</span> <span class="op">&lt;-</span> <span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span> <span class="op">-</span> <span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">paper</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">diff_mat</span>, caption <span class="op">=</span> <span class="st">"Difference (forecastdom − LLQ)"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -312,123 +461,30 @@ by <code>data-raw/llq2022_uv_cspa.R</code>.</p>
 </tr>
 </tbody>
 </table>
-<p>23 of the 30 off-diagonal cells match the LLQ values exactly; 29 fall
-within one rejection and all 30 within two. The ±1-2 noise on boundary
-cells is consistent with the different bootstrap random seed. The
-reading of the table is identical to LLQ’s:</p>
+<p>23 of the 30 off-diagonal cells match exactly; 29 are within ±1 and
+all 30 within ±2. Residual noise on boundary cells reflects the
+different bootstrap seed. The reading is identical to LLQ’s:</p>
 <ul>
 <li>
 <strong>HARQ as benchmark</strong> (column HARQ) — all 28 stocks
-reject for every competitor except ARFIMA: HARQ is conditionally
-superior almost everywhere.</li>
+reject every competitor except ARFIMA: HARQ is conditionally superior
+almost everywhere.</li>
 <li>
 <strong>HARQ / ARFIMA as alternative</strong> (rows HARQ, ARFIMA) —
-they reject every other model as benchmark, confirming both belong in
-the confidence set.</li>
+they reject every other benchmark.</li>
 <li>
 <strong>AR(22) as benchmark</strong> (column AR22) — uniformly
 rejected; the simple long-AR is the weakest model.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="single-stock-illustration-sp-500">Single-stock illustration: S&amp;P 500<a class="anchor" aria-label="anchor" href="#single-stock-illustration-sp-500"></a>
+<h2 id="sp-500-confidence-set-for-the-most-superior-method">S&amp;P 500 — confidence set for the most superior method<a class="anchor" aria-label="anchor" href="#sp-500-confidence-set-for-the-most-superior-method"></a>
 </h2>
-<p>To make the test mechanics concrete, run the same procedure on the
-bundled <code>llq2022</code> (S&amp;P 500 only) and visualise the
-conditional-mean estimates.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"AR22"</span>, <span class="st">"AR22_Lasso"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"ARFIMA"</span><span class="op">)</span></span>
-<span><span class="va">qlike</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">y</span><span class="op">)</span> <span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span>
-<span><span class="va">losses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="fu">qlike</span><span class="op">(</span><span class="va">llq2022</span><span class="op">[[</span><span class="va">m</span><span class="op">]</span><span class="op">]</span>, <span class="va">llq2022</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">X</span>      <span class="op">&lt;-</span> <span class="va">llq2022</span><span class="op">$</span><span class="va">vix_lag</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">losses</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        AR1       AR22 AR22_Lasso        HAR       HARQ     ARFIMA </span></span>
-<span><span class="co">#&gt;     0.3701     0.2110     0.2370     0.1882     0.1551     0.1736</span></span></code></pre></div>
-<p>HARQ wins on average QLIKE, ARFIMA second.</p>
-<div class="section level3">
-<h3 id="cspa-per-benchmark-joint-over-the-other-five">CSPA per benchmark, joint over the other five<a class="anchor" aria-label="anchor" href="#cspa-per-benchmark-joint-over-the-other-five"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">run_cspa</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">models</span>, <span class="va">b</span><span class="op">)</span></span>
-<span>  <span class="va">Y</span>    <span class="op">&lt;-</span> <span class="va">losses</span><span class="op">[</span>, <span class="va">comp</span><span class="op">]</span> <span class="op">-</span> <span class="va">losses</span><span class="op">[</span>, <span class="va">b</span><span class="op">]</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
-<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">Y</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>                 prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>, preselect <span class="op">=</span> <span class="cn">TRUE</span>, R <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>benchmark <span class="op">=</span> <span class="va">b</span>,</span>
-<span>             theta     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">theta</span><span class="op">)</span>,</span>
-<span>             pvalue    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
-<span>             reject    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="va">run_cspa</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left">benchmark</th>
-<th align="right">theta</th>
-<th align="right">pvalue</th>
-<th align="left">reject</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">AR1</td>
-<td align="right">-0.230</td>
-<td align="right">1.000</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">AR22</td>
-<td align="right">-0.040</td>
-<td align="right">1.000</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">AR22_Lasso</td>
-<td align="right">-0.082</td>
-<td align="right">1.000</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="even">
-<td align="left">HAR</td>
-<td align="right">-0.028</td>
-<td align="right">1.000</td>
-<td align="left">TRUE</td>
-</tr>
-<tr class="odd">
-<td align="left">HARQ</td>
-<td align="right">0.020</td>
-<td align="right">0.472</td>
-<td align="left">FALSE</td>
-</tr>
-<tr class="even">
-<td align="left">ARFIMA</td>
-<td align="right">-0.007</td>
-<td align="right">0.005</td>
-<td align="left">TRUE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="conditional-mean-visualisation-harq-vs-har">Conditional-mean visualisation: HARQ vs HAR<a class="anchor" aria-label="anchor" href="#conditional-mean-visualisation-harq-vs-har"></a>
-</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Y_one</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">losses</span><span class="op">[</span>, <span class="st">"HAR"</span><span class="op">]</span> <span class="op">-</span> <span class="va">losses</span><span class="op">[</span>, <span class="st">"HARQ"</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
+<p>The same procedure on the S&amp;P 500 series.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">L_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="fu">qlike</span><span class="op">(</span><span class="va">llq2022</span><span class="op">[[</span><span class="va">m</span><span class="op">]</span><span class="op">]</span>, <span class="va">llq2022</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y_one</span>, X <span class="op">=</span> <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>               prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
-<span>               xlab <span class="op">=</span> <span class="st">"VIX (lagged)"</span>,</span>
-<span>               ylab <span class="op">=</span> <span class="st">"QLIKE diff (HAR − HARQ)"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="llq2022-cspa-rv_files/figure-html/plot-1.png" class="r-plt" alt="" width="672"></p>
-</div>
-<div class="section level3">
-<h3 id="confidence-set-for-the-most-superior-method">Confidence set for the most superior method<a class="anchor" aria-label="anchor" href="#confidence-set-for-the-most-superior-method"></a>
-</h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
-<span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csms.html">csms</a></span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.10</span>, trim <span class="op">=</span> <span class="fl">0</span>,</span>
+<span><span class="va">cs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/csms.html">csms</a></span><span class="op">(</span><span class="va">L_sp</span>, <span class="va">llq2022</span><span class="op">$</span><span class="va">vix_lag</span>, level <span class="op">=</span> <span class="fl">0.10</span>, trim <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>           prewhiten <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>, preselect <span class="op">=</span> <span class="cn">TRUE</span>, R <span class="op">=</span> <span class="fl">10000L</span>,</span>
 <span>           method_names <span class="op">=</span> <span class="va">models</span><span class="op">)</span></span>
 <span><span class="va">cs</span></span>
@@ -450,21 +506,19 @@ conditional-mean estimates.</p>
 <span><span class="co">#&gt; │  HARQ           0.0153     0.4699        Yes   │</span></span>
 <span><span class="co">#&gt; │  ARFIMA        -0.0088     0.0057         No   │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The 90% CSMS for SP500 collapses to <code>{HARQ}</code> alone —
-ARFIMA is rejected as conditionally superior on the SP500 series even
-though it survives across other stocks (cross-stock count: 22 of 28
-stocks reject HARQ-vs-ARFIMA, so SP500 falling in the reject group is in
-line with the panel).</p>
-</div>
+<p>The 90% CSMS collapses to <code>{HARQ}</code> on S&amp;P 500. ARFIMA
+is rejected here even though it survives in 22 of the 28 stocks in the
+cross-stock table above — SP500 falls in the reject group.</p>
 </div>
 <div class="section level2">
 <h2 id="takeaway">Takeaway<a class="anchor" aria-label="anchor" href="#takeaway"></a>
 </h2>
 <p>Unconditional MSE rankings hide which model is <em>uniformly</em>
-best. LLQ’s central empirical message — HARQ and ARFIMA cannot be ruled
-out as conditionally most superior on volatility forecasting — is
-reproduced both at the cross-stock level (Table_UV_CSPA counts) and on
-the SP500 alone (CSMS and per-benchmark CSPA tests).</p>
+best across volatility regimes. LLQ’s central empirical message — HARQ
+and ARFIMA cannot be ruled out as conditionally most superior on
+volatility forecasting — is reproduced at three levels: the JNJ figures
+(one-vs-one and one-vs-all CSPA), the 28-stock count table, and the
+SP500 CSMS.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

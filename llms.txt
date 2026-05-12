@@ -203,10 +203,18 @@ Datasets bundled with the package.
 - [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
   : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
   2016)
+- [`hl2005`](https://gabbocg.github.io/forecastdom/reference/hl2005.md)
+  : IBM Volatility Forecasts and Realized-Variance Proxies (Hansen &
+  Lunde, 2005)
+- [`gw2006`](https://gabbocg.github.io/forecastdom/reference/gw2006.md)
+  : SPF Mean CPI Inflation Forecasts (Giacomini & White, 2006 setup)
 - [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
   : Loss-Differential Path Forecasts from Quaedvlieg (2021)
 - [`llq2022`](https://gabbocg.github.io/forecastdom/reference/llq2022.md)
   : S&P 500 Realized-Variance Forecasts (Li, Liao & Quaedvlieg, 2022)
+- [`llq2022_jnj`](https://gabbocg.github.io/forecastdom/reference/llq2022_jnj.md)
+  : Johnson & Johnson Realized-Variance Forecasts (Li, Liao &
+  Quaedvlieg, 2022)
 - [`llq2022_uv_cspa`](https://gabbocg.github.io/forecastdom/reference/llq2022_uv_cspa.md)
   : Pairwise CSPA Rejection Counts Across 28 Stocks
 
@@ -216,6 +224,10 @@ Datasets bundled with the package.
 
 - [Get Started with
   forecastdom](https://gabbocg.github.io/forecastdom/articles/forecastdom.md):
+- [Replicating Giacomini & White
+  (2006)](https://gabbocg.github.io/forecastdom/articles/gw2006-spf-cepa.md):
+- [Replicating Hansen & Lunde
+  (2005)](https://gabbocg.github.io/forecastdom/articles/hl2005-spa-garch.md):
 - [Replicating Li, Liao & Quaedvlieg
   (2022)](https://gabbocg.github.io/forecastdom/articles/llq2022-cspa-rv.md):
 - [Replicating Neely et al.
@@ -226,7 +238,5 @@ Datasets bundled with the package.
   (2006)](https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.md):
 - [Replicating Rapach et al.
   (2016)](https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.md):
-- [Replicating Rapach, Strauss & Zhou
-  (2010)](https://gabbocg.github.io/forecastdom/articles/rsz2010-enc-combination.md):
 - [Replicating Rapach & Zhou
   (2013)](https://gabbocg.github.io/forecastdom/articles/rz2013-cw-macro.md):

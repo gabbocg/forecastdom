@@ -75,9 +75,17 @@ Datasets bundled with the package.
 - [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
   : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
   2016)
+- [`hl2005`](https://gabbocg.github.io/forecastdom/reference/hl2005.md)
+  : IBM Volatility Forecasts and Realized-Variance Proxies (Hansen &
+  Lunde, 2005)
+- [`gw2006`](https://gabbocg.github.io/forecastdom/reference/gw2006.md)
+  : SPF Mean CPI Inflation Forecasts (Giacomini & White, 2006 setup)
 - [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
   : Loss-Differential Path Forecasts from Quaedvlieg (2021)
 - [`llq2022`](https://gabbocg.github.io/forecastdom/reference/llq2022.md)
   : S&P 500 Realized-Variance Forecasts (Li, Liao & Quaedvlieg, 2022)
+- [`llq2022_jnj`](https://gabbocg.github.io/forecastdom/reference/llq2022_jnj.md)
+  : Johnson & Johnson Realized-Variance Forecasts (Li, Liao &
+  Quaedvlieg, 2022)
 - [`llq2022_uv_cspa`](https://gabbocg.github.io/forecastdom/reference/llq2022_uv_cspa.md)
   : Pairwise CSPA Rejection Counts Across 28 Stocks

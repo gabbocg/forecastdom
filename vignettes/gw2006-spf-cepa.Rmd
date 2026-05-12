@@ -1,0 +1,124 @@
+---
+title: "Replicating Giacomini & White (2006)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Replicating Giacomini & White (2006)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4
+)
+```
+
+This article applies `gw_test()` — Giacomini and White (2006)
+conditional equal predictive ability (CEPA) test — to the Survey of
+Professional Forecasters' mean CPI inflation forecasts. The
+benchmark is a naive random walk in inflation (next quarter's
+forecast = this quarter's realised inflation); the alternative is
+the SPF mean at horizons \eqn{h = 0, 1, 2, 3, 4} quarters. The
+bundled `gw2006` dataset extends GW's quarterly sample to the
+present using the same Philadelphia Fed SPF source.
+
+```{r setup, message = FALSE}
+library(forecastdom)
+data(gw2006)
+str(gw2006)
+```
+
+## CEPA across forecast horizons
+
+```{r table-horizons}
+run_h <- function(h) {
+  spf_col <- paste0("spf_h", h)
+  ok <- complete.cases(gw2006[, c("infl", spf_col, "infl_lag")])
+  d  <- gw2006[ok, ]
+  e_spf <- d$infl - d[[spf_col]]    # SPF errors
+  e_rw  <- d$infl - d$infl_lag      # random-walk errors
+  r <- gw_test(e_spf, e_rw)         # default: constant + lagged loss diff
+  data.frame(h = h, n = nrow(d),
+             mse_spf = mean(e_spf^2),
+             mse_rw  = mean(e_rw^2),
+             wald    = unname(r$statistic),
+             pvalue  = unname(r$pvalue),
+             reject  = unname(r$pvalue) < 0.05)
+}
+tab <- do.call(rbind, lapply(0:4, run_h))
+knitr::kable(tab, digits = 3, row.names = FALSE)
+```
+
+At every horizon SPF has lower mean squared error than the
+random-walk benchmark, yet the GW test fails to reject conditional
+equal predictive ability at the 5% level. The pattern is consistent
+with Atkeson and Ohanian (2001): once the autocorrelation of the
+loss differential is accounted for, sophisticated inflation
+forecasts are hard to distinguish from a "no-change" benchmark in a
+formal test.
+
+## Choice of instruments
+
+`gw_test()` defaults to two instruments: a constant and the lagged
+loss differential. Different instruments target different features
+of the conditioning information set. Below we replace the lag with
+the lagged inflation level — a regime indicator that captures
+high/low inflation environments — at horizon \eqn{h = 1}.
+
+```{r instrument-comparison}
+h <- 1L
+ok <- complete.cases(gw2006[, c("infl", paste0("spf_h", h), "infl_lag")])
+d  <- gw2006[ok, ]
+e_spf <- d$infl - d[[paste0("spf_h", h)]]
+e_rw  <- d$infl - d$infl_lag
+
+# Default: constant + lagged loss differential
+r_default <- gw_test(e_spf, e_rw)
+
+# Custom: constant + lagged inflation level (padded with NA at t = 1
+# so that nrow(W) matches length(e1)).
+W_infl <- cbind(1, c(NA, head(d$infl_lag, -1)))
+keep   <- !is.na(W_infl[, 2])
+r_infl <- gw_test(e_spf[keep], e_rw[keep],
+                  instruments = W_infl[keep, , drop = FALSE])
+
+# Absolute-error loss instead of squared-error
+r_ae <- gw_test(e_spf, e_rw, loss = "AE")
+
+tab2 <- data.frame(
+  spec = c("Default (const + lagged Δloss)",
+           "Const + lagged inflation",
+           "Absolute-error loss"),
+  wald   = c(r_default$statistic, r_infl$statistic, r_ae$statistic),
+  df     = c(r_default$df,        r_infl$df,        r_ae$df),
+  pvalue = c(r_default$pvalue,    r_infl$pvalue,    r_ae$pvalue)
+)
+knitr::kable(tab2, digits = 3, row.names = FALSE)
+```
+
+The decision is robust across all three specifications: SPF and
+the random walk cannot be statistically distinguished at the 5%
+level regardless of which conditioning instruments or loss function
+we choose.
+
+## Note on the original paper
+
+Giacomini and White (2006, Section 4) compare SPF nowcasts to the
+*Greenbook* — the Federal Reserve staff's internal inflation
+forecast — using a richer instrument set. They find that the test
+*does* reject equal conditional predictive ability between the two
+*sophisticated* forecasts in some conditioning states. Replicating
+that result requires Greenbook data with its five-year embargo;
+this article instead demonstrates the test mechanics against the
+simpler random-walk benchmark, which is freely available.
+
+## References
+
+- Atkeson, A. and Ohanian, L. E. (2001). Are Phillips curves useful
+  for forecasting inflation? *Federal Reserve Bank of Minneapolis
+  Quarterly Review*, 25(1), 2-11.
+- Giacomini, R. and White, H. (2006). Tests of conditional
+  predictive ability. *Econometrica*, 74(6), 1545-1578.

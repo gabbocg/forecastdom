@@ -48,48 +48,54 @@ cspa_test_plot <- function(object = NULL, Y = NULL, X = NULL, level = 0.05,
   n <- length(X)
   J <- ncol(h_hat)
 
-  # Sort by X
+  # Sort by X. Both h_hat (rows) and sigma_jx (columns) are stored in
+  # original X order, so the upper-bound matrix must be built in
+  # original order and then sorted as a single object.
   ord <- order(X)
   X_sorted <- X[ord]
   h_sorted <- h_hat[ord, , drop = FALSE]
+  upper_sorted <- (h_hat + kp * t(sigma_jx) / sqrt(n))[ord, , drop = FALSE]
 
   lower_envelope <- apply(h_sorted, 1, min)
-  CI_sorted <- apply(h_sorted + kp * t(sigma_jx) / sqrt(n), 1, min)[ord]
+  CI_sorted      <- apply(upper_sorted, 1, min)
 
-  # Build data frame for ggplot
-  df_env <- data.frame(x = X_sorted, y = lower_envelope, type = "Lower Envelope")
-  df_ci <- data.frame(x = X_sorted, y = CI_sorted, type = "Confidence Bound")
+  # When J = 1 the lower envelope coincides with the single h_1, so the
+  # colored h_j layer is redundant and the envelope label is misleading;
+  # collapse to "Loss Differential" + "Confidence Bound" only.
+  single <- J == 1L
+  env_label <- if (single) "Loss Differential" else "Lower Envelope"
 
-  df_h <- do.call(rbind, lapply(seq_len(J), function(j) {
-    
-    data.frame(
-      x = X_sorted,
-      y = h_sorted[, j],
-      type = paste0("h_", j)
-    )
-    
-  }))
+  df_env <- data.frame(x = X_sorted, y = lower_envelope, type = env_label)
+  df_ci  <- data.frame(x = X_sorted, y = CI_sorted,      type = "Confidence Bound")
 
-  df_all <- rbind(df_env, df_ci, df_h)
+  if (single) {
+    df_all <- rbind(df_env, df_ci)
+    type_levels <- c(env_label, "Confidence Bound")
+    df_all$type <- factor(df_all$type, levels = type_levels)
+    line_colors <- setNames(c("black", "black"),    type_levels)
+    line_types  <- setNames(c("solid", "dashed"),   type_levels)
+    line_sizes  <- setNames(c(1.0,     0.8),        type_levels)
+  } else {
+    df_h <- do.call(rbind, lapply(seq_len(J), function(j) {
+      data.frame(x = X_sorted, y = h_sorted[, j], type = paste0("h_", j))
+    }))
+    df_all <- rbind(df_env, df_ci, df_h)
 
-  # Determine linetypes and colors
-  type_levels <- c("Lower Envelope", "Confidence Bound",
-                    paste0("h_", seq_len(J)))
-  df_all$type <- factor(df_all$type, levels = type_levels)
+    type_levels <- c(env_label, "Confidence Bound",
+                     paste0("h_", seq_len(J)))
+    df_all$type <- factor(df_all$type, levels = type_levels)
 
-  line_colors <- c("Lower Envelope" = "black", "Confidence Bound" = "black")
-  line_types <- c("Lower Envelope" = "solid", "Confidence Bound" = "dashed")
-  line_sizes <- c("Lower Envelope" = 1.2, "Confidence Bound" = 0.8)
+    line_colors <- c("black", "black"); names(line_colors) <- type_levels[1:2]
+    line_types  <- c("solid", "dashed"); names(line_types) <- type_levels[1:2]
+    line_sizes  <- c(1.2,     0.8);      names(line_sizes) <- type_levels[1:2]
 
-  h_colors <- grDevices::hcl.colors(J, palette = "Set 2")
-  
-  for (j in seq_len(J)) {
-    
-    nm <- paste0("h_", j)
-    line_colors[nm] <- h_colors[j]
-    line_types[nm] <- "solid"
-    line_sizes[nm] <- 0.6
-    
+    h_colors <- grDevices::hcl.colors(J, palette = "Set 2")
+    for (j in seq_len(J)) {
+      nm <- paste0("h_", j)
+      line_colors[nm] <- h_colors[j]
+      line_types[nm]  <- "solid"
+      line_sizes[nm]  <- 0.6
+    }
   }
 
   x <- y <- type <- NULL  # avoid R CMD check NOTE

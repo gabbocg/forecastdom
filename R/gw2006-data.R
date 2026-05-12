@@ -1,0 +1,30 @@
+#' SPF Mean CPI Inflation Forecasts (Giacomini & White, 2006 setup)
+#'
+#' Quarterly mean Survey of Professional Forecasters (SPF) forecasts of
+#' annualised CPI inflation at horizons \eqn{h = 0, 1, 2, 3, 4}
+#' quarters ahead, aligned with realised CPI inflation from FRED. The
+#' panel covers 1981Q3 onward, the start of the SPF's CPI survey.
+#'
+#' @format A data frame with 180 rows and 10 columns:
+#' \describe{
+#'   \item{date}{First day of the third month of the realisation
+#'     quarter (\code{Date}).}
+#'   \item{year, quarter}{Realisation quarter.}
+#'   \item{infl}{Realised annualised QoQ CPI inflation (percent),
+#'     computed from quarterly averages of \code{CPIAUCSL}.}
+#'   \item{infl_lag}{One-quarter lag of \code{infl} — the naive
+#'     random-walk forecast benchmark.}
+#'   \item{spf_h0, spf_h1, spf_h2, spf_h3, spf_h4}{SPF mean forecasts
+#'     of \code{infl}, made \eqn{h = 0, \dots, 4} quarters in advance.}
+#' }
+#'
+#' @source SPF mean CPI inflation forecasts from the Federal Reserve
+#'   Bank of Philadelphia,
+#'   \url{https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/survey-of-professional-forecasters}.
+#'   Realised CPI from FRED series CPIAUCSL,
+#'   \url{https://fred.stlouisfed.org/series/CPIAUCSL}.
+#'
+#' @references
+#' Giacomini, R. and White, H. (2006). Tests of conditional predictive
+#' ability. \emph{Econometrica}, 74(6), 1545-1578.
+"gw2006"

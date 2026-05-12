@@ -1,0 +1,40 @@
+#' IBM Volatility Forecasts and Realized-Variance Proxies (Hansen & Lunde, 2005)
+#'
+#' Daily IBM data from the replication archive of Hansen and Lunde
+#' (2005, JAE). Contains 254 trading days (1999-06-01 to 2000-05-31),
+#' 8 realized-variance proxies of varying quality, and 330
+#' one-step-ahead conditional variance forecasts produced by GARCH-family
+#' models. The benchmark GARCH(1,1) with constant mean and Gaussian
+#' errors is identified by the index \code{garch11_idx}.
+#'
+#' @format A list with the following components:
+#' \describe{
+#'   \item{date}{Trading-day \code{Date} vector (length 254).}
+#'   \item{rv}{Numeric vector (length 254); the 5-minute
+#'     linear-interpolation realized-variance proxy. The paper's
+#'     headline series.}
+#'   \item{rv_proxies}{\eqn{254 \times 8} matrix of alternative RV
+#'     proxies: \code{sq_ccr} (squared close-to-close returns),
+#'     \code{spline_50_3min}, \code{spline_250_2min}, \code{fourier_M85},
+#'     \code{linear_5min}, \code{prevtick_5min}, \code{linear_1min},
+#'     \code{prevtick_1min}.}
+#'   \item{forecasts}{\eqn{254 \times 330} matrix of one-step-ahead
+#'     conditional variance forecasts. Columns index a base GARCH
+#'     specification (55 specs: LGARCH, IGARCH, TS-GARCH, A-GARCH,
+#'     NA-GARCH, V-GARCH, THR-GARCH, GJR-GARCH, LOG-GARCH, EGARCH,
+#'     NGARCH, A-PARCH, GQ-ARCH, H-GARCH, AUG-GARCH) crossed with
+#'     mean-equation and error-distribution combinations (zero/const/
+#'     GARCH-in-mean \eqn{\times} Gaussian/t-distributed).}
+#'   \item{garch11_idx}{Integer (= 57); the column of \code{forecasts}
+#'     corresponding to GARCH(1,1) with constant mean and Gaussian
+#'     errors, used as the benchmark in the paper.}
+#' }
+#'
+#' @source JAE Data Archive,
+#'   \url{http://qed.econ.queensu.ca/jae/2005-v20.7/hansen-lunde/}.
+#'
+#' @references
+#' Hansen, P. R. and Lunde, A. (2005). A forecast comparison of
+#' volatility models: does anything beat a GARCH(1,1)?
+#' \emph{Journal of Applied Econometrics}, 20(7), 873-889.
+"hl2005"

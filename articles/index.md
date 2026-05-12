@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Replicating Clark & McCracken
+  (2001)](https://gabbocg.github.io/forecastdom/articles/cm2001-enc-new.md):
 - [Get Started with
   forecastdom](https://gabbocg.github.io/forecastdom/articles/forecastdom.md):
 - [Replicating Giacomini & White

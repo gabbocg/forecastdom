@@ -75,6 +75,8 @@ Datasets bundled with the package.
 - [`rrz2016`](https://gabbocg.github.io/forecastdom/reference/rrz2016.md)
   : Equity Premium and Short Interest Index (Rapach, Ringgenberg & Zhou,
   2016)
+- [`cm2001`](https://gabbocg.github.io/forecastdom/reference/cm2001.md)
+  : US Unemployment and Inflation (Clark & McCracken, 2001 setup)
 - [`hl2005`](https://gabbocg.github.io/forecastdom/reference/hl2005.md)
   : IBM Volatility Forecasts and Realized-Variance Proxies (Hansen &
   Lunde, 2005)

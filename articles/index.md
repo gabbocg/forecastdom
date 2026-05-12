@@ -22,3 +22,5 @@
   (2016)](https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.md):
 - [Replicating Rapach & Zhou
   (2013)](https://gabbocg.github.io/forecastdom/articles/rz2013-cw-macro.md):
+- [Replicating Welch & Goyal (2008) — DP
+  predictor](https://gabbocg.github.io/forecastdom/articles/wg2008-dp.md):

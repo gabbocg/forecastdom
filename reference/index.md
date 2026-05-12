@@ -82,6 +82,8 @@ Datasets bundled with the package.
   Lunde, 2005)
 - [`gw2006`](https://gabbocg.github.io/forecastdom/reference/gw2006.md)
   : SPF Mean CPI Inflation Forecasts (Giacomini & White, 2006 setup)
+- [`wg2008`](https://gabbocg.github.io/forecastdom/reference/wg2008.md)
+  : Welch & Goyal (2008) Annual Equity-Premium Dataset
 - [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
   : Loss-Differential Path Forecasts from Quaedvlieg (2021)
 - [`llq2022`](https://gabbocg.github.io/forecastdom/reference/llq2022.md)

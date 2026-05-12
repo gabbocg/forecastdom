@@ -11,6 +11,8 @@ forecasting methods.
   : Clark-West Test for Predictive Ability of Nested Models
 - [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
   : Clark-McCracken ENC-NEW Encompassing Test
+- [`mse_f_test()`](https://gabbocg.github.io/forecastdom/reference/mse_f_test.md)
+  : McCracken MSE-F Test for Equal Forecast Accuracy
 - [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
   : Conditional Equal Predictive Ability (CEPA) Test
 

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Replicating Welch &amp; Goyal (2008) — DP predictor • forecastdom</title>
+<title>Replicating Welch &amp; Goyal (2008) • forecastdom</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Welch &amp; Goyal (2008) — DP predictor">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Welch &amp; Goyal (2008)">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -44,12 +44,12 @@
     <li><a class="dropdown-item" href="../articles/hl2005-spa-garch.html">Replicating Hansen &amp; Lunde (2005)</a></li>
     <li><a class="dropdown-item" href="../articles/gw2006-spf-cepa.html">Replicating Giacomini &amp; White (2006)</a></li>
     <li><a class="dropdown-item" href="../articles/rossi2006-dm.html">Replicating Rossi (2006)</a></li>
-    <li><a class="dropdown-item" href="../articles/wg2008-dp.html">Replicating Welch &amp; Goyal (2008) — DP predictor</a></li>
+    <li><a class="dropdown-item" href="../articles/wg2008-dp.html">Replicating Welch &amp; Goyal (2008)</a></li>
     <li><a class="dropdown-item" href="../articles/rz2013-cw-macro.html">Replicating Rapach &amp; Zhou (2013)</a></li>
     <li><a class="dropdown-item" href="../articles/nrtz2014-cw-technical.html">Replicating Neely et al. (2014)</a></li>
     <li><a class="dropdown-item" href="../articles/rrz2016-ivx-qll.html">Replicating Rapach et al. (2016)</a></li>
     <li><a class="dropdown-item" href="../articles/quaedvlieg2021-mh-spa.html">Replicating Quaedvlieg (2021)</a></li>
-    <li><a class="dropdown-item" href="../articles/llq2022-cspa-rv.html">Replicating Li, Liao &amp; Quaedvlieg (2022)</a></li>
+    <li><a class="dropdown-item" href="../articles/llq2022-cspa-rv.html">Replicating Li et al. (2022)</a></li>
   </ul>
 </li>
       </ul>
@@ -70,7 +70,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Replicating Welch &amp; Goyal (2008) — DP predictor</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Replicating Welch &amp; Goyal (2008)</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/GabboCg/forecastdom/blob/main/vignettes/wg2008-dp.Rmd" class="external-link"><code>vignettes/wg2008-dp.Rmd</code></a></small>
@@ -103,8 +103,8 @@ computes each on the same data:</p>
 <li>
 <strong>ΔRMSE</strong> — .</li>
 <li>
-<strong>MSE-F</strong> — McCracken (2004) F-statistic for equal
-MSE.</li>
+<strong>MSE-F</strong> — McCracken (2007) F-statistic for equal MSE
+(<code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>).</li>
 <li>
 <strong>ENC-NEW</strong> — Clark-McCracken (2001) encompassing test
 (<code><a href="../reference/enc_new.html">enc_new()</a></code>).</li>
@@ -173,7 +173,7 @@ parameters (intercept + predictor).</p>
 <span>  <span class="va">R2</span>    <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">MSE_A</span> <span class="op">/</span> <span class="va">MSE_N</span></span>
 <span>  <span class="va">R2bar</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">R2</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">T_oos</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">T_oos</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span>
 <span>  <span class="va">dRMSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">MSE_N</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">MSE_A</span><span class="op">)</span></span>
-<span>  <span class="va">MSE_F</span> <span class="op">&lt;-</span> <span class="va">T_oos</span> <span class="op">*</span> <span class="op">(</span><span class="va">MSE_N</span> <span class="op">-</span> <span class="va">MSE_A</span><span class="op">)</span> <span class="op">/</span> <span class="va">MSE_A</span></span>
+<span>  <span class="va">msef</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mse_f_test.html">mse_f_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_A</span><span class="op">)</span></span>
 <span>  <span class="va">enc</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enc_new.html">enc_new</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_A</span><span class="op">)</span></span>
 <span>  <span class="va">cw</span>    <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cw_test.html">cw_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_A</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f_A</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>spec         <span class="op">=</span> <span class="va">spec</span><span class="op">$</span><span class="va">label</span>,</span>
@@ -182,7 +182,7 @@ parameters (intercept + predictor).</p>
 <span>             R2_OS_pct    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">R2</span>,</span>
 <span>             R2_bar_OS    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">R2bar</span>,</span>
 <span>             dRMSE_pct    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">dRMSE</span>,</span>
-<span>             MSE_F        <span class="op">=</span> <span class="va">MSE_F</span>,</span>
+<span>             MSE_F        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">msef</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
 <span>             ENC_NEW      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">enc</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
 <span>             CW_stat      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
 <span>             CW_p         <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span><span class="op">)</span></span>

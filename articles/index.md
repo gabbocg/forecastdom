@@ -10,7 +10,7 @@
   (2006)](https://gabbocg.github.io/forecastdom/articles/gw2006-spf-cepa.md):
 - [Replicating Hansen & Lunde
   (2005)](https://gabbocg.github.io/forecastdom/articles/hl2005-spa-garch.md):
-- [Replicating Li, Liao & Quaedvlieg
+- [Replicating Li et al.
   (2022)](https://gabbocg.github.io/forecastdom/articles/llq2022-cspa-rv.md):
 - [Replicating Neely et al.
   (2014)](https://gabbocg.github.io/forecastdom/articles/nrtz2014-cw-technical.md):
@@ -22,5 +22,5 @@
   (2016)](https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.md):
 - [Replicating Rapach & Zhou
   (2013)](https://gabbocg.github.io/forecastdom/articles/rz2013-cw-macro.md):
-- [Replicating Welch & Goyal (2008) — DP
-  predictor](https://gabbocg.github.io/forecastdom/articles/wg2008-dp.md):
+- [Replicating Welch & Goyal
+  (2008)](https://gabbocg.github.io/forecastdom/articles/wg2008-dp.md):

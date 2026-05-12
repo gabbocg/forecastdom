@@ -1,4 +1,4 @@
-# Replicating Li, Liao & Quaedvlieg (2022)
+# Replicating Li et al. (2022)
 
 This article reproduces the volatility-forecasting application of Li,
 Liao and Quaedvlieg (2022, *RFS*), Section 4: Figure 2 (one-vs-one CSPA

@@ -32,12 +32,16 @@ navbar:
         href: articles/rossi2006-dm.html
       - text: Replicating Rapach & Zhou (2013)
         href: articles/rz2013-cw-macro.html
+      - text: Replicating Rapach, Strauss & Zhou (2010)
+        href: articles/rsz2010-enc-combination.html
       - text: Replicating Neely et al. (2014)
         href: articles/nrtz2014-cw-technical.html
       - text: Replicating Rapach et al. (2016)
         href: articles/rrz2016-ivx-qll.html
       - text: Replicating Quaedvlieg (2021)
         href: articles/quaedvlieg2021-mh-spa.html
+      - text: Replicating Li, Liao & Quaedvlieg (2022)
+        href: articles/llq2022-cspa-rv.html
 reference:
 - title: Forecast Comparison Tests
   desc: |
@@ -81,6 +85,8 @@ reference:
   - nrtz2014
   - rrz2016
   - quaedvlieg2021
+  - llq2022
+  - llq2022_uv_cspa
 footer:
   structure:
     left: developed_by

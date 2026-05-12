@@ -1,0 +1,36 @@
+#' Pairwise CSPA Rejection Counts Across 28 Stocks
+#'
+#' Pre-computed rejection counts replicating Table_UV_CSPA.xlsx from
+#' the Li, Liao and Quaedvlieg (2022) replication package. For each of
+#' 28 stocks, pairwise conditional superior predictive ability (CSPA)
+#' tests are run for every benchmark-competitor pair across six
+#' realized-variance forecasting models; cell \eqn{(k, l)} counts the
+#' number of stocks for which the null \dQuote{benchmark \eqn{l}
+#' conditionally dominates alternative \eqn{k}} is rejected at the 5%
+#' level. Conditioning variable is one-day-lagged VIX; loss is QLIKE.
+#'
+#' @format A list with the following components:
+#' \describe{
+#'   \item{mine}{\eqn{6 \times 6} integer matrix of rejection counts
+#'     produced by \code{forecastdom::cspa_test} with \code{R = 10000}
+#'     bootstrap reps and AIC pre-whitening, matching the call
+#'     signature in \code{Empirics_Volatility.ox}.}
+#'   \item{paper}{\eqn{6 \times 6} integer matrix from
+#'     \code{Table_UV_CSPA.xlsx} in the LLQ replication package.}
+#'   \item{losses}{\eqn{28 \times 6} matrix of mean QLIKE loss per
+#'     stock and model.}
+#'   \item{tickers}{Character vector of the 28 tickers used.}
+#'   \item{models}{Character vector of the six model names.}
+#'   \item{level}{Significance level used (0.05).}
+#'   \item{R}{Number of bootstrap replications used.}
+#' }
+#'
+#' @source Computed by \code{data-raw/llq2022_uv_cspa.R} from the
+#'   replication package of Li, Liao and Quaedvlieg (2022),
+#'   \url{https://zenodo.org/record/4884813}.
+#'
+#' @references
+#' Li, J., Liao, Z. and Quaedvlieg, R. (2022). Conditional Superior
+#' Predictive Ability. \emph{Review of Economic Studies}, 89(2),
+#' 843-875.
+"llq2022_uv_cspa"

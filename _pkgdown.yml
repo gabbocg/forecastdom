@@ -28,12 +28,14 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Replicating Rossi (2006)
-        href: articles/rossi2006-dm.html
-      - text: Replicating Giacomini & White (2006)
-        href: articles/gw2006-spf-cepa.html
+      - text: Replicating Clark & McCracken (2001)
+        href: articles/cm2001-enc-new.html
       - text: Replicating Hansen & Lunde (2005)
         href: articles/hl2005-spa-garch.html
+      - text: Replicating Giacomini & White (2006)
+        href: articles/gw2006-spf-cepa.html
+      - text: Replicating Rossi (2006)
+        href: articles/rossi2006-dm.html
       - text: Replicating Rapach & Zhou (2013)
         href: articles/rz2013-cw-macro.html
       - text: Replicating Neely et al. (2014)
@@ -86,6 +88,7 @@ reference:
   - rz2013
   - nrtz2014
   - rrz2016
+  - cm2001
   - hl2005
   - gw2006
   - quaedvlieg2021

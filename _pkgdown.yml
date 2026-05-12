@@ -36,6 +36,8 @@ navbar:
         href: articles/gw2006-spf-cepa.html
       - text: Replicating Rossi (2006)
         href: articles/rossi2006-dm.html
+      - text: Replicating Welch & Goyal (2008) — DP predictor
+        href: articles/wg2008-dp.html
       - text: Replicating Rapach & Zhou (2013)
         href: articles/rz2013-cw-macro.html
       - text: Replicating Neely et al. (2014)
@@ -91,6 +93,7 @@ reference:
   - cm2001
   - hl2005
   - gw2006
+  - wg2008
   - quaedvlieg2021
   - llq2022
   - llq2022_jnj

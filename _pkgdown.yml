@@ -36,7 +36,7 @@ navbar:
         href: articles/gw2006-spf-cepa.html
       - text: Replicating Rossi (2006)
         href: articles/rossi2006-dm.html
-      - text: Replicating Welch & Goyal (2008) — DP predictor
+      - text: Replicating Welch & Goyal (2008)
         href: articles/wg2008-dp.html
       - text: Replicating Rapach & Zhou (2013)
         href: articles/rz2013-cw-macro.html
@@ -46,7 +46,7 @@ navbar:
         href: articles/rrz2016-ivx-qll.html
       - text: Replicating Quaedvlieg (2021)
         href: articles/quaedvlieg2021-mh-spa.html
-      - text: Replicating Li, Liao & Quaedvlieg (2022)
+      - text: Replicating Li et al. (2022)
         href: articles/llq2022-cspa-rv.html
 reference:
 - title: Forecast Comparison Tests
@@ -56,6 +56,7 @@ reference:
   - dm_test
   - cw_test
   - enc_new
+  - mse_f_test
   - gw_test
 - title: Superior Predictive Ability
   desc: |

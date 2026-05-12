@@ -205,6 +205,10 @@ Datasets bundled with the package.
   2016)
 - [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
   : Loss-Differential Path Forecasts from Quaedvlieg (2021)
+- [`llq2022`](https://gabbocg.github.io/forecastdom/reference/llq2022.md)
+  : S&P 500 Realized-Variance Forecasts (Li, Liao & Quaedvlieg, 2022)
+- [`llq2022_uv_cspa`](https://gabbocg.github.io/forecastdom/reference/llq2022_uv_cspa.md)
+  : Pairwise CSPA Rejection Counts Across 28 Stocks
 
 # Articles
 
@@ -212,6 +216,8 @@ Datasets bundled with the package.
 
 - [Get Started with
   forecastdom](https://gabbocg.github.io/forecastdom/articles/forecastdom.md):
+- [Replicating Li, Liao & Quaedvlieg
+  (2022)](https://gabbocg.github.io/forecastdom/articles/llq2022-cspa-rv.md):
 - [Replicating Neely et al.
   (2014)](https://gabbocg.github.io/forecastdom/articles/nrtz2014-cw-technical.md):
 - [Replicating Quaedvlieg
@@ -220,5 +226,7 @@ Datasets bundled with the package.
   (2006)](https://gabbocg.github.io/forecastdom/articles/rossi2006-dm.md):
 - [Replicating Rapach et al.
   (2016)](https://gabbocg.github.io/forecastdom/articles/rrz2016-ivx-qll.md):
+- [Replicating Rapach, Strauss & Zhou
+  (2010)](https://gabbocg.github.io/forecastdom/articles/rsz2010-enc-combination.md):
 - [Replicating Rapach & Zhou
   (2013)](https://gabbocg.github.io/forecastdom/articles/rz2013-cw-macro.md):

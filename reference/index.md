@@ -77,3 +77,7 @@ Datasets bundled with the package.
   2016)
 - [`quaedvlieg2021`](https://gabbocg.github.io/forecastdom/reference/quaedvlieg2021.md)
   : Loss-Differential Path Forecasts from Quaedvlieg (2021)
+- [`llq2022`](https://gabbocg.github.io/forecastdom/reference/llq2022.md)
+  : S&P 500 Realized-Variance Forecasts (Li, Liao & Quaedvlieg, 2022)
+- [`llq2022_uv_cspa`](https://gabbocg.github.io/forecastdom/reference/llq2022_uv_cspa.md)
+  : Pairwise CSPA Rejection Counts Across 28 Stocks

@@ -43,11 +43,13 @@ so positive values mean GARCH(1,1) wins.
 b <- hl2005$garch11_idx
 
 build_Y <- function(rv) {
-  L <- (hl2005$forecasts - rv)^2
+
+  L <- (hl2005$forecasts - rv) ^ 2
   L[, -b] - L[, b]
+
 }
 
-Y <- build_Y(hl2005$rv)            # primary RV proxy (5-min linear)
+Y <- build_Y(hl2005$rv) # primary RV proxy (5-min linear)
 dim(Y)
 
 cat("Competitors with lower MSE than GARCH(1,1):",
@@ -64,7 +66,9 @@ exactly what `spa_test()` answers.
 
 ```{r primary-spa}
 set.seed(20260512)
+
 r <- spa_test(Y, level = 0.05, B = 5000L, q = 0.25)
+
 r
 ```
 
@@ -84,14 +88,17 @@ paper's central robustness table.
 proxies <- colnames(hl2005$rv_proxies)
 
 tab <- do.call(rbind, lapply(proxies, function(p) {
+
   set.seed(20260512)
-  r <- spa_test(build_Y(hl2005$rv_proxies[, p]),
-                level = 0.05, B = 5000L, q = 0.25)
+
+  r <- spa_test(build_Y(hl2005$rv_proxies[, p]), level = 0.05, B = 5000L, q = 0.25)
+
   data.frame(proxy = p,
              T_SPA   = unname(r$statistic),
              pvalue  = unname(r$pvalue),
              reject  = unname(r$reject),
              n_beat  = sum(colMeans(build_Y(hl2005$rv_proxies[, p])) < 0))
+
 }))
 
 knitr::kable(
@@ -121,6 +128,7 @@ decision is sensitive to how cleanly we measure realised volatility.
 ```{r top10}
 d_bar <- colMeans(Y)
 top10_idx <- order(d_bar)[1:10]
+
 data.frame(rank = 1:10,
            competitor_col = (1:J)[-b][top10_idx],
            mean_loss_diff = round(d_bar[top10_idx], 3))

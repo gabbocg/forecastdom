@@ -84,7 +84,9 @@ fig2 <- function(competitor) {
              pvalue     = unname(r$pvalue),
              reject     = unname(r$reject))
 }
-knitr::kable(rbind(fig2("AR1"), fig2("HARQ")), digits = 4, row.names = FALSE)
+knitr::kable(
+  rbind(fig2("AR1"), fig2("HARQ")), digits = 4, row.names = FALSE,
+  col.names = c("Competitor", "$\\theta$", "$p$-value", "Reject"))
 ```
 
 The left panel — AR(1) as the only competitor to HAR — shows the
@@ -98,7 +100,7 @@ accompanying text.
 ## Figure 3 — JNJ, one-versus-all CSPA
 
 Now use all five other models simultaneously as competitors and plot
-each \eqn{\hat h_j(x)} (colored), their lower envelope (solid black)
+each $\hat h_j(x)$ (colored), their lower envelope (solid black)
 and the upper confidence bound on that envelope (dashed black).
 Rejection of the CSPA null occurs when the dashed line is below zero
 anywhere.
@@ -137,15 +139,17 @@ fig3 <- function(bench) {
              pvalue    = unname(r$pvalue),
              reject    = unname(r$reject))
 }
-knitr::kable(rbind(fig3("AR1"), fig3("HARQ")), digits = 4, row.names = FALSE)
+knitr::kable(
+  rbind(fig3("AR1"), fig3("HARQ")), digits = 4, row.names = FALSE,
+  col.names = c("Benchmark", "$\\theta$", "$p$-value", "Reject"))
 ```
 
 For AR(1) as benchmark the lower envelope sits well below zero
 across the VIX support and the dashed bound is below zero in the
-low-VIX region — strong CSPA rejection (\eqn{\theta \approx -0.24},
+low-VIX region — strong CSPA rejection ($\theta \approx -0.24$,
 p < 0.001). For HARQ as benchmark the envelope dips modestly below
 zero around VIX 25-40 and the dashed bound just barely follows
-(\eqn{\theta \approx -0.008}, p ≈ 0.01) — a borderline rejection
+($\theta \approx -0.008$, p ≈ 0.01) — a borderline rejection
 at 5%. The paper notes HARQ belongs to the CSMS for 24 of the 28
 assets, so for the other four HARQ is itself rejected; on this
 dataset, JNJ falls in that small minority.
@@ -154,7 +158,7 @@ dataset, JNJ falls in that small minority.
 
 For each of 28 stocks, pairwise CSPA tests are run for every
 benchmark-competitor pair and rejections are tallied at the 5%
-level. Cell \eqn{(k, l)} counts the stocks where the null
+level. Cell $(k, l)$ counts the stocks where the null
 "benchmark *l* conditionally dominates alternative *k*" is rejected.
 Computed offline by `data-raw/llq2022_uv_cspa.R` (~5 min at
 R=10000).

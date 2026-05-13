@@ -2,14 +2,18 @@ pandoc: 2.19.2
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
+  cm2001-enc-new: cm2001-enc-new.html
   forecastdom: forecastdom.html
+  gw2006-spf-cepa: gw2006-spf-cepa.html
+  hl2005-spa-garch: hl2005-spa-garch.html
   llq2022-cspa-rv: llq2022-cspa-rv.html
   nrtz2014-cw-technical: nrtz2014-cw-technical.html
   quaedvlieg2021-mh-spa: quaedvlieg2021-mh-spa.html
   rossi2006-dm: rossi2006-dm.html
   rrz2016-ivx-qll: rrz2016-ivx-qll.html
   rz2013-cw-macro: rz2013-cw-macro.html
-last_built: 2026-05-12T15:49Z
+  wg2008-dp: wg2008-dp.html
+last_built: 2026-05-13T10:06Z
 urls:
   reference: https://gabbocg.github.io/forecastdom/reference
   article: https://gabbocg.github.io/forecastdom/articles

@@ -64,7 +64,9 @@ period 1966-01 to 2011-12.
 
 ```{r nrtz}
 preds_nr <- c("MA_1_9", "MA_2_12", "MOM_9", "MOM_12", "VOL_2_12")
-knitr::kable(run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE)
+knitr::kable(
+  run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE,
+  col.names = c("Predictor", "$R^2_{OS}$ (%)", "CW stat", "$p$-value"))
 ```
 
 ## Takeaway

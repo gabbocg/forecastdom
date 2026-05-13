@@ -148,14 +148,14 @@ run_panel <- function(p) {
 
 ```{r tab-ar1}
 knitr::kable(run_panel(1), row.names = FALSE,
-             caption = "DM_T statistic (p-value), AR(1) vs. RW")
+             caption = "$DM_T$ statistic ($p$-value), AR(1) vs. RW")
 ```
 
 ### AR(2)
 
 ```{r tab-ar2}
 knitr::kable(run_panel(2), row.names = FALSE,
-             caption = "DM_T statistic (p-value), AR(2) vs. RW")
+             caption = "$DM_T$ statistic ($p$-value), AR(2) vs. RW")
 ```
 
 These cells reproduce the OOS DM panel of Rossi (2006) Table 1

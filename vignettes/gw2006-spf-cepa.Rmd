@@ -21,7 +21,7 @@ conditional equal predictive ability (CEPA) test — to the Survey of
 Professional Forecasters' mean CPI inflation forecasts. The
 benchmark is a naive random walk in inflation (next quarter's
 forecast = this quarter's realised inflation); the alternative is
-the SPF mean at horizons \eqn{h = 0, 1, 2, 3, 4} quarters. The
+the SPF mean at horizons $h = 0, 1, 2, 3, 4$ quarters. The
 bundled `gw2006` dataset extends GW's quarterly sample to the
 present using the same Philadelphia Fed SPF source.
 
@@ -49,7 +49,11 @@ run_h <- function(h) {
              reject  = unname(r$pvalue) < 0.05)
 }
 tab <- do.call(rbind, lapply(0:4, run_h))
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("$h$", "$n$",
+                "$MSE_{SPF}$", "$MSE_{RW}$",
+                "Wald", "$p$-value", "Reject"))
 ```
 
 At every horizon SPF has lower mean squared error than the
@@ -66,7 +70,7 @@ formal test.
 loss differential. Different instruments target different features
 of the conditioning information set. Below we replace the lag with
 the lagged inflation level — a regime indicator that captures
-high/low inflation environments — at horizon \eqn{h = 1}.
+high/low inflation environments — at horizon $h = 1$.
 
 ```{r instrument-comparison}
 h <- 1L
@@ -96,7 +100,9 @@ tab2 <- data.frame(
   df     = c(r_default$df,        r_infl$df,        r_ae$df),
   pvalue = c(r_default$pvalue,    r_infl$pvalue,    r_ae$pvalue)
 )
-knitr::kable(tab2, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab2, digits = 3, row.names = FALSE,
+  col.names = c("Specification", "Wald", "df", "$p$-value"))
 ```
 
 The decision is robust across all three specifications: SPF and

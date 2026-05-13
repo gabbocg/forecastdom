@@ -64,7 +64,9 @@ out-of-sample period 1947-01 to 2010-12.
 
 ```{r rz}
 preds_rz <- c("DP", "EP", "NTIS", "TBL", "INFL_lag")
-knitr::kable(run_cw(rz2013, preds_rz, R = 241), digits = 3, row.names = FALSE)
+knitr::kable(
+  run_cw(rz2013, preds_rz, R = 241), digits = 3, row.names = FALSE,
+  col.names = c("Predictor", "$R^2_{OS}$ (%)", "CW stat", "$p$-value"))
 ```
 
 ## Takeaway

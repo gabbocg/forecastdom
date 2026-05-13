@@ -28,9 +28,9 @@ in the predictor consumes that row.
 The benchmark is the prevailing historical mean (NULL); the
 alternative is a predictive regression on the lagged predictor
 (ALTERNATIVE). The predictor is constructed as
-\eqn{\log(D12_{t-1}) - \log(\text{Index}_{t-1})} per WG Section 1,
-where \eqn{D12} is the 12-month moving sum of dividends and
-\eqn{\text{Index}} is the S&P 500 price level. (WG's public plotting
+$\log(D12_{t-1}) - \log(\text{Index}_{t-1})$ per WG Section 1,
+where $D12$ is the 12-month moving sum of dividends and
+$\text{Index}$ is the S&P 500 price level. (WG's public plotting
 script `goyal-welch-plots.R` uses the level D/P instead, but their
 paper text and Table 1 use the log form.)
 
@@ -38,7 +38,7 @@ WG report five OOS statistics per predictor in Table 1; this article
 computes each on the same data:
 
 - **R²_OS** — out-of-sample R² (Campbell-Thompson 2008).
-- **ΔRMSE** — \eqn{\sqrt{\text{MSE}_N} - \sqrt{\text{MSE}_A}}.
+- **ΔRMSE** — $\sqrt{\text{MSE}_N} - \sqrt{\text{MSE}_A}$.
 - **MSE-F** — McCracken (2007) F-statistic for equal MSE
   (`mse_f_test()`).
 - **ENC-NEW** — Clark-McCracken (2001) encompassing test
@@ -88,7 +88,7 @@ WG explore three OOS-start dates: 20 years after the data begins
 (≈ 1892), 1965, and the most recent 30 years (1976-2005). The
 column `R2_bar_OS` is the *adjusted* out-of-sample R² that WG
 report in Table 1, applied to the OOS sample of size T:
-\eqn{\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,(T-1)/(T-k)} with k = 2
+$\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,(T-1)/(T-k)$ with k = 2
 parameters (intercept + predictor).
 
 ```{r main-table}
@@ -121,12 +121,18 @@ run_spec <- function(spec) {
              CW_p         = unname(cw$pvalue))
 }
 tab <- do.call(rbind, lapply(specs, run_spec))
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("Spec", "$R$", "$T$",
+                "$R^2_{OS}$ (%)", "$\\bar R^2_{OS}$ (%)",
+                "$\\Delta\\text{RMSE}$ (%)",
+                "MSE-F", "ENC-NEW",
+                "CW stat", "CW $p$"))
 ```
 
 Compared to WG's reported d/p numbers:
 
-| Spec | T_oos | This article \eqn{\bar R^2_{OS}} | WG \eqn{\bar R^2_{OS}} | Gap | Source in WG paper |
+| Spec | T_oos | This article $\bar R^2_{OS}$ | WG $\bar R^2_{OS}$ | Gap | Source in WG paper |
 |---|---:|---:|---:|---:|---|
 | 1892+ (20 yr after start) | 114 | **-2.06** | **-2.06** | 0.00 | p. 1474 in-text table ("All years") |
 | 1965+ | 41 | -3.73 | -3.69 | 0.04 | Table 1, "Forecasts begin 1965" column |
@@ -166,7 +172,7 @@ mean" conclusion under WG's tests.
 ## WG Figure 1 — cumulative SSE difference for DP
 
 WG's signature visual is the cumulative squared-error difference
-\eqn{\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2)}: a rising line means
+$\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2)$: a rising line means
 the ALTERNATIVE beats the NULL up to that date, a falling line
 the opposite. The plot below mirrors the *d/p* panel of WG Figure 1
 (IS = dotted, OOS = solid; Oil Shock 1973-1975 shaded in red).

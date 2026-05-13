@@ -162,7 +162,11 @@ sens <- do.call(rbind, lapply(Ls, function(L) {
              uspa_stat = u$statistic, uspa_p = u$pvalue,
              aspa_stat = a$statistic, aspa_p = a$pvalue)
 }))
-knitr::kable(sens, digits = 3, row.names = FALSE)
+knitr::kable(
+  sens, digits = 3, row.names = FALSE,
+  col.names = c("$L$",
+                "uSPA stat", "uSPA $p$",
+                "aSPA stat", "aSPA $p$"))
 ```
 
 The statistics are independent of `L` (they depend only on the QS

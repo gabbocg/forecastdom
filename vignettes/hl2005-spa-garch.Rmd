@@ -94,7 +94,10 @@ tab <- do.call(rbind, lapply(proxies, function(p) {
              n_beat  = sum(colMeans(build_Y(hl2005$rv_proxies[, p])) < 0))
 }))
 
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("Proxy", "$T^{SPA}$", "$p$-value",
+                "Reject", "$n_{\\text{beat}}$"))
 ```
 
 The decision flips with proxy quality:

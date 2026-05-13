@@ -23,7 +23,7 @@ two functions from **forecastdom**:
 
 * `ivx_wald()` -- Kostakis, Magdalinos and Stamatogiannis (2015)
   IVX-Wald test for return predictability with persistent regressors.
-* `qll_hat()` -- Elliott and Müller (2006) \eqn{\widehat{qLL}} test
+* `qll_hat()` -- Elliott and Müller (2006) $\widehat{qLL}$ test
   for time-varying coefficients.
 
 The predictive regression is

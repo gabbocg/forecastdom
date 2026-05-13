@@ -91,7 +91,11 @@ rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
              ENC_NEW  = unname(enc$statistic))
 })
 tab <- do.call(rbind, rows)
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("$p$", "$T_{OOS}$", "$\\pi = P/R$",
+                "$MSFE_{AR}$", "$MSFE_{ARX}$",
+                "$R^2_{OS}$ (%)", "ENC-NEW"))
 ```
 
 For every lag order considered, the ARX model achieves a lower MSFE
@@ -122,7 +126,9 @@ rows2 <- lapply(c(1L, 3L, 6L, 12L), function(p) {
              CW_stat   = unname(cw$statistic),
              CW_pvalue = unname(cw$pvalue))
 })
-knitr::kable(do.call(rbind, rows2), digits = 3, row.names = FALSE)
+knitr::kable(
+  do.call(rbind, rows2), digits = 3, row.names = FALSE,
+  col.names = c("$p$", "CW stat", "CW $p$-value"))
 ```
 
 CW p-values are far below 5% for every lag order, agreeing with the

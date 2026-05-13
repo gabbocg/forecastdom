@@ -17,6 +17,7 @@ data(cm2001)
 cm <- subset(cm2001,
              date >= as.Date("1957-01-01") &
              date <= as.Date("1997-08-01"))
+
 nrow(cm)
 #> [1] 488
 ```
@@ -29,11 +30,14 @@ roll forward by one month.
 
 ``` r
 make_lags <- function(z, p) {
+
   n <- length(z)
   sapply(seq_len(p), function(k) c(rep(NA, k), z[seq_len(n - k)]))
+
 }
 
 recursive_arx <- function(y, x, p, R) {
+
   n <- length(y)
   YL <- make_lags(y, p)
   XL <- make_lags(x, p)
@@ -41,8 +45,11 @@ recursive_arx <- function(y, x, p, R) {
   YL <- YL[(p + 1):n, , drop = FALSE]
   XL <- XL[(p + 1):n, , drop = FALSE]
   P <- length(target) - R
+  
   e_ar <- e_arx <- numeric(P)
+  
   for (j in seq_len(P)) {
+
     idx     <- seq_len(R + j - 1)
     fit_ar  <- lm.fit(cbind(1, YL[idx, ]),         target[idx])
     fit_arx <- lm.fit(cbind(1, YL[idx, ], XL[idx, ]), target[idx])
@@ -50,8 +57,11 @@ recursive_arx <- function(y, x, p, R) {
     pred_arx <- sum(coef(fit_arx) * c(1, YL[R + j, ], XL[R + j, ]))
     e_ar[j]  <- target[R + j] - pred_ar
     e_arx[j] <- target[R + j] - pred_arx
+
   }
+  
   list(e_ar = e_ar, e_arx = e_arx)
+
 }
 ```
 
@@ -63,11 +73,13 @@ the out-of-sample period.
 
 ``` r
 R <- 120L
+
 rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
+
   fc  <- recursive_arx(cm$unrate, cm$infl, p = p, R = R)
   enc <- enc_new(fc$e_ar, fc$e_arx)
-  msfe1 <- mean(fc$e_ar^2)
-  msfe2 <- mean(fc$e_arx^2)
+  msfe1 <- mean(fc$e_ar ^ 2)
+  msfe2 <- mean(fc$e_arx ^ 2)
   data.frame(p        = p,
              n_oos    = length(fc$e_ar),
              pi_ratio = round(length(fc$e_ar) / R, 2),
@@ -76,7 +88,9 @@ rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
              R2OS_pct = 100 * (1 - msfe2 / msfe1),
              ENC_NEW  = unname(enc$statistic))
 })
+
 tab <- do.call(rbind, rows)
+
 knitr::kable(
   tab, digits = 3, row.names = FALSE,
   col.names = c("$p$", "$T_{OOS}$", "$\\pi = P/R$",
@@ -113,14 +127,18 @@ typically point the same way; reporting both is informative.
 
 ``` r
 rows2 <- lapply(c(1L, 3L, 6L, 12L), function(p) {
+
   fc <- recursive_arx(cm$unrate, cm$infl, p = p, R = R)
   f1 <- cm$unrate[(p + 1 + R):nrow(cm)] - fc$e_ar
   f2 <- cm$unrate[(p + 1 + R):nrow(cm)] - fc$e_arx
   cw <- cw_test(fc$e_ar, fc$e_arx, f1, f2)
+
   data.frame(p         = p,
              CW_stat   = unname(cw$statistic),
              CW_pvalue = unname(cw$pvalue))
+             
 })
+
 knitr::kable(
   do.call(rbind, rows2), digits = 3, row.names = FALSE,
   col.names = c("$p$", "CW stat", "CW $p$-value"))

@@ -60,6 +60,7 @@ evaluated out of sample. Three estimation schemes are considered:
 
 ``` r
 forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling")) {
+
   scheme <- match.arg(scheme)
 
   T_full <- length(log_fx)
@@ -77,20 +78,24 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
   e_bench <- numeric(P_oos)
 
   for (j in seq_len(P_oos)) {
+
     idx <- switch(scheme,
       split     = seq_len(R),
       recursive = seq_len(R + j - 1),
       rolling   = j:(R + j - 1)
     )
+
     Z <- cbind(1, Xm[idx, , drop = FALSE])
     b <- as.numeric(solve(crossprod(Z), crossprod(Z, Y[idx])))
     pred <- as.numeric(c(1, Xm[R + j, ]) %*% b)
 
     e_alt[j]   <- Y[R + j] - pred
     e_bench[j] <- Y[R + j]
+
   }
 
   list(e_bench = e_bench, e_alt = e_alt, P = P_oos)
+
 }
 ```
 
@@ -109,25 +114,30 @@ countries <- levels(rossi2006$country)
 schemes   <- c("split", "recursive", "rolling")
 
 run_panel <- function(p) {
+
   out <- expand.grid(country = countries, scheme = schemes,
                      stringsAsFactors = FALSE)
   out$DM   <- NA_real_
   out$DM_p <- NA_real_
 
   for (i in seq_len(nrow(out))) {
+
     log_fx <- log(subset(rossi2006, country == out$country[i])$fx)
     fc     <- forecast_oos(log_fx, p = p, scheme = out$scheme[i])
     res    <- dm_test(fc$e_alt, fc$e_bench,
                       alternative = "two.sided", correction = FALSE)
     out$DM[i]   <- res$statistic
     out$DM_p[i] <- res$pvalue
+
   }
 
   out$cell <- sprintf("%.2f (%.2f)", out$DM, out$DM_p)
   wide <- reshape(out[, c("country", "scheme", "cell")],
                   idvar = "scheme", timevar = "country", direction = "wide")
   names(wide) <- gsub("^cell\\.", "", names(wide))
+
   wide
+
 }
 ```
 
@@ -172,8 +182,7 @@ classical Meese-Rogoff finding.
 log_fx_jp <- log(subset(rossi2006, country == "Japan")$fx)
 fc_jp     <- forecast_oos(log_fx_jp, p = 1, scheme = "recursive")
 
-dm_test(fc_jp$e_alt, fc_jp$e_bench,
-        alternative = "two.sided", correction = FALSE)
+dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided", correction = FALSE)
 #> 
 #> ╭────────────────────────────────────────────────────╮
 #> │            Diebold-Mariano Test (1995)             │

@@ -16,9 +16,12 @@ data(nrtz2014)
 
 ``` r
 recursive_forecasts <- function(y, x, R) {
+
   P <- length(y) - R
   e1 <- e2 <- f1 <- f2 <- numeric(P)
+  
   for (j in seq_len(P)) {
+
     ty <- y[1:(R + j - 1)]
     tx <- x[1:(R + j - 1)]
     f1[j] <- mean(ty)
@@ -26,19 +29,27 @@ recursive_forecasts <- function(y, x, R) {
     f2[j] <- as.numeric(predict(fit, newdata = data.frame(xlag = tx[length(tx)])))
     e1[j] <- y[R + j] - f1[j]
     e2[j] <- y[R + j] - f2[j]
+
   }
+
   list(e1 = e1, e2 = e2, f1 = f1, f2 = f2)
+
 }
 
 run_cw <- function(data, predictors, R) {
+
   do.call(rbind, lapply(predictors, function(p) {
+
     fc  <- recursive_forecasts(data$eq_prem, data[[p]], R = R)
     res <- cw_test(fc$e1, fc$e2, fc$f1, fc$f2)
+
     data.frame(predictor = p,
                R2OS_pct  = unname(res$r2os),
                CW_stat   = unname(res$statistic),
                p_value   = unname(res$pvalue))
+
   }))
+
 }
 ```
 
@@ -49,6 +60,7 @@ Initial window of 181 months (1950-12 to 1965-12); out-of-sample period
 
 ``` r
 preds_nr <- c("MA_1_9", "MA_2_12", "MOM_9", "MOM_12", "VOL_2_12")
+
 knitr::kable(
   run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE,
   col.names = c("Predictor", "$R^2_{OS}$ (%)", "CW stat", "$p$-value"))

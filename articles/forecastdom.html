@@ -122,6 +122,7 @@ Liao, and Quaedvlieg (2022):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">e2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, mean <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">e1</span>, <span class="va">e2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -151,8 +152,9 @@ t-distribution critical values.</p>
 (2007) MSFE-adjusted test corrects for this:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
-<span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">actual</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>   <span class="co"># benchmark (restricted)</span></span>
-<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">actual</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, sd <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span>   <span class="co"># alternative (unrestricted)</span></span>
+<span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">actual</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="co"># benchmark (restricted)</span></span>
+<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">actual</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, sd <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="co"># alternative (unrestricted)</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/cw_test.html">cw_test</a></span><span class="op">(</span><span class="va">actual</span> <span class="op">-</span> <span class="va">f1</span>, <span class="va">actual</span> <span class="op">-</span> <span class="va">f2</span>, <span class="va">f1</span>, <span class="va">f2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -267,6 +269,7 @@ states:</p>
 <code class="sourceCode R"><span><span class="co"># Under the alternative (a = 1.5): a competitor outperforms in some states</span></span>
 <span><span class="va">sim_alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">500</span>, a <span class="op">=</span> <span class="fl">1.5</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">sim_alt</span><span class="op">$</span><span class="va">Y</span>, <span class="va">sim_alt</span><span class="op">$</span><span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">result</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -310,8 +313,7 @@ their lower envelope, and the confidence bound:</p>
 CSPA test for each candidate and collects those that are not
 rejected:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/csms.html">csms</a></span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>     method_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"LASSO"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/csms.html">csms</a></span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span>, method_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"LASSO"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -326,6 +328,7 @@ predictors:</p>
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">300</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0.02</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/ivx_wald.html">ivx_wald</a></span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, K <span class="op">=</span> <span class="fl">1</span>, M_n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">n</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -357,7 +360,8 @@ the alternative of general time variation:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, <span class="va">n</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">y2</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/qll_hat.html">qll_hat</a></span><span class="op">(</span><span class="va">y2</span>, <span class="va">X</span>, L <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">n</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/qll_hat.html">qll_hat</a></span><span class="op">(</span><span class="va">y2</span>, <span class="va">X</span>, L <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">n</span> <span class="op">^</span> <span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
 <span><span class="co">#&gt; │ Elliott-Muller Test for Time-Varying Coefficients  │</span></span>

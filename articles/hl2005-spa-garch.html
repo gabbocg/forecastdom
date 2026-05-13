@@ -105,11 +105,13 @@ GARCH(1,1) wins.</p>
 <code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="va">hl2005</span><span class="op">$</span><span class="va">garch11_idx</span></span>
 <span></span>
 <span><span class="va">build_Y</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">rv</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">L</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">forecasts</span> <span class="op">-</span> <span class="va">rv</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span>
+<span></span>
+<span>  <span class="va">L</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">forecasts</span> <span class="op">-</span> <span class="va">rv</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span></span>
 <span>  <span class="va">L</span><span class="op">[</span>, <span class="op">-</span><span class="va">b</span><span class="op">]</span> <span class="op">-</span> <span class="va">L</span><span class="op">[</span>, <span class="va">b</span><span class="op">]</span></span>
+<span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span>            <span class="co"># primary RV proxy (5-min linear)</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span> <span class="co"># primary RV proxy (5-min linear)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 254 329</span></span>
 <span></span>
@@ -127,7 +129,9 @@ exactly what <code><a href="../reference/spa_test.html">spa_test()</a></code> an
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spa_test.html">spa_test</a></span><span class="op">(</span><span class="va">Y</span>, level <span class="op">=</span> <span class="fl">0.05</span>, B <span class="op">=</span> <span class="fl">5000L</span>, q <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">r</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
@@ -164,14 +168,17 @@ robustness table.</p>
 <code class="sourceCode R"><span><span class="va">proxies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv_proxies</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">proxies</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
-<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spa_test.html">spa_test</a></span><span class="op">(</span><span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv_proxies</span><span class="op">[</span>, <span class="va">p</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                level <span class="op">=</span> <span class="fl">0.05</span>, B <span class="op">=</span> <span class="fl">5000L</span>, q <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/spa_test.html">spa_test</a></span><span class="op">(</span><span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv_proxies</span><span class="op">[</span>, <span class="va">p</span><span class="op">]</span><span class="op">)</span>, level <span class="op">=</span> <span class="fl">0.05</span>, B <span class="op">=</span> <span class="fl">5000L</span>, q <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>proxy <span class="op">=</span> <span class="va">p</span>,</span>
 <span>             T_SPA   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
 <span>             pvalue  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
 <span>             reject  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span>,</span>
 <span>             n_beat  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv_proxies</span><span class="op">[</span>, <span class="va">p</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
@@ -273,6 +280,7 @@ decision is sensitive to how cleanly we measure realised volatility.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_bar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
 <span><span class="va">top10_idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">d_bar</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rank <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
 <span>           competitor_col <span class="op">=</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">J</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="va">b</span><span class="op">]</span><span class="op">[</span><span class="va">top10_idx</span><span class="op">]</span>,</span>
 <span>           mean_loss_diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">d_bar</span><span class="op">[</span><span class="va">top10_idx</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>

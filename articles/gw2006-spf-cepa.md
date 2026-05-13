@@ -31,20 +31,25 @@ str(gw2006)
 
 ``` r
 run_h <- function(h) {
+
   spf_col <- paste0("spf_h", h)
   ok <- complete.cases(gw2006[, c("infl", spf_col, "infl_lag")])
   d  <- gw2006[ok, ]
-  e_spf <- d$infl - d[[spf_col]]    # SPF errors
-  e_rw  <- d$infl - d$infl_lag      # random-walk errors
-  r <- gw_test(e_spf, e_rw)         # default: constant + lagged loss diff
+  e_spf <- d$infl - d[[spf_col]] # SPF errors
+  e_rw  <- d$infl - d$infl_lag   # random-walk errors
+  r <- gw_test(e_spf, e_rw)      # default: constant + lagged loss diff
+
   data.frame(h = h, n = nrow(d),
              mse_spf = mean(e_spf^2),
              mse_rw  = mean(e_rw^2),
              wald    = unname(r$statistic),
              pvalue  = unname(r$pvalue),
              reject  = unname(r$pvalue) < 0.05)
+
 }
+
 tab <- do.call(rbind, lapply(0:4, run_h))
+
 knitr::kable(
   tab, digits = 3, row.names = FALSE,
   col.names = c("$h$", "$n$",
@@ -104,6 +109,7 @@ tab2 <- data.frame(
   df     = c(r_default$df,        r_infl$df,        r_ae$df),
   pvalue = c(r_default$pvalue,    r_infl$pvalue,    r_ae$pvalue)
 )
+
 knitr::kable(
   tab2, digits = 3, row.names = FALSE,
   col.names = c("Specification", "Wald", "df", "$p$-value"))

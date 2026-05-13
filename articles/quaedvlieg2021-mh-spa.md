@@ -44,11 +44,14 @@ they discriminate between the tests.
 
 ``` r
 H <- ncol(quaedvlieg2021$uspa)
+
 means <- rbind(
   uspa_dataset = colMeans(quaedvlieg2021$uspa),
   aspa_dataset = colMeans(quaedvlieg2021$aspa)
 )
+
 colnames(means) <- paste0("h", seq_len(H))
+
 knitr::kable(round(means, 3))
 ```
 
@@ -64,12 +67,14 @@ is worse on average but not uniformly.
 
 ``` r
 library(ggplot2)
+
 df <- data.frame(
   horizon = rep(seq_len(H), 2),
   d_bar   = c(colMeans(quaedvlieg2021$uspa),
               colMeans(quaedvlieg2021$aspa)),
   dataset = rep(c("uspa", "aspa"), each = H)
 )
+
 ggplot(df, aes(horizon, d_bar, colour = dataset)) +
   geom_hline(yintercept = 0, linetype = "dashed", colour = "grey60") +
   geom_line() + geom_point() +
@@ -86,8 +91,10 @@ matrices](quaedvlieg2021-mh-spa_files/figure-html/mean-plot-1.png)
 ``` r
 set.seed(1)
 uspa_uspa <- uspa_mh_test(quaedvlieg2021$uspa, L = 3, B = 999)
+
 set.seed(1)
 uspa_aspa <- uspa_mh_test(quaedvlieg2021$aspa, L = 3, B = 999)
+
 uspa_uspa
 uspa_aspa
 #> 
@@ -145,10 +152,13 @@ standardized unweighted average loss differential:
 
 ``` r
 w_unif <- rep(1 / H, H)
+
 set.seed(1)
 aspa_uspa <- aspa_mh_test(quaedvlieg2021$uspa, weights = w_unif, L = 3, B = 999)
+
 set.seed(1)
 aspa_aspa <- aspa_mh_test(quaedvlieg2021$aspa, weights = w_unif, L = 3, B = 999)
+
 aspa_uspa
 aspa_aspa
 #> 
@@ -208,7 +218,8 @@ Down-weighting short horizons makes the aSPA test even more decisive
 against `$aspa`:
 
 ``` r
-w_down <- c(rep(0, 4), rep(1, 16)) / 16   # zero weight on h = 1..4
+w_down <- c(rep(0, 4), rep(1, 16)) / 16 # zero weight on h = 1..4
+
 set.seed(1)
 aspa_mh_test(quaedvlieg2021$aspa, weights = w_down, L = 3, B = 999)
 #> 
@@ -236,7 +247,8 @@ aspa_mh_test(quaedvlieg2021$aspa, weights = w_down, L = 3, B = 999)
 Up-weighting the shortest horizons pulls the statistic back toward zero:
 
 ``` r
-w_up <- c(rep(4, 4), rep(0, 16)) / 16     # all weight on h = 1..4
+w_up <- c(rep(4, 4), rep(0, 16)) / 16 # all weight on h = 1..4
+
 set.seed(1)
 aspa_mh_test(quaedvlieg2021$aspa, weights = w_up, L = 3, B = 999)
 #> 
@@ -269,15 +281,21 @@ large enough to capture the path’s serial dependence:
 
 ``` r
 Ls <- c(2, 3, 5, 8, 12)
+
 sens <- do.call(rbind, lapply(Ls, function(L) {
+
   set.seed(1)
   u <- uspa_mh_test(quaedvlieg2021$uspa, L = L, B = 499)
+  
   set.seed(1)
   a <- aspa_mh_test(quaedvlieg2021$uspa, weights = w_unif, L = L, B = 499)
+  
   data.frame(L = L,
              uspa_stat = u$statistic, uspa_p = u$pvalue,
              aspa_stat = a$statistic, aspa_p = a$pvalue)
+
 }))
+
 knitr::kable(
   sens, digits = 3, row.names = FALSE,
   col.names = c("$L$",

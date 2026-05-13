@@ -126,11 +126,14 @@ loss differentials. The two example matrices are constructed so that
 they discriminate between the tests.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
 <span>  uspa_dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span>,</span>
 <span>  aspa_dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">means</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"h"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">H</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">means</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -235,12 +238,14 @@ mean at the shortest horizon, so the benchmark is worse on average but
 not uniformly.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  horizon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">H</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  d_bar   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span>,</span>
 <span>              <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"uspa"</span>, <span class="st">"aspa"</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">H</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">horizon</span>, <span class="va">d_bar</span>, colour <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, colour <span class="op">=</span> <span class="st">"grey60"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -255,8 +260,10 @@ not uniformly.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">uspa_uspa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/uspa_mh_test.html">uspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">uspa_aspa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/uspa_mh_test.html">uspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">uspa_uspa</span></span>
 <span><span class="va">uspa_aspa</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -315,10 +322,13 @@ the aSPA statistic is the standardized unweighted average loss
 differential:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w_unif</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">H</span>, <span class="va">H</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">aspa_uspa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aspa_mh_test.html">aspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span>, weights <span class="op">=</span> <span class="va">w_unif</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">aspa_aspa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aspa_mh_test.html">aspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span>, weights <span class="op">=</span> <span class="va">w_unif</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">aspa_uspa</span></span>
 <span><span class="va">aspa_aspa</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -375,7 +385,8 @@ multiple-testing burden.</p>
 <p>Down-weighting short horizons makes the aSPA test even more decisive
 against <code>$aspa</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">w_down</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">16</span>   <span class="co"># zero weight on h = 1..4</span></span>
+<code class="sourceCode R"><span><span class="va">w_down</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">16</span> <span class="co"># zero weight on h = 1..4</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aspa_mh_test.html">aspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span>, weights <span class="op">=</span> <span class="va">w_down</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -401,7 +412,8 @@ against <code>$aspa</code>:</p>
 <p>Up-weighting the shortest horizons pulls the statistic back toward
 zero:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">w_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">16</span>     <span class="co"># all weight on h = 1..4</span></span>
+<code class="sourceCode R"><span><span class="va">w_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fl">16</span> <span class="co"># all weight on h = 1..4</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aspa_mh_test.html">aspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span>, weights <span class="op">=</span> <span class="va">w_up</span>, L <span class="op">=</span> <span class="fl">3</span>, B <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -435,15 +447,21 @@ enough to keep many blocks, large enough to capture the path’s serial
 dependence:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">sens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">Ls</span>, <span class="kw">function</span><span class="op">(</span><span class="va">L</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="va">u</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/uspa_mh_test.html">uspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span>, L <span class="op">=</span> <span class="va">L</span>, B <span class="op">=</span> <span class="fl">499</span><span class="op">)</span></span>
+<span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aspa_mh_test.html">aspa_mh_test</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span>, weights <span class="op">=</span> <span class="va">w_unif</span>, L <span class="op">=</span> <span class="va">L</span>, B <span class="op">=</span> <span class="fl">499</span><span class="op">)</span></span>
+<span>  </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>L <span class="op">=</span> <span class="va">L</span>,</span>
 <span>             uspa_stat <span class="op">=</span> <span class="va">u</span><span class="op">$</span><span class="va">statistic</span>, uspa_p <span class="op">=</span> <span class="va">u</span><span class="op">$</span><span class="va">pvalue</span>,</span>
 <span>             aspa_stat <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">statistic</span>, aspa_p <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span></span>
+<span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
 <span>  <span class="va">sens</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"$L$"</span>,</span>

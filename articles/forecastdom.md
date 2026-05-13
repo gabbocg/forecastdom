@@ -33,6 +33,7 @@ The simplest starting point: compare two sets of forecast errors.
 ``` r
 e1 <- rnorm(200)
 e2 <- rnorm(200, mean = 0.15)
+
 dm_test(e1, e2)
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -64,8 +65,9 @@ For nested models, the standard DM test is undersized. The Clark-West
 
 ``` r
 actual <- rnorm(200)
-f1 <- actual + rnorm(200, sd = 0.5)   # benchmark (restricted)
-f2 <- actual + rnorm(200, sd = 0.4)   # alternative (unrestricted)
+f1 <- actual + rnorm(200, sd = 0.5) # benchmark (restricted)
+f2 <- actual + rnorm(200, sd = 0.4) # alternative (unrestricted)
+
 cw_test(actual - f1, actual - f2, f1, f2)
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -182,6 +184,7 @@ cspa_test(sim_null$Y, sim_null$X, level = 0.05, trim = 2)
 # Under the alternative (a = 1.5): a competitor outperforms in some states
 sim_alt <- do_sim(J = 3, n = 500, a = 1.5, c = 0, rho_u = 0.4)
 result <- cspa_test(sim_alt$Y, sim_alt$X, level = 0.05, trim = 2)
+
 result
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -227,8 +230,7 @@ When there is no *a priori* benchmark, the CSMS inverts the CSPA test
 for each candidate and collects those that are not rejected:
 
 ``` r
-csms(losses, X, level = 0.05, trim = 2,
-     method_names = c("AR1", "HAR", "HARQ", "LASSO"))
+csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "LASSO"))
 ```
 
 ## Predictive Regressions
@@ -242,6 +244,7 @@ predictors:
 n <- 300
 x <- cumsum(rnorm(n))
 y <- 0.02 * x + rnorm(n)
+
 ivx_wald(y, as.matrix(x), K = 1, M_n = floor(n^(1/3)))
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -274,7 +277,8 @@ the alternative of general time variation:
 ``` r
 X <- matrix(rnorm(n * 2), n, 2)
 y2 <- X %*% c(0.5, -0.3) + rnorm(n)
-qll_hat(y2, X, L = floor(n^(1/3)))
+
+qll_hat(y2, X, L = floor(n ^ (1 / 3)))
 #> 
 #> ╭────────────────────────────────────────────────────╮
 #> │ Elliott-Muller Test for Time-Varying Coefficients  │

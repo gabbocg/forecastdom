@@ -29,11 +29,13 @@ positive values mean GARCH(1,1) wins.
 b <- hl2005$garch11_idx
 
 build_Y <- function(rv) {
-  L <- (hl2005$forecasts - rv)^2
+
+  L <- (hl2005$forecasts - rv) ^ 2
   L[, -b] - L[, b]
+
 }
 
-Y <- build_Y(hl2005$rv)            # primary RV proxy (5-min linear)
+Y <- build_Y(hl2005$rv) # primary RV proxy (5-min linear)
 dim(Y)
 #> [1] 254 329
 
@@ -53,7 +55,9 @@ answers.
 
 ``` r
 set.seed(20260512)
+
 r <- spa_test(Y, level = 0.05, B = 5000L, q = 0.25)
+
 r
 #> 
 #> ╭────────────────────────────────────────────────────╮
@@ -91,14 +95,17 @@ robustness table.
 proxies <- colnames(hl2005$rv_proxies)
 
 tab <- do.call(rbind, lapply(proxies, function(p) {
+
   set.seed(20260512)
-  r <- spa_test(build_Y(hl2005$rv_proxies[, p]),
-                level = 0.05, B = 5000L, q = 0.25)
+
+  r <- spa_test(build_Y(hl2005$rv_proxies[, p]), level = 0.05, B = 5000L, q = 0.25)
+
   data.frame(proxy = p,
              T_SPA   = unname(r$statistic),
              pvalue  = unname(r$pvalue),
              reject  = unname(r$reject),
              n_beat  = sum(colMeans(build_Y(hl2005$rv_proxies[, p])) < 0))
+
 }))
 
 knitr::kable(
@@ -139,6 +146,7 @@ sensitive to how cleanly we measure realised volatility.
 ``` r
 d_bar <- colMeans(Y)
 top10_idx <- order(d_bar)[1:10]
+
 data.frame(rank = 1:10,
            competitor_col = (1:J)[-b][top10_idx],
            mean_loss_diff = round(d_bar[top10_idx], 3))

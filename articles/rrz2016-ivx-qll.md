@@ -53,6 +53,7 @@ and
 horizons <- c(1, 3, 6, 12)
 
 results <- do.call(rbind, lapply(horizons, function(h) {
+
   ivx <- ivx_wald(rrz2016$r, matrix(-rrz2016$SII, ncol = 1),
                   K = h, M_n = 0L, beta = 0.99)
 
@@ -64,6 +65,7 @@ results <- do.call(rbind, lapply(horizons, function(h) {
   qll <- qll_hat(y_h, X_h, Z = Z_h, L = h)
 
   data.frame(h = h, IVX_Wald = ivx$statistic, qLL = qll$statistic)
+  
 }))
 
 knitr::kable(results, digits = 3, row.names = FALSE,

@@ -35,12 +35,15 @@ below zero anywhere over the support of VIX.
 
 ``` r
 set.seed(20260512)
+
 g_har_ar1 <- cspa_test_plot(
-  Y = as.matrix(L_jnj[, "AR1"] - L_jnj[, "HAR"]),
-  X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
-  xlab = "VIX (lagged)", ylab = "QLIKE diff (AR(1) − HAR)"
-) + ggplot2::ggtitle("HAR vs AR(1)") +
-    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+    Y = as.matrix(L_jnj[, "AR1"] - L_jnj[, "HAR"]),
+    X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+    xlab = "VIX (lagged)", ylab = "QLIKE diff (AR(1) − HAR)"
+  ) + 
+  ggplot2::ggtitle("HAR vs AR(1)") +
+  ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+    
 g_har_ar1
 ```
 
@@ -49,11 +52,13 @@ g_har_ar1
 ``` r
 set.seed(20260512)
 g_har_harq <- cspa_test_plot(
-  Y = as.matrix(L_jnj[, "HARQ"] - L_jnj[, "HAR"]),
-  X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
-  xlab = "VIX (lagged)", ylab = "QLIKE diff (HARQ − HAR)"
-) + ggplot2::ggtitle("HAR vs HARQ") +
-    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+    Y = as.matrix(L_jnj[, "HARQ"] - L_jnj[, "HAR"]),
+    X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+    xlab = "VIX (lagged)", ylab = "QLIKE diff (HARQ − HAR)"
+  ) + 
+  ggplot2::ggtitle("HAR vs HARQ") +
+  ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+
 g_har_harq
 ```
 
@@ -61,15 +66,21 @@ g_har_harq
 
 ``` r
 fig2 <- function(competitor) {
+
   Y <- as.matrix(L_jnj[, competitor] - L_jnj[, "HAR"])
+  
   set.seed(20260512)
+  
   r <- cspa_test(Y, X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
                  preselect = TRUE, R = 10000L)
+  
   data.frame(competitor = competitor,
              theta      = unname(r$theta),
              pvalue     = unname(r$pvalue),
              reject     = unname(r$reject))
+
 }
+
 knitr::kable(
   rbind(fig2("AR1"), fig2("HARQ")), digits = 4, row.names = FALSE,
   col.names = c("Competitor", "$\\theta$", "$p$-value", "Reject"))
@@ -97,12 +108,15 @@ anywhere.
 
 ``` r
 set.seed(20260512)
+
 Y_ar1 <- L_jnj[, setdiff(models, "AR1")] - L_jnj[, "AR1"]
 g_ar1 <- cspa_test_plot(
-  Y = Y_ar1, X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
-  xlab = "VIX (lagged)", ylab = "QLIKE diff (competitors − AR(1))"
-) + ggplot2::ggtitle("Benchmark: AR(1)") +
-    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+    Y = Y_ar1, X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
+    xlab = "VIX (lagged)", ylab = "QLIKE diff (competitors − AR(1))"
+  ) + 
+  ggplot2::ggtitle("Benchmark: AR(1)") +
+  ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+
 g_ar1
 ```
 
@@ -110,12 +124,15 @@ g_ar1
 
 ``` r
 set.seed(20260512)
+
 Y_harq <- L_jnj[, setdiff(models, "HARQ")] - L_jnj[, "HARQ"]
 g_harq <- cspa_test_plot(
   Y = Y_harq, X = X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
   xlab = "VIX (lagged)", ylab = "QLIKE diff (competitors − HARQ)"
-) + ggplot2::ggtitle("Benchmark: HARQ") +
-    ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+  ) + 
+  ggplot2::ggtitle("Benchmark: HARQ") +
+  ggplot2::geom_hline(yintercept = 0, linewidth = 0.3)
+
 g_harq
 ```
 
@@ -123,16 +140,20 @@ g_harq
 
 ``` r
 fig3 <- function(bench) {
+
   comp <- setdiff(models, bench)
   Y    <- L_jnj[, comp] - L_jnj[, bench]
+  
   set.seed(20260512)
-  r <- cspa_test(Y, X_jnj, level = 0.05, trim = 0, prewhiten = -1L,
-                 preselect = TRUE, R = 10000L)
+  
+  r <- cspa_test(Y, X_jnj, level = 0.05, trim = 0, prewhiten = -1L, preselect = TRUE, R = 10000L)
   data.frame(benchmark = bench,
              theta     = unname(r$theta),
              pvalue    = unname(r$pvalue),
              reject    = unname(r$reject))
+
 }
+
 knitr::kable(
   rbind(fig3("AR1"), fig3("HARQ")), digits = 4, row.names = FALSE,
   col.names = c("Benchmark", "$\\theta$", "$p$-value", "Reject"))
@@ -226,10 +247,13 @@ The same procedure on the S&P 500 series.
 
 ``` r
 L_sp <- sapply(models, function(m) qlike(llq2022[[m]], llq2022$rv))
+
 set.seed(20260512)
+
 cs <- csms(L_sp, llq2022$vix_lag, level = 0.10, trim = 0,
            prewhiten = -1L, preselect = TRUE, R = 10000L,
            method_names = models)
+
 cs
 #> 
 #> ╭────────────────────────────────────────────────────╮

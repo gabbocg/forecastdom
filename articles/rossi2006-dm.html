@@ -151,6 +151,7 @@ observations.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">forecast_oos</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">log_fx</span>, <span class="va">p</span>, <span class="va">scheme</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"split"</span>, <span class="st">"recursive"</span>, <span class="st">"rolling"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="va">scheme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg</a></span><span class="op">(</span><span class="va">scheme</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">T_full</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">log_fx</span><span class="op">)</span></span>
@@ -168,20 +169,24 @@ observations.</li>
 <span>  <span class="va">e_bench</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P_oos</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">P_oos</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="va">scheme</span>,</span>
 <span>      split     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">R</span><span class="op">)</span>,</span>
 <span>      recursive <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>      rolling   <span class="op">=</span> <span class="va">j</span><span class="op">:</span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
+<span></span>
 <span>    <span class="va">Z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">Xm</span><span class="op">[</span><span class="va">idx</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
 <span>    <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">Z</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">Z</span>, <span class="va">Y</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">Xm</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span>, <span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">b</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="va">e_alt</span><span class="op">[</span><span class="va">j</span><span class="op">]</span>   <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span> <span class="op">-</span> <span class="va">pred</span></span>
 <span>    <span class="va">e_bench</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span></span>
+<span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>e_bench <span class="op">=</span> <span class="va">e_bench</span>, e_alt <span class="op">=</span> <span class="va">e_alt</span>, P <span class="op">=</span> <span class="va">P_oos</span><span class="op">)</span></span>
+<span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -200,25 +205,30 @@ the random-walk errors as <code>e2</code>.</p>
 <span><span class="va">schemes</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"split"</span>, <span class="st">"recursive"</span>, <span class="st">"rolling"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">run_panel</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>country <span class="op">=</span> <span class="va">countries</span>, scheme <span class="op">=</span> <span class="va">schemes</span>,</span>
 <span>                     stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="va">out</span><span class="op">$</span><span class="va">DM</span>   <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
 <span>  <span class="va">out</span><span class="op">$</span><span class="va">DM_p</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
 <span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>    <span class="va">log_fx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="va">out</span><span class="op">$</span><span class="va">country</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
 <span>    <span class="va">fc</span>     <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx</span>, p <span class="op">=</span> <span class="va">p</span>, scheme <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">scheme</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>    <span class="va">res</span>    <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_alt</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_bench</span>,</span>
 <span>                      alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>    <span class="va">out</span><span class="op">$</span><span class="va">DM</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>   <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">statistic</span></span>
 <span>    <span class="va">out</span><span class="op">$</span><span class="va">DM_p</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">pvalue</span></span>
+<span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
 <span>  <span class="va">out</span><span class="op">$</span><span class="va">cell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f (%.2f)"</span>, <span class="va">out</span><span class="op">$</span><span class="va">DM</span>, <span class="va">out</span><span class="op">$</span><span class="va">DM_p</span><span class="op">)</span></span>
 <span>  <span class="va">wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/reshape.html" class="external-link">reshape</a></span><span class="op">(</span><span class="va">out</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"scheme"</span>, <span class="st">"cell"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                  idvar <span class="op">=</span> <span class="st">"scheme"</span>, timevar <span class="op">=</span> <span class="st">"country"</span>, direction <span class="op">=</span> <span class="st">"wide"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wide</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"^cell\\."</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wide</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="va">wide</span></span>
+<span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="ar1">AR(1)<a class="anchor" aria-label="anchor" href="#ar1"></a>
@@ -344,8 +354,7 @@ the classical Meese-Rogoff finding.</p>
 <code class="sourceCode R"><span><span class="va">log_fx_jp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="va">country</span> <span class="op">==</span> <span class="st">"Japan"</span><span class="op">)</span><span class="op">$</span><span class="va">fx</span><span class="op">)</span></span>
 <span><span class="va">fc_jp</span>     <span class="op">&lt;-</span> <span class="fu">forecast_oos</span><span class="op">(</span><span class="va">log_fx_jp</span>, p <span class="op">=</span> <span class="fl">1</span>, scheme <span class="op">=</span> <span class="st">"recursive"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>,</span>
-<span>        alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/dm_test.html">dm_test</a></span><span class="op">(</span><span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, correction <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ╭────────────────────────────────────────────────────╮</span></span>
 <span><span class="co">#&gt; │            Diebold-Mariano Test (1995)             │</span></span>

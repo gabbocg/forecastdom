@@ -93,9 +93,12 @@ variable.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recursive_forecasts</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span>, <span class="va">R</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="va">P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="va">R</span></span>
 <span>  <span class="va">e1</span> <span class="op">&lt;-</span> <span class="va">e2</span> <span class="op">&lt;-</span> <span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>    <span class="va">ty</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span></span>
 <span>    <span class="va">tx</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span></span>
 <span>    <span class="va">f1</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ty</span><span class="op">)</span></span>
@@ -103,19 +106,26 @@ variable.</p>
 <span>    <span class="va">f2</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>xlag <span class="op">=</span> <span class="va">tx</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">tx</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">e1</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span> <span class="op">-</span> <span class="va">f1</span><span class="op">[</span><span class="va">j</span><span class="op">]</span></span>
 <span>    <span class="va">e2</span><span class="op">[</span><span class="va">j</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">R</span> <span class="op">+</span> <span class="va">j</span><span class="op">]</span> <span class="op">-</span> <span class="va">f2</span><span class="op">[</span><span class="va">j</span><span class="op">]</span></span>
+<span></span>
 <span>  <span class="op">}</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>e1 <span class="op">=</span> <span class="va">e1</span>, e2 <span class="op">=</span> <span class="va">e2</span>, f1 <span class="op">=</span> <span class="va">f1</span>, f2 <span class="op">=</span> <span class="va">f2</span><span class="op">)</span></span>
+<span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">run_cw</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">predictors</span>, <span class="va">R</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">predictors</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
 <span>    <span class="va">fc</span>  <span class="op">&lt;-</span> <span class="fu">recursive_forecasts</span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">eq_prem</span>, <span class="va">data</span><span class="op">[[</span><span class="va">p</span><span class="op">]</span><span class="op">]</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span></span>
 <span>    <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cw_test.html">cw_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e1</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e2</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f1</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f2</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>predictor <span class="op">=</span> <span class="va">p</span>,</span>
 <span>               R2OS_pct  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">r2os</span><span class="op">)</span>,</span>
 <span>               CW_stat   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
 <span>               p_value   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -125,6 +135,7 @@ variable.</p>
 out-of-sample period 1947-01 to 2010-12.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds_rz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DP"</span>, <span class="st">"EP"</span>, <span class="st">"NTIS"</span>, <span class="st">"TBL"</span>, <span class="st">"INFL_lag"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
 <span>  <span class="fu">run_cw</span><span class="op">(</span><span class="va">rz2013</span>, <span class="va">preds_rz</span>, R <span class="op">=</span> <span class="fl">241</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Predictor"</span>, <span class="st">"$R^2_{OS}$ (%)"</span>, <span class="st">"CW stat"</span>, <span class="st">"$p$-value"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>

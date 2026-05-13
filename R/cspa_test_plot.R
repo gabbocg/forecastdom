@@ -23,6 +23,7 @@
 #' @importFrom ggplot2 ggplot aes geom_line labs theme_minimal
 #'   scale_color_manual scale_linetype_manual scale_linewidth_manual
 #' @importFrom grDevices hcl.colors
+#' @importFrom stats setNames
 #' @export
 cspa_test_plot <- function(object = NULL, Y = NULL, X = NULL, level = 0.05,
                            trim = 0, prewhiten = -1L, preselect = TRUE,

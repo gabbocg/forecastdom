@@ -86,18 +86,18 @@ mse_f_test <- function(e1, e2, h = 1L) {
 print.mse_f_test <- function(x, digits = 4, ...) {
 
   w <- 52
-  dash <- strrep("─", w)
-  dot  <- strrep("┄", w)
+  dash <- strrep("\u2500", w)
+  dot  <- strrep("\u2504", w)
 
   cat("\n")
-  cat("╭", dash, "╮\n", sep = "")
+  cat("\u256D", dash, "\u256E\n", sep = "")
   .center_line("MSE-F Test for Equal Forecast Accuracy", w)
   .center_line("(McCracken, 2007)", w)
-  cat("├", dash, "┤\n", sep = "")
+  cat("\u251C", dash, "\u2524\n", sep = "")
 
   .padded_line("H0: MSFE benchmark <= MSFE alternative", w)
   .padded_line("H1: Alternative reduces MSFE", w)
-  cat("├", dot, "┤\n", sep = "")
+  cat("\u251C", dot, "\u2524\n", sep = "")
 
   .padded_line("Test Results:", w)
   .kv_line("MSE-F statistic",
@@ -106,7 +106,7 @@ print.mse_f_test <- function(x, digits = 4, ...) {
            formatC(x$msfe1,     digits = digits, format = "f"), w)
   .kv_line("MSFE alternative",
            formatC(x$msfe2,     digits = digits, format = "f"), w)
-  cat("├", dot, "┤\n", sep = "")
+  cat("\u251C", dot, "\u2524\n", sep = "")
 
   .padded_line("Details:", w)
   .kv_line("Observations (n)", x$n, w)
@@ -114,7 +114,7 @@ print.mse_f_test <- function(x, digits = 4, ...) {
   .padded_line("Note: Critical values are non-standard.", w)
   .padded_line("See McCracken (2007, Table 1).", w)
 
-  cat("╰", dash, "╯\n", sep = "")
+  cat("\u2570", dash, "\u256F\n", sep = "")
   cat("\n")
 
   invisible(x)

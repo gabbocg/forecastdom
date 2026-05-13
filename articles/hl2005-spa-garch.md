@@ -101,19 +101,22 @@ tab <- do.call(rbind, lapply(proxies, function(p) {
              n_beat  = sum(colMeans(build_Y(hl2005$rv_proxies[, p])) < 0))
 }))
 
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("Proxy", "$T^{SPA}$", "$p$-value",
+                "Reject", "$n_{\\text{beat}}$"))
 ```
 
-| proxy           |  T_SPA | pvalue | reject | n_beat |
-|:----------------|-------:|-------:|:-------|-------:|
-| sq_ccr          | 18.341 |  0.798 | FALSE  |    257 |
-| spline_50_3min  | 40.427 |  0.076 | FALSE  |    186 |
-| spline_250_2min | 46.255 |  0.034 | TRUE   |    187 |
-| fourier_M85     | 43.255 |  0.051 | FALSE  |    195 |
-| linear_5min     | 40.530 |  0.073 | FALSE  |    187 |
-| prevtick_5min   | 41.068 |  0.068 | FALSE  |    187 |
-| linear_1min     | 49.770 |  0.020 | TRUE   |    189 |
-| prevtick_1min   | 49.784 |  0.021 | TRUE   |    189 |
+| Proxy           | $T^{SPA}$ | $p$-value | Reject | $n_{\text{beat}}$ |
+|:----------------|----------:|----------:|:-------|------------------:|
+| sq_ccr          |    18.341 |     0.798 | FALSE  |               257 |
+| spline_50_3min  |    40.427 |     0.076 | FALSE  |               186 |
+| spline_250_2min |    46.255 |     0.034 | TRUE   |               187 |
+| fourier_M85     |    43.255 |     0.051 | FALSE  |               195 |
+| linear_5min     |    40.530 |     0.073 | FALSE  |               187 |
+| prevtick_5min   |    41.068 |     0.068 | FALSE  |               187 |
+| linear_1min     |    49.770 |     0.020 | TRUE   |               189 |
+| prevtick_1min   |    49.784 |     0.021 | TRUE   |               189 |
 
 The decision flips with proxy quality:
 

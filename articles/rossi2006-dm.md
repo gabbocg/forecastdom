@@ -135,7 +135,7 @@ run_panel <- function(p) {
 
 ``` r
 knitr::kable(run_panel(1), row.names = FALSE,
-             caption = "DM_T statistic (p-value), AR(1) vs. RW")
+             caption = "$DM_T$ statistic ($p$-value), AR(1) vs. RW")
 ```
 
 | scheme    | Canada      | France      | Germany      | Italy       | Japan        |
@@ -144,13 +144,13 @@ knitr::kable(run_panel(1), row.names = FALSE,
 | recursive | 1.16 (0.25) | 2.24 (0.03) | 0.14 (0.89)  | 0.77 (0.44) | 0.00 (1.00)  |
 | rolling   | 2.15 (0.03) | 1.77 (0.08) | 0.93 (0.35)  | 0.60 (0.55) | 0.39 (0.69)  |
 
-DM_T statistic (p-value), AR(1) vs. RW
+$DM_{T}$ statistic ($p$-value), AR(1) vs. RW
 
 ### AR(2)
 
 ``` r
 knitr::kable(run_panel(2), row.names = FALSE,
-             caption = "DM_T statistic (p-value), AR(2) vs. RW")
+             caption = "$DM_T$ statistic ($p$-value), AR(2) vs. RW")
 ```
 
 | scheme    | Canada      | France      | Germany      | Italy       | Japan        |
@@ -159,7 +159,7 @@ knitr::kable(run_panel(2), row.names = FALSE,
 | recursive | 1.94 (0.05) | 1.71 (0.09) | 0.37 (0.71)  | 0.73 (0.47) | 0.04 (0.97)  |
 | rolling   | 2.29 (0.02) | 1.74 (0.08) | 0.79 (0.43)  | 0.75 (0.45) | 0.41 (0.68)  |
 
-DM_T statistic (p-value), AR(2) vs. RW
+$DM_{T}$ statistic ($p$-value), AR(2) vs. RW
 
 These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly.
 The statistics are typically positive – the random walk has lower MSFE

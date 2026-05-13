@@ -125,13 +125,18 @@ variable.</p>
 out-of-sample period 1947-01 to 2010-12.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds_rz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DP"</span>, <span class="st">"EP"</span>, <span class="st">"NTIS"</span>, <span class="st">"TBL"</span>, <span class="st">"INFL_lag"</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu">run_cw</span><span class="op">(</span><span class="va">rz2013</span>, <span class="va">preds_rz</span>, R <span class="op">=</span> <span class="fl">241</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="fu">run_cw</span><span class="op">(</span><span class="va">rz2013</span>, <span class="va">preds_rz</span>, R <span class="op">=</span> <span class="fl">241</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Predictor"</span>, <span class="st">"$R^2_{OS}$ (%)"</span>, <span class="st">"CW stat"</span>, <span class="st">"$p$-value"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">predictor</th>
-<th align="right">R2OS_pct</th>
-<th align="right">CW_stat</th>
-<th align="right">p_value</th>
+<th align="left">Predictor</th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
+(%)</th>
+<th align="right">CW stat</th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value</th>
 </tr></thead>
 <tbody>
 <tr class="odd">

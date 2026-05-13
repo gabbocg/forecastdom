@@ -77,15 +77,19 @@ rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
              ENC_NEW  = unname(enc$statistic))
 })
 tab <- do.call(rbind, rows)
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("$p$", "$T_{OOS}$", "$\\pi = P/R$",
+                "$MSFE_{AR}$", "$MSFE_{ARX}$",
+                "$R^2_{OS}$ (%)", "ENC-NEW"))
 ```
 
-|   p | n_oos | pi_ratio | MSFE_AR | MSFE_ARX | R2OS_pct | ENC_NEW |
-|----:|------:|---------:|--------:|---------:|---------:|--------:|
-|   1 |   367 |     3.06 |   0.035 |    0.034 |    2.968 |  13.930 |
-|   3 |   365 |     3.04 |   0.033 |    0.032 |    2.184 |  11.412 |
-|   6 |   362 |     3.02 |   0.031 |    0.031 |    1.833 |  14.754 |
-|  12 |   356 |     2.97 |   0.032 |    0.033 |   -2.459 |  20.984 |
+| $p$ | $T_{OOS}$ | $\pi = P/R$ | $MSFE_{AR}$ | $MSFE_{ARX}$ | $R_{OS}^{2}$ (%) | ENC-NEW |
+|----:|----------:|------------:|------------:|-------------:|-----------------:|--------:|
+|   1 |       367 |        3.06 |       0.035 |        0.034 |            2.968 |  13.930 |
+|   3 |       365 |        3.04 |       0.033 |        0.032 |            2.184 |  11.412 |
+|   6 |       362 |        3.02 |       0.031 |        0.031 |            1.833 |  14.754 |
+|  12 |       356 |        2.97 |       0.032 |        0.033 |           -2.459 |  20.984 |
 
 For every lag order considered, the ARX model achieves a lower MSFE than
 the pure AR — that is, knowing past inflation reduces out-of-sample
@@ -117,15 +121,17 @@ rows2 <- lapply(c(1L, 3L, 6L, 12L), function(p) {
              CW_stat   = unname(cw$statistic),
              CW_pvalue = unname(cw$pvalue))
 })
-knitr::kable(do.call(rbind, rows2), digits = 3, row.names = FALSE)
+knitr::kable(
+  do.call(rbind, rows2), digits = 3, row.names = FALSE,
+  col.names = c("$p$", "CW stat", "CW $p$-value"))
 ```
 
-|   p | CW_stat | CW_pvalue |
-|----:|--------:|----------:|
-|   1 |   2.531 |     0.006 |
-|   3 |   2.295 |     0.011 |
-|   6 |   2.522 |     0.006 |
-|  12 |   2.489 |     0.006 |
+| $p$ | CW stat | CW $p$-value |
+|----:|--------:|-------------:|
+|   1 |   2.531 |        0.006 |
+|   3 |   2.295 |        0.011 |
+|   6 |   2.522 |        0.006 |
+|  12 |   2.489 |        0.006 |
 
 CW p-values are far below 5% for every lag order, agreeing with the
 ENC-NEW decision: the ARX model has significantly lower out-of-sample

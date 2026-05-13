@@ -444,14 +444,22 @@ dependence:</p>
 <span>             uspa_stat <span class="op">=</span> <span class="va">u</span><span class="op">$</span><span class="va">statistic</span>, uspa_p <span class="op">=</span> <span class="va">u</span><span class="op">$</span><span class="va">pvalue</span>,</span>
 <span>             aspa_stat <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">statistic</span>, aspa_p <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">sens</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">sens</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"$L$"</span>,</span>
+<span>                <span class="st">"uSPA stat"</span>, <span class="st">"uSPA $p$"</span>,</span>
+<span>                <span class="st">"aSPA stat"</span>, <span class="st">"aSPA $p$"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">L</th>
-<th align="right">uspa_stat</th>
-<th align="right">uspa_p</th>
-<th align="right">aspa_stat</th>
-<th align="right">aspa_p</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math></th>
+<th align="right">uSPA stat</th>
+<th align="right">uSPA
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+</th>
+<th align="right">aSPA stat</th>
+<th align="right">aSPA
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+</th>
 </tr></thead>
 <tbody>
 <tr class="odd">

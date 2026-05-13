@@ -6,9 +6,9 @@ This article applies
 test — to the Survey of Professional Forecasters’ mean CPI inflation
 forecasts. The benchmark is a naive random walk in inflation (next
 quarter’s forecast = this quarter’s realised inflation); the alternative
-is the SPF mean at horizons quarters. The bundled `gw2006` dataset
-extends GW’s quarterly sample to the present using the same Philadelphia
-Fed SPF source.
+is the SPF mean at horizons $h = 0,1,2,3,4$ quarters. The bundled
+`gw2006` dataset extends GW’s quarterly sample to the present using the
+same Philadelphia Fed SPF source.
 
 ``` r
 library(forecastdom)
@@ -45,16 +45,20 @@ run_h <- function(h) {
              reject  = unname(r$pvalue) < 0.05)
 }
 tab <- do.call(rbind, lapply(0:4, run_h))
-knitr::kable(tab, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab, digits = 3, row.names = FALSE,
+  col.names = c("$h$", "$n$",
+                "$MSE_{SPF}$", "$MSE_{RW}$",
+                "Wald", "$p$-value", "Reject"))
 ```
 
-|   h |   n | mse_spf | mse_rw |  wald | pvalue | reject |
-|----:|----:|--------:|-------:|------:|-------:|:-------|
-|   0 | 176 |   5.657 |  5.565 | 4.510 |  0.105 | FALSE  |
-|   1 | 176 |   4.906 |  5.565 | 1.206 |  0.547 | FALSE  |
-|   2 | 175 |   4.631 |  5.456 | 4.177 |  0.124 | FALSE  |
-|   3 | 174 |   4.708 |  5.434 | 3.581 |  0.167 | FALSE  |
-|   4 | 173 |   4.884 |  5.435 | 2.908 |  0.234 | FALSE  |
+| $h$ | $n$ | $MSE_{SPF}$ | $MSE_{RW}$ |  Wald | $p$-value | Reject |
+|----:|----:|------------:|-----------:|------:|----------:|:-------|
+|   0 | 176 |       5.657 |      5.565 | 4.510 |     0.105 | FALSE  |
+|   1 | 176 |       4.906 |      5.565 | 1.206 |     0.547 | FALSE  |
+|   2 | 175 |       4.631 |      5.456 | 4.177 |     0.124 | FALSE  |
+|   3 | 174 |       4.708 |      5.434 | 3.581 |     0.167 | FALSE  |
+|   4 | 173 |       4.884 |      5.435 | 2.908 |     0.234 | FALSE  |
 
 At every horizon SPF has lower mean squared error than the random-walk
 benchmark, yet the GW test fails to reject conditional equal predictive
@@ -70,7 +74,7 @@ defaults to two instruments: a constant and the lagged loss
 differential. Different instruments target different features of the
 conditioning information set. Below we replace the lag with the lagged
 inflation level — a regime indicator that captures high/low inflation
-environments — at horizon .
+environments — at horizon $h = 1$.
 
 ``` r
 h <- 1L
@@ -100,14 +104,16 @@ tab2 <- data.frame(
   df     = c(r_default$df,        r_infl$df,        r_ae$df),
   pvalue = c(r_default$pvalue,    r_infl$pvalue,    r_ae$pvalue)
 )
-knitr::kable(tab2, digits = 3, row.names = FALSE)
+knitr::kable(
+  tab2, digits = 3, row.names = FALSE,
+  col.names = c("Specification", "Wald", "df", "$p$-value"))
 ```
 
-| spec                           |   wald |  df | pvalue |
-|:-------------------------------|-------:|----:|-------:|
-| Default (const + lagged Δloss) |  1.206 |   2 |  0.547 |
-| Const + lagged inflation       | 10.738 |   2 |  0.005 |
-| Absolute-error loss            |  1.957 |   2 |  0.376 |
+| Specification                  |   Wald |  df | $p$-value |
+|:-------------------------------|-------:|----:|----------:|
+| Default (const + lagged Δloss) |  1.206 |   2 |     0.547 |
+| Const + lagged inflation       | 10.738 |   2 |     0.005 |
+| Absolute-error loss            |  1.957 |   2 |     0.376 |
 
 The decision is robust across all three specifications: SPF and the
 random walk cannot be statistically distinguished at the 5% level

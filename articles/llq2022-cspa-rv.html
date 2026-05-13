@@ -140,13 +140,16 @@ dips below zero anywhere over the support of VIX.</p>
 <span>             pvalue     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
 <span>             reject     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig2</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig2</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig2</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig2</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Competitor"</span>, <span class="st">"$\\theta$"</span>, <span class="st">"$p$-value"</span>, <span class="st">"Reject"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">competitor</th>
-<th align="right">theta</th>
-<th align="right">pvalue</th>
-<th align="left">reject</th>
+<th align="left">Competitor</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math></th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value</th>
+<th align="left">Reject</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -174,9 +177,11 @@ This matches the paper’s Figure 2 and the accompanying text.</p>
 <h2 id="figure-3-jnj-one-versus-all-cspa">Figure 3 — JNJ, one-versus-all CSPA<a class="anchor" aria-label="anchor" href="#figure-3-jnj-one-versus-all-cspa"></a>
 </h2>
 <p>Now use all five other models simultaneously as competitors and plot
-each (colored), their lower envelope (solid black) and the upper
-confidence bound on that envelope (dashed black). Rejection of the CSPA
-null occurs when the dashed line is below zero anywhere.</p>
+each
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>h</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat h_j(x)</annotation></semantics></math>
+(colored), their lower envelope (solid black) and the upper confidence
+bound on that envelope (dashed black). Rejection of the CSPA null occurs
+when the dashed line is below zero anywhere.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
 <span><span class="va">Y_ar1</span> <span class="op">&lt;-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="va">models</span>, <span class="st">"AR1"</span><span class="op">)</span><span class="op">]</span> <span class="op">-</span> <span class="va">L_jnj</span><span class="op">[</span>, <span class="st">"AR1"</span><span class="op">]</span></span>
@@ -209,13 +214,16 @@ null occurs when the dashed line is below zero anywhere.</p>
 <span>             pvalue    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span>,</span>
 <span>             reject    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">reject</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig3</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig3</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu">fig3</span><span class="op">(</span><span class="st">"AR1"</span><span class="op">)</span>, <span class="fu">fig3</span><span class="op">(</span><span class="st">"HARQ"</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">4</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Benchmark"</span>, <span class="st">"$\\theta$"</span>, <span class="st">"$p$-value"</span>, <span class="st">"Reject"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">benchmark</th>
-<th align="right">theta</th>
-<th align="right">pvalue</th>
-<th align="left">reject</th>
+<th align="left">Benchmark</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math></th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value</th>
+<th align="left">Reject</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -234,22 +242,25 @@ null occurs when the dashed line is below zero anywhere.</p>
 </table>
 <p>For AR(1) as benchmark the lower envelope sits well below zero across
 the VIX support and the dashed bound is below zero in the low-VIX region
-— strong CSPA rejection (, p &lt; 0.001). For HARQ as benchmark the
-envelope dips modestly below zero around VIX 25-40 and the dashed bound
-just barely follows (, p ≈ 0.01) — a borderline rejection at 5%. The
-paper notes HARQ belongs to the CSMS for 24 of the 28 assets, so for the
-other four HARQ is itself rejected; on this dataset, JNJ falls in that
-small minority.</p>
+— strong CSPA rejection
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≈</mo><mo>−</mo><mn>0.24</mn></mrow><annotation encoding="application/x-tex">\theta \approx -0.24</annotation></semantics></math>,
+p &lt; 0.001). For HARQ as benchmark the envelope dips modestly below
+zero around VIX 25-40 and the dashed bound just barely follows
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≈</mo><mo>−</mo><mn>0.008</mn></mrow><annotation encoding="application/x-tex">\theta \approx -0.008</annotation></semantics></math>,
+p ≈ 0.01) — a borderline rejection at 5%. The paper notes HARQ belongs
+to the CSMS for 24 of the 28 assets, so for the other four HARQ is
+itself rejected; on this dataset, JNJ falls in that small minority.</p>
 </div>
 <div class="section level2">
 <h2 id="table-4-panel-a-cross-stock-rejection-counts">Table 4 Panel A — cross-stock rejection counts<a class="anchor" aria-label="anchor" href="#table-4-panel-a-cross-stock-rejection-counts"></a>
 </h2>
 <p>For each of 28 stocks, pairwise CSPA tests are run for every
 benchmark-competitor pair and rejections are tallied at the 5% level.
-Cell counts the stocks where the null “benchmark <em>l</em>
-conditionally dominates alternative <em>k</em>” is rejected. Computed
-offline by <code>data-raw/llq2022_uv_cspa.R</code> (~5 min at
-R=10000).</p>
+Cell
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>l</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k, l)</annotation></semantics></math>
+counts the stocks where the null “benchmark <em>l</em> conditionally
+dominates alternative <em>k</em>” is rejected. Computed offline by
+<code>data-raw/llq2022_uv_cspa.R</code> (~5 min at R=10000).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span>,</span>
 <span>             caption <span class="op">=</span> <span class="st">"forecastdom::cspa_test, R = 10000"</span><span class="op">)</span></span></code></pre></div>

@@ -28,6 +28,7 @@ devtools::install_github("GabboCg/forecastdom")
 | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)           | Diebold-Mariano (+ HLN correction)      | Diebold & Mariano (1995); Harvey, Leybourne & Newbold (1997) |
 | [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)           | Clark-West MSFE-adjusted                | Clark & West (2007)                                          |
 | [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)           | ENC-NEW Encompassing                    | Clark & McCracken (2001)                                     |
+| [`mse_f_test()`](https://gabbocg.github.io/forecastdom/reference/mse_f_test.md)     | McCracken MSE-F equal-MSFE              | McCracken (2007)                                             |
 | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)           | Giacomini-White (CEPA)                  | Giacomini & White (2006)                                     |
 | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)         | Hansen’s SPA (USPA)                     | Hansen (2005)                                                |
 | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md)       | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022)                                 |
@@ -123,5 +124,7 @@ p-value computation).
   Financial Studies*, 28(5), 1506-1553.
 - Li, J., Liao, Z., and Quaedvlieg, R. (2022). Conditional Superior
   Predictive Ability. *Review of Economic Studies*, 89(2), 843-875.
+- McCracken, M.W. (2007). Asymptotics for Out of Sample Tests of Granger
+  Causality. *Journal of Econometrics*, 140(2), 719-752.
 - Quaedvlieg, R. (2021). Multi-Horizon Forecast Comparison. *Journal of
   Business & Economic Statistics*, 39(1), 40-53.

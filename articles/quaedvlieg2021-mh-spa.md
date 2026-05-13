@@ -278,16 +278,20 @@ sens <- do.call(rbind, lapply(Ls, function(L) {
              uspa_stat = u$statistic, uspa_p = u$pvalue,
              aspa_stat = a$statistic, aspa_p = a$pvalue)
 }))
-knitr::kable(sens, digits = 3, row.names = FALSE)
+knitr::kable(
+  sens, digits = 3, row.names = FALSE,
+  col.names = c("$L$",
+                "uSPA stat", "uSPA $p$",
+                "aSPA stat", "aSPA $p$"))
 ```
 
-|   L | uspa_stat | uspa_p | aspa_stat | aspa_p |
-|----:|----------:|-------:|----------:|-------:|
-|   2 |      0.08 |  0.028 |     3.407 |  0.000 |
-|   3 |      0.08 |  0.020 |     3.407 |  0.002 |
-|   5 |      0.08 |  0.030 |     3.407 |  0.002 |
-|   8 |      0.08 |  0.036 |     3.407 |  0.002 |
-|  12 |      0.08 |  0.024 |     3.407 |  0.000 |
+| $L$ | uSPA stat | uSPA $p$ | aSPA stat | aSPA $p$ |
+|----:|----------:|---------:|----------:|---------:|
+|   2 |      0.08 |    0.028 |     3.407 |    0.000 |
+|   3 |      0.08 |    0.020 |     3.407 |    0.002 |
+|   5 |      0.08 |    0.030 |     3.407 |    0.002 |
+|   8 |      0.08 |    0.036 |     3.407 |    0.002 |
+|  12 |      0.08 |    0.024 |     3.407 |    0.000 |
 
 The statistics are independent of `L` (they depend only on the QS HAC
 long-run variance, not on the bootstrap), and the p-values are stable

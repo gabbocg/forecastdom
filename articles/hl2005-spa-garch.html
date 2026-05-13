@@ -174,14 +174,18 @@ robustness table.</p>
 <span>             n_beat  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu">build_Y</span><span class="op">(</span><span class="va">hl2005</span><span class="op">$</span><span class="va">rv_proxies</span><span class="op">[</span>, <span class="va">p</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Proxy"</span>, <span class="st">"$T^{SPA}$"</span>, <span class="st">"$p$-value"</span>,</span>
+<span>                <span class="st">"Reject"</span>, <span class="st">"$n_{\\text{beat}}$"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">proxy</th>
-<th align="right">T_SPA</th>
-<th align="right">pvalue</th>
-<th align="left">reject</th>
-<th align="right">n_beat</th>
+<th align="left">Proxy</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>T</mi><mrow><mi>S</mi><mi>P</mi><mi>A</mi></mrow></msup><annotation encoding="application/x-tex">T^{SPA}</annotation></semantics></math></th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value</th>
+<th align="left">Reject</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mtext mathvariant="normal">beat</mtext></msub><annotation encoding="application/x-tex">n_{\text{beat}}</annotation></semantics></math></th>
 </tr></thead>
 <tbody>
 <tr class="odd">

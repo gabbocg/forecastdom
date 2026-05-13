@@ -49,16 +49,18 @@ Initial window of 181 months (1950-12 to 1965-12); out-of-sample period
 
 ``` r
 preds_nr <- c("MA_1_9", "MA_2_12", "MOM_9", "MOM_12", "VOL_2_12")
-knitr::kable(run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE)
+knitr::kable(
+  run_cw(nrtz2014, preds_nr, R = 181), digits = 3, row.names = FALSE,
+  col.names = c("Predictor", "$R^2_{OS}$ (%)", "CW stat", "$p$-value"))
 ```
 
-| predictor | R2OS_pct | CW_stat | p_value |
-|:----------|---------:|--------:|--------:|
-| MA_1_9    |    0.235 |   0.981 |   0.163 |
-| MA_2_12   |    0.779 |   1.693 |   0.045 |
-| MOM_9     |    0.108 |   0.613 |   0.270 |
-| MOM_12    |    0.154 |   0.686 |   0.247 |
-| VOL_2_12  |    0.331 |   1.121 |   0.131 |
+| Predictor | $R_{OS}^{2}$ (%) | CW stat | $p$-value |
+|:----------|-----------------:|--------:|----------:|
+| MA_1_9    |            0.235 |   0.981 |     0.163 |
+| MA_2_12   |            0.779 |   1.693 |     0.045 |
+| MOM_9     |            0.108 |   0.613 |     0.270 |
+| MOM_12    |            0.154 |   0.686 |     0.247 |
+| VOL_2_12  |            0.331 |   1.121 |     0.131 |
 
 ## Takeaway
 

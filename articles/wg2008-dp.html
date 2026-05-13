@@ -89,11 +89,15 @@ annual observations)</strong>, matching WG: the file itself begins in
 1871, but the one-year lag in the predictor consumes that row.</p>
 <p>The benchmark is the prevailing historical mean (NULL); the
 alternative is a predictive regression on the lagged predictor
-(ALTERNATIVE). The predictor is constructed as per WG Section 1, where
-is the 12-month moving sum of dividends and is the S&amp;P 500 price
-level. (WG’s public plotting script <code>goyal-welch-plots.R</code>
-uses the level D/P instead, but their paper text and Table 1 use the log
-form.)</p>
+(ALTERNATIVE). The predictor is constructed as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><msub><mn>12</mn><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mtext mathvariant="normal">Index</mtext><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(D12_{t-1}) - \log(\text{Index}_{t-1})</annotation></semantics></math>
+per WG Section 1, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mn>12</mn></mrow><annotation encoding="application/x-tex">D12</annotation></semantics></math>
+is the 12-month moving sum of dividends and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">Index</mtext><annotation encoding="application/x-tex">\text{Index}</annotation></semantics></math>
+is the S&amp;P 500 price level. (WG’s public plotting script
+<code>goyal-welch-plots.R</code> uses the level D/P instead, but their
+paper text and Table 1 use the log form.)</p>
 <p>WG report five OOS statistics per predictor in Table 1; this article
 computes each on the same data:</p>
 <ul>
@@ -101,7 +105,8 @@ computes each on the same data:</p>
 <strong>R²_OS</strong> — out-of-sample R² (Campbell-Thompson
 2008).</li>
 <li>
-<strong>ΔRMSE</strong> — .</li>
+<strong>ΔRMSE</strong> —
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><msub><mtext mathvariant="normal">MSE</mtext><mi>N</mi></msub></msqrt><mo>−</mo><msqrt><msub><mtext mathvariant="normal">MSE</mtext><mi>A</mi></msub></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{\text{MSE}_N} - \sqrt{\text{MSE}_A}</annotation></semantics></math>.</li>
 <li>
 <strong>MSE-F</strong> — McCracken (2007) F-statistic for equal MSE
 (<code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>).</li>
@@ -156,8 +161,9 @@ contemporaneous <code>log_dp_lag[t]</code>.</li>
 <p>WG explore three OOS-start dates: 20 years after the data begins (≈
 1892), 1965, and the most recent 30 years (1976-2005). The column
 <code>R2_bar_OS</code> is the <em>adjusted</em> out-of-sample R² that WG
-report in Table 1, applied to the OOS sample of size T: with k = 2
-parameters (intercept + predictor).</p>
+report in Table 1, applied to the OOS sample of size T:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>−</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,(T-1)/(T-k)</annotation></semantics></math>
+with k = 2 parameters (intercept + predictor).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">specs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"20 yr after start (1892+)"</span>, R <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span>,</span>
@@ -188,31 +194,45 @@ parameters (intercept + predictor).</p>
 <span>             CW_p         <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">specs</span>, <span class="va">run_spec</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Spec"</span>, <span class="st">"$R$"</span>, <span class="st">"$T$"</span>,</span>
+<span>                <span class="st">"$R^2_{OS}$ (%)"</span>, <span class="st">"$\\bar R^2_{OS}$ (%)"</span>,</span>
+<span>                <span class="st">"$\\Delta\\text{RMSE}$ (%)"</span>,</span>
+<span>                <span class="st">"MSE-F"</span>, <span class="st">"ENC-NEW"</span>,</span>
+<span>                <span class="st">"CW stat"</span>, <span class="st">"CW $p$"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="26%">
+<col width="21%">
+<col width="3%">
+<col width="3%">
+<col width="12%">
+<col width="16%">
+<col width="19%">
+<col width="5%">
 <col width="6%">
 <col width="6%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="7%">
-<col width="8%">
-<col width="8%">
-<col width="6%">
+<col width="5%">
 </colgroup>
 <thead><tr class="header">
-<th align="left">spec</th>
-<th align="right">R_est</th>
-<th align="right">T_oos</th>
-<th align="right">R2_OS_pct</th>
-<th align="right">R2_bar_OS</th>
-<th align="right">dRMSE_pct</th>
-<th align="right">MSE_F</th>
-<th align="right">ENC_NEW</th>
-<th align="right">CW_stat</th>
-<th align="right">CW_p</th>
+<th align="left">Spec</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math></th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math></th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
+(%)</th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
+(%)</th>
+<th align="right">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mtext mathvariant="normal">RMSE</mtext></mrow><annotation encoding="application/x-tex">\Delta\text{RMSE}</annotation></semantics></math>
+(%)</th>
+<th align="right">MSE-F</th>
+<th align="right">ENC-NEW</th>
+<th align="right">CW stat</th>
+<th align="right">CW
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -266,8 +286,12 @@ parameters (intercept + predictor).</p>
 <thead><tr class="header">
 <th>Spec</th>
 <th align="right">T_oos</th>
-<th align="right">This article </th>
-<th align="right">WG </th>
+<th align="right">This article
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
+</th>
+<th align="right">WG
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
+</th>
 <th align="right">Gap</th>
 <th>Source in WG paper</th>
 </tr></thead>
@@ -348,8 +372,9 @@ conclusion under WG’s tests.</p>
 <div class="section level2">
 <h2 id="wg-figure-1-cumulative-sse-difference-for-dp">WG Figure 1 — cumulative SSE difference for DP<a class="anchor" aria-label="anchor" href="#wg-figure-1-cumulative-sse-difference-for-dp"></a>
 </h2>
-<p>WG’s signature visual is the cumulative squared-error difference : a
-rising line means the ALTERNATIVE beats the NULL up to that date, a
+<p>WG’s signature visual is the cumulative squared-error difference
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mrow><mi>s</mi><mo>≤</mo><mi>t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>e</mi><mrow><mi>N</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>e</mi><mrow><mi>A</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2)</annotation></semantics></math>:
+a rising line means the ALTERNATIVE beats the NULL up to that date, a
 falling line the opposite. The plot below mirrors the <em>d/p</em> panel
 of WG Figure 1 (IS = dotted, OOS = solid; Oil Shock 1973-1975 shaded in
 red).</p>

@@ -16,42 +16,28 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article reproduces the out-of-sample analysis of Welch and
-Goyal (2008, *RFS*) for the **log dividend-price ratio** as a
-predictor of the annual log equity premium. The bundled `wg2008`
-dataset is built from WG's original `PredictorData.xls` (annual
-sheet) — the data vintage shipped with the published paper. The
-effective sample is **1872-2005 (134 annual observations)**,
-matching WG: the file itself begins in 1871, but the one-year lag
-in the predictor consumes that row.
+This article reproduces the out-of-sample analysis of Welch and Goyal (2008, *RFS*) for the **log dividend-price ratio** as a predictor of the annual log equity premium. The bundled `wg2008` dataset is built from WG's original `PredictorData.xls` (annual sheet), the data vintage shipped with the published paper. The effective sample is **1872-2005 (134 annual observations)**, matching WG: the file itself begins in 1871, but the one-year lag in the predictor consumes that first row.
 
-The benchmark is the prevailing historical mean (NULL); the
-alternative is a predictive regression on the lagged predictor
-(ALTERNATIVE). The predictor is constructed as
-$\log(D12_{t-1}) - \log(\text{Index}_{t-1})$ per WG Section 1,
-where $D12$ is the 12-month moving sum of dividends and
-$\text{Index}$ is the S&P 500 price level. (WG's public plotting
-script `goyal-welch-plots.R` uses the level D/P instead, but their
-paper text and Table 1 use the log form.)
+The benchmark is the prevailing historical mean (NULL). The alternative is a predictive regression on the lagged predictor (ALTERNATIVE). The predictor is
 
-WG report five OOS statistics per predictor in Table 1; this article
-computes each on the same data:
+$$x_{t-1} = \log(D12_{t-1}) - \log(\text{Index}_{t-1}),$$
 
-- **R²_OS** — out-of-sample R² (Campbell-Thompson 2008).
-- **ΔRMSE** — $\sqrt{\text{MSE}_N} - \sqrt{\text{MSE}_A}$.
-- **MSE-F** — McCracken (2007) F-statistic for equal MSE
-  (`mse_f_test()`).
-- **ENC-NEW** — Clark-McCracken (2001) encompassing test
-  (`enc_new()`).
-- **CW MSFE-adj** — Clark-West (2007) MSFE-adjusted t-statistic
-  (`cw_test()`), reported by WG in footnote 2.
+per WG Section 1, where $D12$ is the 12-month moving sum of dividends and $\text{Index}$ is the S&P 500 price level. (The public plotting script `goyal-welch-plots.R` uses the level D/P, but WG's paper text and Table 1 use the log form.)
+
+WG report five OOS statistics per predictor in Table 1, all of which we compute on the same data:
+
+- $R^2_{OS}$: out-of-sample $R^2$ (Campbell-Thompson 2008).
+- $\Delta\text{RMSE}$: $\sqrt{\mathrm{MSE}_N} - \sqrt{\mathrm{MSE}_A}$.
+- MSE-F: McCracken (2007) $F$-statistic for equal MSE (`mse_f_test()`).
+- ENC-NEW: Clark-McCracken (2001) encompassing test (`enc_new()`).
+- CW MSFE-adj: Clark-West (2007) MSFE-adjusted $t$-statistic (`cw_test()`), which WG report in footnote 2.
 
 ```{r setup, message = FALSE}
 library(forecastdom)
 library(ggplot2)
 data(wg2008)
 
-# WG (2008) Table 1 covers 1872-2005 — the entire bundled file.
+# WG (2008) Table 1 covers 1872-2005, the entire bundled file.
 wg <- wg2008
 c(first_year = min(wg$year), last_year = max(wg$year), n = nrow(wg))
 ```
@@ -88,14 +74,13 @@ recursive_forecasts <- function(y, x, R) {
 }
 ```
 
-## Table 1 — five tests across three OOS specifications
+## Table 1: five tests across three OOS specifications
 
-WG explore three OOS-start dates: 20 years after the data begins
-(≈ 1892), 1965, and the most recent 30 years (1976-2005). The
-column `R2_bar_OS` is the *adjusted* out-of-sample R² that WG
-report in Table 1, applied to the OOS sample of size T:
-$\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,(T-1)/(T-k)$ with k = 2
-parameters (intercept + predictor).
+WG explore three OOS-start dates: 20 years after the data begins (around 1892), 1965, and the most recent 30 years (1976-2005). The column `R2_bar_OS` is the *adjusted* out-of-sample $R^2$ that WG report in Table 1, applied to the OOS sample of size $T$:
+
+$$\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,\frac{T-1}{T-k},$$
+
+with $k = 2$ parameters (intercept plus predictor).
 
 ```{r main-table}
 specs <- list(
@@ -148,25 +133,9 @@ Compared to WG's reported d/p numbers:
 | 1965+ | 41 | -3.73 | -3.69 | 0.04 | Table 1, "Forecasts begin 1965" column |
 | Recent 30 yr (1976+) | 30 | -15.22 | -15.14 | 0.09 | p. 1474 in-text table ("Recent 30 years") |
 
-The longest window matches WG **exactly to two decimals**. The two
-shorter windows are within 0.1 percentage points. The pattern of
-the residual gap — zero on the long sample, small on the short
-samples that are entirely post-1965 — is consistent with minor
-revisions to Goyal's annual data file between the 2007 vintage
-that fed the published paper and the version currently distributed
-through Goyal's website. The longest window draws most of its
-weight from pre-1965 data that hasn't been revised; the shorter
-windows are entirely post-1965 and show small drift in proportion
-to how concentrated they are. Other plausible reconstructions
-(WG's `log(1 + R − Rfree)` plotting-script formula, hybrid
-Shiller/CRSP returns, alternative OOS-start boundaries) do not
-close the gap.
+The longest window matches WG **exactly to two decimals**. The two shorter windows are within 0.1 percentage points. The pattern of the residual gap (zero on the long sample, small on the short samples that are entirely post-1965) is consistent with minor revisions to Goyal's annual data file between the 2007 vintage that fed the published paper and the version currently distributed on Goyal's website. The longest window draws most of its weight from pre-1965 data that has not been revised. The shorter windows are entirely post-1965 and show small drift in proportion to how concentrated they are. Other plausible reconstructions (WG's `log(1 + R - Rfree)` plotting-script formula, hybrid Shiller/CRSP returns, alternative OOS-start boundaries) do not close the gap.
 
-The deterioration of DP through time is unmistakable: a small
-negative R²_OS in the long sample, deeper-negative in 1965+, and
-substantially negative for 1976-2005. McCracken (2004) and
-Clark-McCracken (2001) asymptotic 5% critical values for k₂ = 1
-extra regressor:
+The deterioration of DP through time is unmistakable: a small negative $R^2_{OS}$ in the long sample, more negative in 1965+, and substantially negative for 1976-2005. The McCracken (2004) and Clark-McCracken (2001) asymptotic 5% critical values for $k_2 = 1$ extra regressor are:
 
 | π = P/R | MSE-F (5%) | ENC-NEW (5%) |
 |---:|---:|---:|
@@ -174,18 +143,15 @@ extra regressor:
 | 1.0  | 1.71 | 2.52 |
 | 2.0  | 1.82 | 2.70 |
 
-For the 1892+ window (π ≈ 6.4) MSE-F is small and ENC-NEW is below
-the 5% threshold; for the recent 30 years both statistics are
-firmly negative or near zero. No window supports a "DP beats the
-mean" conclusion under WG's tests.
+For the 1892+ window ($\pi \approx 6.4$) MSE-F is small and ENC-NEW is below the 5% threshold. For the recent 30 years both statistics are firmly negative or near zero. No window supports a "DP beats the mean" conclusion under WG's tests.
 
-## WG Figure 1 — cumulative SSE difference for DP
+## WG Figure 1: cumulative SSE difference for DP
 
 WG's signature visual is the cumulative squared-error difference
-$\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2)$: a rising line means
-the ALTERNATIVE beats the NULL up to that date, a falling line
-the opposite. The plot below mirrors the *d/p* panel of WG Figure 1
-(IS = dotted, OOS = solid; Oil Shock 1973-1975 shaded in red).
+
+$$\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2).$$
+
+A rising line means the ALTERNATIVE beats the NULL up to that date, a falling line the opposite. The plot below mirrors the *d/p* panel of WG Figure 1 (IS = dotted, OOS = solid; Oil Shock 1973-1975 shaded in red).
 
 ```{r wg-fig1, fig.width = 7.5, fig.height = 4.5}
 # IS residuals from a single regression on the entire sample
@@ -224,33 +190,17 @@ ggplot(df_long, aes(x = year, y = value, color = kind,
         legend.position = "top")
 ```
 
-The replicated picture matches the *d/p* panel of WG Figure 1: a
-quiet first half-century, a climb from WW II to the early 1970s
-where DP modestly beats the historical mean, a peak around the Oil
-Shock, and a steep decline through the 1990s as the dividend
-yield collapsed during the dot-com bull market. The IS line (dashed)
-sits steadily above zero — DP looks like a useful in-sample
-predictor — while the OOS line (solid) eventually crashes through
-zero in the late 1990s, the gap between IS and OOS that motivated
-WG's "comprehensive look".
+The replicated picture matches the *d/p* panel of WG Figure 1: a quiet first half-century, a climb from WW II to the early 1970s where DP modestly beats the historical mean, a peak around the Oil Shock, and a steep decline through the 1990s as the dividend yield collapsed during the dot-com bull market. The IS line (dashed) sits steadily above zero, so DP looks like a useful in-sample predictor. The OOS line (solid) eventually crashes through zero in the late 1990s. This gap between IS and OOS is what motivated WG's "comprehensive look".
 
 ## Takeaway
 
-For the dividend-price ratio at annual frequency, applied with WG's
-own data and procedure:
+For the dividend-price ratio at annual frequency, applied with WG's own data and procedure:
 
-- **Long sample (1892+)** — every OOS statistic agrees that DP does
-  not significantly beat the historical mean; the encompassing
-  evidence is weak.
-- **1965+ window** — both R²_OS and MSE-F turn clearly negative.
-- **Recent 30 years (1976+)** — the DP-augmented forecast is
-  decisively worse than the historical mean.
+- **Long sample (1892+)**: every OOS statistic agrees that DP does not significantly beat the historical mean; the encompassing evidence is weak.
+- **1965+ window**: both $R^2_{OS}$ and MSE-F turn clearly negative.
+- **Recent 30 years (1976+)**: the DP-augmented forecast is decisively worse than the historical mean.
 
-This is precisely WG's central message about the dividend-price
-ratio: in-sample significance does not survive an honest
-out-of-sample evaluation, and the cumulative-SSE plot makes the
-structural break around the Oil Shock and the late-1990s decline
-immediate.
+This is the central message of Welch and Goyal about the dividend-price ratio: in-sample significance does not survive an honest out-of-sample evaluation, and the cumulative-SSE plot makes the structural break around the Oil Shock and the late-1990s decline immediate.
 
 ## References
 

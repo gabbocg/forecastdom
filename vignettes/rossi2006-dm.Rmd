@@ -16,15 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article replicates the **out-of-sample Diebold-Mariano panel of
-Table 1** in Rossi (2006), *"Are exchange rates really random walks?
-Some evidence robust to parameter instability"* (*Macroeconomic
-Dynamics*, 10(1), 20-38), using `dm_test()` from **forecastdom** and
-the bundled `rossi2006` dataset.
+This article replicates the **out-of-sample Diebold-Mariano panel of Table 1** in Rossi (2006), *"Are exchange rates really random walks? Some evidence robust to parameter instability"* (*Macroeconomic Dynamics*, 10(1), 20-38), using `dm_test()` from **forecastdom** and the bundled `rossi2006` dataset.
 
-The exercise is the classical Meese-Rogoff (1983) question: at the
-monthly horizon, can a small linear AR model of exchange-rate returns
-beat a driftless random walk out of sample?
+The exercise is the classical Meese-Rogoff (1983) question: at the monthly horizon, can a small linear AR model of exchange-rate returns beat a driftless random walk out of sample?
 
 ```{r setup, message = FALSE}
 library(forecastdom)
@@ -35,9 +29,7 @@ data(rossi2006)
 
 ## The data
 
-Five bilateral nominal exchange rates against the U.S. dollar
-(Canada, France, Germany, Italy, Japan), monthly from March 1973 to
-December 1998 -- 310 observations per country.
+Five bilateral nominal exchange rates against the U.S. dollar (Canada, France, Germany, Italy, Japan), monthly from March 1973 to December 1998, 310 observations per country.
 
 ```{r plot-fx}
 ggplot(rossi2006, aes(date, log(fx))) +
@@ -50,27 +42,16 @@ ggplot(rossi2006, aes(date, log(fx))) +
 
 ## Forecasting setup
 
-Let \(e_t\) denote the log exchange rate and
-\(\Delta e_t = e_t - e_{t-1}\) its monthly return. Two competing
-one-step-ahead forecasts of \(\Delta e_{t+1}\):
+Let $e_t$ denote the log exchange rate and $\Delta e_t = e_t - e_{t-1}$ its monthly return. We compare two one-step-ahead forecasts of $\Delta e_{t+1}$:
 
-* **Benchmark -- driftless random walk:**
-  \(\widehat{\Delta e}^{RW}_{t+1} = 0\).
-* **Alternative -- AR(*p*):** \(\widehat{\Delta e}^{AR}_{t+1}
-  = \hat\alpha_t + \sum_{k=1}^{p} \hat\beta_{k,t}\, \Delta e_{t-k+1}\),
-  with coefficients re-estimated each period.
+* **Benchmark** (driftless random walk): $\widehat{\Delta e}^{RW}_{t+1} = 0$.
+* **Alternative** (AR($p$)): $\widehat{\Delta e}^{AR}_{t+1} = \hat\alpha_t + \sum_{k=1}^{p} \hat\beta_{k,t}\, \Delta e_{t-k+1}$, with coefficients re-estimated each period.
 
-Following Rossi, both AR(1) and AR(2) start from the same usable
-sample of \(n_{obs} = 307\) returns. The first
-\(R = \lceil n_{obs}/2 \rceil = 154\) are used to fit the initial
-model and the remaining \(P = 153\) are evaluated out of sample.
-Three estimation schemes are considered:
+Following Rossi, AR(1) and AR(2) share the same usable sample of $n_{obs} = 307$ returns. The first $R = \lceil n_{obs}/2 \rceil = 154$ observations fit the initial model, and the remaining $P = 153$ are evaluated out of sample. Three estimation schemes are considered:
 
-* **Split** -- coefficients estimated once on \(1{:}R\) and held fixed.
-* **Recursive** -- coefficients re-estimated each period using all
-  available data.
-* **Rolling** -- coefficients re-estimated each period using the most
-  recent \(R\) observations.
+* **Split**: coefficients estimated once on $1{:}R$ and held fixed.
+* **Recursive**: coefficients re-estimated each period using all available data.
+* **Rolling**: coefficients re-estimated each period using the most recent $R$ observations.
 
 ```{r forecast-fn}
 forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling")) {
@@ -115,12 +96,7 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
 
 ## Replicating the OOS DM panel of Table 1
 
-We use `dm_test()` with `correction = FALSE` to match Rossi's
-asymptotic \(\chi^2(1)\) reference distribution. Rossi defines the
-loss differential as \(f_t = u^{AR}_t - u^{RW}_t\), so a *positive*
-DM statistic means the random walk has lower MSFE. To reproduce her
-sign we pass the AR errors as `e1` and the random-walk errors as
-`e2`.
+We call `dm_test()` with `correction = FALSE` to match Rossi's asymptotic $\chi^2(1)$ reference distribution. Rossi defines the loss differential as $f_t = u^{AR}_t - u^{RW}_t$, so a *positive* DM statistic means the random walk has the lower MSFE. To reproduce her sign convention we pass the AR errors as `e1` and the random-walk errors as `e2`.
 
 ```{r run-table1}
 countries <- levels(rossi2006$country)
@@ -168,10 +144,7 @@ knitr::kable(run_panel(2), row.names = FALSE,
              caption = "$DM_T$ statistic ($p$-value), AR(2) vs. RW")
 ```
 
-These cells reproduce the OOS DM panel of Rossi (2006) Table 1
-exactly. The statistics are typically positive -- the random walk
-has lower MSFE than the AR model -- with two-sided p-values rarely
-below 5%, the classical Meese-Rogoff finding.
+These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly. The statistics are typically positive (the random walk has the lower MSFE), and the two-sided $p$-values rarely fall below 5%. This is the classical Meese-Rogoff finding.
 
 ## Single-country deep dive: Japan, AR(1), recursive
 
@@ -182,10 +155,7 @@ fc_jp     <- forecast_oos(log_fx_jp, p = 1, scheme = "recursive")
 dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided", correction = FALSE)
 ```
 
-The cumulative squared-error differential -- using Rossi's sign
-convention so that positive means the *random walk* is winning --
-shows the AR's edge is concentrated in narrow sub-samples rather
-than uniform across the OOS period:
+The cumulative squared-error differential, using Rossi's sign convention so that positive values mean the *random walk* is winning, shows that the AR's edge is concentrated in narrow sub-samples rather than spread uniformly across the OOS period.
 
 ```{r cum-loss}
 loss_diff <- fc_jp$e_alt^2 - fc_jp$e_bench^2

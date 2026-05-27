@@ -16,12 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This article reproduces the central question of Hansen and Lunde
-(2005, *JAE*) — *Does anything beat a GARCH(1,1)?* — using
-`spa_test()` on the bundled `hl2005` dataset. The benchmark is
-GARCH(1,1) with constant mean and Gaussian errors; the alternatives
-are 329 other GARCH-family specifications. The realized-variance
-proxy choice turns out to matter for the decision.
+This article reproduces the central question of Hansen and Lunde (2005, *JAE*), *Does anything beat a GARCH(1,1)?*, using `spa_test()` on the bundled `hl2005` dataset. The benchmark is GARCH(1,1) with constant mean and Gaussian errors. The alternatives are 329 other GARCH-family specifications. The choice of realized-variance proxy turns out to matter for the decision.
 
 ```{r setup, message = FALSE}
 library(forecastdom)
@@ -56,11 +51,7 @@ cat("Competitors with lower MSE than GARCH(1,1):",
     sum(colMeans(Y) < 0), "of", ncol(Y), "\n")
 ```
 
-More than half of the 329 alternatives beat GARCH(1,1) on average
-loss — the unconditional ranking does not single out GARCH(1,1).
-The question is whether any of them does so by a *statistically
-significant* margin after correcting for multiple testing. That is
-exactly what `spa_test()` answers.
+More than half of the 329 alternatives beat GARCH(1,1) on average loss, so the unconditional ranking does not single out GARCH(1,1). The question is whether any of them does so by a *statistically significant* margin after correcting for multiple testing. That is what `spa_test()` answers.
 
 ## SPA test against the primary RV proxy
 
@@ -72,10 +63,7 @@ r <- spa_test(Y, level = 0.05, B = 5000L, q = 0.25)
 r
 ```
 
-T_SPA is large but the bootstrap p-value sits just above 5%.
-Conclusion: at the 5% level, with the 5-minute linear-interpolation
-proxy, *nothing significantly beats GARCH(1,1)* — Hansen and Lunde's
-headline finding.
+$T^{SPA}$ is large but the bootstrap $p$-value sits just above 5%. Conclusion: at the 5% level, with the 5-minute linear-interpolation proxy, *nothing significantly beats GARCH(1,1)*. This is Hansen and Lunde's headline finding.
 
 ## Robustness across realised-variance proxies
 
@@ -109,19 +97,11 @@ knitr::kable(
 
 The decision flips with proxy quality:
 
-- **Noisy proxy** (`sq_ccr`, squared close-to-close returns): T_SPA
-  much smaller and p-value far from rejection. With a noisy target
-  no model can be confidently ranked against any other.
-- **Coarse intraday proxies** (5-min linear/previous-tick): p-values
-  hover near 0.07-0.08 — just *failing* to reject GARCH(1,1).
-- **Fine intraday proxies** (1-min linear/previous-tick, Fourier,
-  Spline-250): p-values fall below 5% and the SPA *does* reject —
-  with a sufficiently accurate volatility proxy, some competitor
-  models can be shown to beat GARCH(1,1).
+- **Noisy proxy** (`sq_ccr`, squared close-to-close returns): $T^{SPA}$ is much smaller and the $p$-value is far from rejection. With a noisy target no model can be confidently ranked against any other.
+- **Coarse intraday proxies** (5-min linear / previous-tick): $p$-values hover near 0.07-0.08, just *failing* to reject GARCH(1,1).
+- **Fine intraday proxies** (1-min linear / previous-tick, Fourier, Spline-250): $p$-values fall below 5% and the SPA *does* reject. With a sufficiently accurate volatility proxy some competitor models can be shown to beat GARCH(1,1).
 
-This is precisely Hansen and Lunde's nuanced answer: GARCH(1,1) is
-hard to beat in any *concrete* unconditional comparison, but the
-decision is sensitive to how cleanly we measure realised volatility.
+This is the nuanced answer of Hansen and Lunde: GARCH(1,1) is hard to beat in any *concrete* unconditional comparison, but the decision is sensitive to how cleanly we measure realised volatility.
 
 ## Top 10 alternatives by mean loss (5-min proxy)
 
@@ -134,12 +114,7 @@ data.frame(rank = 1:10,
            mean_loss_diff = round(d_bar[top10_idx], 3))
 ```
 
-`mean_loss_diff` is the average of `L_competitor − L_GARCH(1,1)`;
-negative values mean the competitor has lower mean MSE than
-GARCH(1,1). Columns 261-265 correspond to the EGARCH family with
-constant mean and t-distributed errors (per the README's grouping
-of the 330 specifications) — the most consistent winners across
-proxies.
+`mean_loss_diff` is the average of $L_{\text{competitor}} - L_{\text{GARCH(1,1)}}$. Negative values mean the competitor has lower mean MSE than GARCH(1,1). Columns 261-265 correspond to the EGARCH family with constant mean and $t$-distributed errors (per the README's grouping of the 330 specifications). These are the most consistent winners across proxies.
 
 ## References
 

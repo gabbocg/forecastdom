@@ -18,14 +18,14 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-**forecastdom** provides a comprehensive suite of forecast evaluation tests organized around the taxonomy proposed by Li, Liao, and Quaedvlieg (2022):
+**forecastdom** collects forecast evaluation tests under the taxonomy of Li, Liao, and Quaedvlieg (2022):
 
-|  | **Equal** | **Superior** |
+|  | **Equal accuracy** | **Superior accuracy** |
 |---|---|---|
 | **Unconditional** | `dm_test()` | `spa_test()` |
 | **Conditional** | `gw_test()` | `cspa_test()` |
 
-Along with complementary tests for nested models (`cw_test()`, `enc_new()`), predictive regressions (`ivx_wald()`), and parameter instability (`qll_hat()`).
+It also bundles the tests usually paired with these in applied work: nested-model comparisons (`cw_test()`, `enc_new()`, `mse_f_test()`), return predictability (`ivx_wald()`), and parameter instability (`qll_hat()`).
 
 ```{r setup}
 library(forecastdom)
@@ -34,9 +34,9 @@ set.seed(42)
 
 ## Pairwise Forecast Comparison
 
-### Diebold-Mariano Test
+### Diebold-Mariano test
 
-The simplest starting point: compare two sets of forecast errors.
+Compares two sets of forecast errors and asks whether the average loss differential is zero.
 
 ```{r dm}
 e1 <- rnorm(200)
@@ -45,11 +45,11 @@ e2 <- rnorm(200, mean = 0.15)
 dm_test(e1, e2)
 ```
 
-The `correction = TRUE` default applies the Harvey, Leybourne, and Newbold (1997) small-sample correction with t-distribution critical values.
+The default `correction = TRUE` applies the Harvey, Leybourne, and Newbold (1997) small-sample correction, which uses a $t$ distribution with $T - 1$ degrees of freedom in place of the asymptotic normal.
 
-### Clark-West Test
+### Clark-West test
 
-For nested models, the standard DM test is undersized. The Clark-West (2007) MSFE-adjusted test corrects for this:
+The standard DM test is undersized when the two models are nested. The Clark-West (2007) MSFE-adjusted statistic fixes this by adding a correction term for the extra parameters in the larger model and is approximately $N(0,1)$ under the null.
 
 ```{r cw}
 actual <- rnorm(200)
@@ -59,9 +59,9 @@ f2 <- actual + rnorm(200, sd = 0.4) # alternative (unrestricted)
 cw_test(actual - f1, actual - f2, f1, f2)
 ```
 
-### Giacomini-White Test
+### Giacomini-White test
 
-Tests whether two methods have *conditionally* equal predictive ability, using instruments from the information set:
+Asks whether two methods have equal predictive ability *given* the information available to the forecaster. The default instruments are a constant and the lagged loss differential.
 
 ```{r gw}
 gw_test(e1, e2)
@@ -69,27 +69,31 @@ gw_test(e1, e2)
 
 ## Multiple Forecast Comparison
 
-### Hansen's SPA Test
+### Hansen's SPA test
 
-Tests whether a benchmark is unconditionally superior to all competitors simultaneously:
+Asks whether the benchmark has the lowest expected loss among all competitors. The null is that no competitor beats the benchmark on average; the bootstrap controls family-wise error across the $J$ comparisons.
 
 ```{r spa}
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
 spa_test(sim$Y, level = 0.05, B = 1000)
 ```
 
-### CSPA Test
+### CSPA test
 
-The main contribution of Li, Liao, and Quaedvlieg (2022). Tests whether the benchmark's conditional expected loss is no more than that of any competitor, *uniformly* across all conditioning states:
+Li, Liao, and Quaedvlieg (2022) ask the same question conditional on a state variable $X_t$. The null is
+
+$$H_0:\ \min_{j}\, \mathbb{E}[L_{0,t} - L_{j,t} \mid X_t = x] \le 0 \quad \text{for all } x,$$
+
+i.e. there is no competitor and no state value where the benchmark is strictly worse. The test combines a Legendre-polynomial series estimate of the conditional mean differentials $h_j(x)$ with an HAC-based Gaussian-process critical value.
 
 ```{r cspa-null}
-# Under the null (a = 1): benchmark weakly dominates
+# Under the null (a = 1) the benchmark is weakly dominant
 sim_null <- do_sim(J = 3, n = 500, a = 1, c = 0, rho_u = 0.4)
 cspa_test(sim_null$Y, sim_null$X, level = 0.05, trim = 2)
 ```
 
 ```{r cspa-alt}
-# Under the alternative (a = 1.5): a competitor outperforms in some states
+# Under the alternative (a = 1.5) one competitor beats the benchmark in some states
 sim_alt <- do_sim(J = 3, n = 500, a = 1.5, c = 0, rho_u = 0.4)
 result <- cspa_test(sim_alt$Y, sim_alt$X, level = 0.05, trim = 2)
 
@@ -98,15 +102,15 @@ result
 
 ### Visualization
 
-The `cspa_test_plot()` function displays the estimated conditional mean functions $\hat{h}_j(x)$, their lower envelope, and the confidence bound:
+`cspa_test_plot()` draws the estimated conditional means $\hat h_j(x)$, their lower envelope, and the upper confidence bound on that envelope. The CSPA null is rejected when the dashed bound drops below zero anywhere on the support of $x$.
 
 ```{r cspa-plot}
 cspa_test_plot(result)
 ```
 
-### CSMS: Confidence Set for the Most Superior
+### CSMS: confidence set for the most superior
 
-When there is no *a priori* benchmark, the CSMS inverts the CSPA test for each candidate and collects those that are not rejected:
+If no model is singled out as the benchmark, `csms()` runs the CSPA test once per candidate and keeps the candidates that are *not* rejected. The resulting set is asymptotically a level-$(1-\alpha)$ confidence set for the conditionally most-superior method.
 
 ```{r csms, eval = FALSE}
 csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "LASSO"))
@@ -114,9 +118,9 @@ csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "
 
 ## Predictive Regressions
 
-### IVX-Wald Test
+### IVX-Wald test
 
-Robust test for return predictability with potentially persistent predictors:
+Kostakis, Magdalinos, and Stamatogiannis (2015) build an instrument from a near-stationary transformation of the regressor so that the predictability test has a standard $\chi^2$ distribution even when the predictor is near-unit-root.
 
 ```{r ivx}
 n <- 300
@@ -126,9 +130,9 @@ y <- 0.02 * x + rnorm(n)
 ivx_wald(y, as.matrix(x), K = 1, M_n = floor(n^(1/3)))
 ```
 
-### Elliott-Muller Test
+### Elliott-Muller test
 
-Tests the null hypothesis of constant regression coefficients against the alternative of general time variation:
+Tests $H_0:\ \beta_t = \beta$ for all $t$ against the alternative that the regression coefficient drifts. The statistic $\widehat{qLL}$ has a non-standard limit; critical values are tabulated in Elliott and Muller (2006, Table 1).
 
 ```{r qll}
 X <- matrix(rnorm(n * 2), n, 2)

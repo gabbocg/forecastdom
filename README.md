@@ -11,7 +11,7 @@
 
 ## Overview
 
-**forecastdom** is a toolkit for (un)conditional forecast dominance testing in R. It covers the full taxonomy of forecast evaluation hypotheses (unconditional and conditional, equal and superior) plus encompassing, nested-model, predictive regression, and parameter instability tests.
+**forecastdom** is an R toolkit for comparing the predictive ability of forecasting methods. It implements the four cells of the Li, Liao, and Quaedvlieg (2022) taxonomy (equal vs. superior, unconditional vs. conditional) plus tests for nested models, forecast encompassing, return predictability, and parameter instability.
 
 ## Installation
 
@@ -86,16 +86,18 @@ ivx_wald(returns, predictors, K = 1, M_n = floor(T ^ (1 / 3)))
 
 ## Taxonomy
 
-The package covers the forecast evaluation taxonomy from Li, Liao, and Quaedvlieg (2022):
+The four cells in Li, Liao, and Quaedvlieg (2022):
 
-|  | **Equal** | **Superior** |
+|  | **Equal accuracy** | **Superior accuracy** |
 |---|---|---|
 | **Unconditional** | `dm_test()` | `spa_test()` |
 | **Conditional** | `gw_test()` | `cspa_test()` |
 
+Equal vs. superior asks whether forecasts have the same loss or whether one is strictly lower. Unconditional vs. conditional asks whether the comparison holds on average or holds at every value of a conditioning variable.
+
 ## Performance
 
-The CSPA test uses Rcpp-accelerated C++ code for the computationally intensive operations (Gaussian process column-max and binary search p-value computation).
+The CSPA test uses Rcpp / C++ for the two hot loops (Gaussian-process column maxima and the binary search over the p-value).
 
 ## References
 

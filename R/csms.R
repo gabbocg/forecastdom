@@ -123,22 +123,21 @@ print.csms <- function(x, digits = 4, ...) {
   cat("\u251C", dot, "\u2524\n", sep = "")
 
   .padded_line("Per-method CSPA results:", w)
-  cat("\u2502\n", sep = "")
+  .padded_line("", w)
 
-  header <- sprintf("\u2502  %-10s %10s %10s %10s   \u2502",
-                     "Method", "Theta", "P-value", "In Set?")
-  cat(header, "\n")
+  cat(sprintf("\u2502  %-14s  %10s  %10s  %7s   \u2502\n",
+              "Method", "Theta", "P-value", "In Set?"))
   cat("\u2502  ", strrep("-", w - 4), "  \u2502\n", sep = "")
 
   for (j in seq_len(x$n_methods)) {
-    
+
     mark <- if (x$in_set[j]) "Yes" else "No"
-    cat(sprintf("\u2502  %-10s %10s %10s %10s   \u2502\n",
+    cat(sprintf("\u2502  %-14s  %10s  %10s  %7s   \u2502\n",
                 x$method_names[j],
                 formatC(x$theta[j], digits = digits, format = "f"),
                 formatC(x$pvalues[j], digits = digits, format = "f"),
                 mark))
-    
+
   }
 
   cat("\u2570", dash, "\u256F\n", sep = "")

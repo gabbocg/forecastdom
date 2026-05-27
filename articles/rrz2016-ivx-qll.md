@@ -74,8 +74,7 @@ results <- do.call(rbind, lapply(horizons, function(h) {
 }))
 
 knitr::kable(results, digits = 3, row.names = FALSE,
-             col.names = c("$h$", "IVX-Wald", "$\\widehat{qLL}$"),
-             caption = "Replication of RRZ (2016) Table A2")
+             col.names = c("$h$", "IVX-Wald", "$\\widehat{qLL}$"))
 ```
 
 | $h$ | IVX-Wald | $\widehat{qLL}$ |
@@ -84,8 +83,6 @@ knitr::kable(results, digits = 3, row.names = FALSE,
 |   3 |    4.513 |          -4.858 |
 |   6 |    4.603 |          -4.909 |
 |  12 |    3.669 |          -5.016 |
-
-Replication of RRZ (2016) Table A2
 
 Critical values (from RRZ 2016, online appendix):
 

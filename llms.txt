@@ -1,7 +1,8 @@
 # forecastdom
 
 **Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
-**License:** [MIT](https://opensource.org/licenses/MIT)
+**License:** [MIT](https://opensource.org/licenses/MIT) + file
+[LICENSE](https://gabbocg.github.io/forecastdom/LICENSE)
 
 ## Overview
 

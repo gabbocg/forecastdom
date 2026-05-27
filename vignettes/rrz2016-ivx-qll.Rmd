@@ -29,19 +29,21 @@ at horizons $h \in \{1, 3, 6, 12\}$. IVX-Wald tests $H_0: \beta = 0$. The $\wide
 
 ```{r setup, message = FALSE}
 library(forecastdom)
+library(ggplot2)
 data(rrz2016)
 ```
 
 ## The data
 
-Monthly U.S. log excess return on the S&P 500 and the standardised
-linearly-detrended log of the equal-weighted short interest index
-(EWSI), 1973-01 to 2014-12 (504 observations).
+Monthly U.S. log excess return on the S&P 500 and the standardised linearly-detrended log of the equal-weighted short interest index (EWSI), 1973-01 to 2014-12 (504 observations).
 
 ```{r plot, fig.height = 3.5}
-plot(rrz2016$date, rrz2016$SII, type = "l", col = "#47A5C5",
-     xlab = NULL, ylab = "SII", main = "Short interest index, 1973-2014")
-abline(h = 0, lty = 2)
+ggplot(rrz2016, aes(date, SII)) +
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey60") +
+  geom_line(colour = "#47A5C5", linewidth = 0.6) +
+  labs(x = NULL, y = "SII",
+       title = "Short interest index, 1973-2014") +
+  theme_minimal()
 ```
 
 ## Replicating Table A2
@@ -68,6 +70,7 @@ results <- do.call(rbind, lapply(horizons, function(h) {
 }))
 
 knitr::kable(results, digits = 3, row.names = FALSE,
+             col.names = c("$h$", "IVX-Wald", "$\\widehat{qLL}$"),
              caption = "Replication of RRZ (2016) Table A2")
 ```
 

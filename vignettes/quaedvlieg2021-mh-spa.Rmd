@@ -42,14 +42,15 @@ Before running the tests it is worth looking at the per-horizon mean loss differ
 ```{r mean-table}
 H <- ncol(quaedvlieg2021$uspa)
 
-means <- rbind(
-  uspa_dataset = colMeans(quaedvlieg2021$uspa),
-  aspa_dataset = colMeans(quaedvlieg2021$aspa)
+means <- data.frame(
+  h    = seq_len(H),
+  uspa = colMeans(quaedvlieg2021$uspa),
+  aspa = colMeans(quaedvlieg2021$aspa)
 )
 
-colnames(means) <- paste0("h", seq_len(H))
-
-knitr::kable(round(means, 3))
+knitr::kable(
+  means, digits = 3, row.names = FALSE,
+  col.names = c("$h$", "uSPA dataset", "aSPA dataset"))
 ```
 
 `$uspa` shows positive mean loss differentials at *every* horizon, so the benchmark is worse uniformly. `$aspa` shows positive means at most horizons but a near-zero mean at the shortest horizon, so the benchmark is worse on average but not uniformly.

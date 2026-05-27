@@ -4,10 +4,10 @@
 **License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
 
 <!-- badges: start -->
-[![License: MIT + file LICENSE](https://img.shields.io/badge/License-MIT_+_file_LICENSE-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![pkgdown](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml)
+[![pkgdown](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://gabbocg.github.io/forecastdom/)
 <!-- badges: end -->
 
 ## Overview

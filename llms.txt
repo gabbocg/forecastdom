@@ -101,6 +101,12 @@ variable.
 The CSPA test uses Rcpp / C++ for the two hot loops (Gaussian-process
 column maxima and the binary search over the p-value).
 
+## Getting help
+
+If you encounter a bug, please file an issue with a minimal reproducible
+example on [GitHub](https://github.com/GabboCg/forecastdom/issues). For
+questions, email <gabriel.cabreraguzman@postgrad.manchester.ac.uk>.
+
 ## References
 
 - Clark, T.E. and McCracken, M.W. (2001). Tests of Equal Forecast

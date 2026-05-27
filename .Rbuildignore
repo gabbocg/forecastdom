@@ -6,6 +6,7 @@
 ^\.github$
 ^data-raw$
 ^CLAUDE\.md$
+^LICENSE\.md$
 ^\.claude$
 ^doc$
 ^Meta$

@@ -120,7 +120,7 @@ knitr::kable(
   caption = "\\(\\bar R^2_{OS}\\) and \\(\\Delta\\mathrm{RMSE}\\) in percent.",
   col.names = c("Spec", "\\(T\\)", "\\(\\bar R^2_{OS}\\)",
                 "\\(\\Delta\\mathrm{RMSE}\\)",
-                "MSE-F", "ENC-NEW", "CW", "CW \\(p\\)"))
+                "MSE-F", "ENC-NEW", "CW stat", "\\(p\\)-value"))
 ```
 
 Compared to WG's reported d/p numbers:

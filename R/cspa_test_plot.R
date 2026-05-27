@@ -99,19 +99,26 @@ cspa_test_plot <- function(object = NULL, Y = NULL, X = NULL, level = 0.05,
     }
   }
 
+  # Render h_j legend entries as plotmath h[j] (subscript), and
+  # convert spaces in other labels to ~ so they parse cleanly.
+  legend_labels <- parse(text = vapply(type_levels, function(s) {
+    if (grepl("^h_\\d+$", s)) sub("h_(\\d+)", "h[\\1]", s)
+    else gsub(" ", "~", s)
+  }, character(1)))
+
   x <- y <- type <- NULL  # avoid R CMD check NOTE
   p <- ggplot2::ggplot(df_all, ggplot2::aes(
       x = x, y = y,
       color = type, linetype = type, linewidth = type
     )) +
     ggplot2::geom_line() +
-    ggplot2::scale_color_manual(values = line_colors) +
-    ggplot2::scale_linetype_manual(values = line_types) +
-    ggplot2::scale_linewidth_manual(values = line_sizes) +
+    ggplot2::scale_color_manual(values = line_colors, labels = legend_labels) +
+    ggplot2::scale_linetype_manual(values = line_types, labels = legend_labels) +
+    ggplot2::scale_linewidth_manual(values = line_sizes, labels = legend_labels) +
     ggplot2::labs(x = xlab, y = ylab, color = NULL, linetype = NULL,
                   linewidth = NULL) +
     ggplot2::theme_minimal()
 
   p
-  
+
 }

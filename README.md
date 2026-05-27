@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen)](https://github.com/GabboCg/forecastdom)
+[![R-CMD-check](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![pkgdown](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->

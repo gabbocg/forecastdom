@@ -1,7 +1,7 @@
 # forecastdom <img src="man/figures/logo.png" align="right" height="138" />
 
 **Author:** [Gabriel Cabrera](https://github.com/GabboCg)<br>
-**License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
+**License:** [MIT](https://opensource.org/licenses/MIT)
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

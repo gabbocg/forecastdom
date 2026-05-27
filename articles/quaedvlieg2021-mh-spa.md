@@ -48,20 +48,39 @@ so that they tell the tests apart.
 ``` r
 H <- ncol(quaedvlieg2021$uspa)
 
-means <- rbind(
-  uspa_dataset = colMeans(quaedvlieg2021$uspa),
-  aspa_dataset = colMeans(quaedvlieg2021$aspa)
+means <- data.frame(
+  h    = seq_len(H),
+  uspa = colMeans(quaedvlieg2021$uspa),
+  aspa = colMeans(quaedvlieg2021$aspa)
 )
 
-colnames(means) <- paste0("h", seq_len(H))
-
-knitr::kable(round(means, 3))
+knitr::kable(
+  means, digits = 3, row.names = FALSE,
+  col.names = c("$h$", "uSPA dataset", "aSPA dataset"))
 ```
 
-|              |     h1 |    h2 |    h3 |    h4 |    h5 |    h6 |    h7 |    h8 |    h9 |   h10 |   h11 |   h12 |   h13 |   h14 |   h15 |   h16 |   h17 |   h18 |   h19 |   h20 |
-|:-------------|-------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|------:|
-| uspa_dataset |  0.004 | 0.136 | 0.182 | 0.164 | 0.135 | 0.092 | 0.185 | 0.224 | 0.260 | 0.171 | 0.272 | 0.280 | 0.262 | 0.232 | 0.274 | 0.332 | 0.383 | 0.351 | 0.411 | 0.425 |
-| aspa_dataset | -0.014 | 0.101 | 0.140 | 0.116 | 0.082 | 0.035 | 0.124 | 0.160 | 0.193 | 0.101 | 0.199 | 0.204 | 0.184 | 0.151 | 0.191 | 0.247 | 0.295 | 0.261 | 0.319 | 0.330 |
+| $h$ | uSPA dataset | aSPA dataset |
+|----:|-------------:|-------------:|
+|   1 |        0.004 |       -0.014 |
+|   2 |        0.136 |        0.101 |
+|   3 |        0.182 |        0.140 |
+|   4 |        0.164 |        0.116 |
+|   5 |        0.135 |        0.082 |
+|   6 |        0.092 |        0.035 |
+|   7 |        0.185 |        0.124 |
+|   8 |        0.224 |        0.160 |
+|   9 |        0.260 |        0.193 |
+|  10 |        0.171 |        0.101 |
+|  11 |        0.272 |        0.199 |
+|  12 |        0.280 |        0.204 |
+|  13 |        0.262 |        0.184 |
+|  14 |        0.232 |        0.151 |
+|  15 |        0.274 |        0.191 |
+|  16 |        0.332 |        0.247 |
+|  17 |        0.383 |        0.295 |
+|  18 |        0.351 |        0.261 |
+|  19 |        0.411 |        0.319 |
+|  20 |        0.425 |        0.330 |
 
 `$uspa` shows positive mean loss differentials at *every* horizon, so
 the benchmark is worse uniformly. `$aspa` shows positive means at most

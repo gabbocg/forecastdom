@@ -167,9 +167,11 @@ contemporaneous <code>log_dp_lag[t]</code>.</li>
 </h2>
 <p>WG explore three OOS-start dates: 20 years after the data begins
 (around 1892), 1965, and the most recent 30 years (1976-2005). The
-column <code>R2_bar_OS</code> is the <em>adjusted</em> out-of-sample
+reported
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
+is the <em>adjusted</em> out-of-sample
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
-that WG report in Table 1, applied to the OOS sample of size
+that WG quote in Table 1, applied to the OOS sample of size
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mfrac><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>T</mi><mo>−</mo><mi>k</mi></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,\frac{T-1}{T-k},</annotation></semantics></math></p>
 <p>with
@@ -177,9 +179,9 @@ that WG report in Table 1, applied to the OOS sample of size
 parameters (intercept plus predictor).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">specs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"20 yr after start (1892+)"</span>, R <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"1965 onward"</span>,              R <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1964</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"1976 onward (recent 30)"</span>,  R <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1975</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"1892+"</span>,  R <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"1965+"</span>,  R <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1964</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"1976+"</span>,  R <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1975</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">run_spec</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span> <span class="op">{</span></span>
@@ -195,52 +197,44 @@ parameters (intercept plus predictor).</p>
 <span>  <span class="va">enc</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enc_new.html">enc_new</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_A</span><span class="op">)</span></span>
 <span>  <span class="va">cw</span>    <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cw_test.html">cw_test</a></span><span class="op">(</span><span class="va">fc</span><span class="op">$</span><span class="va">e_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">e_A</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f_N</span>, <span class="va">fc</span><span class="op">$</span><span class="va">f_A</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>spec         <span class="op">=</span> <span class="va">spec</span><span class="op">$</span><span class="va">label</span>,</span>
-<span>             R_est        <span class="op">=</span> <span class="va">spec</span><span class="op">$</span><span class="va">R</span>,</span>
-<span>             T_oos        <span class="op">=</span> <span class="va">T_oos</span>,</span>
-<span>             R2_OS_pct    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">R2</span>,</span>
-<span>             R2_bar_OS    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">R2bar</span>,</span>
-<span>             dRMSE_pct    <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">dRMSE</span>,</span>
-<span>             MSE_F        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">msef</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
-<span>             ENC_NEW      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">enc</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
-<span>             CW_stat      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
-<span>             CW_p         <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>spec      <span class="op">=</span> <span class="va">spec</span><span class="op">$</span><span class="va">label</span>,</span>
+<span>             T_oos     <span class="op">=</span> <span class="va">T_oos</span>,</span>
+<span>             R2bar_pct <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">R2bar</span>,</span>
+<span>             dRMSE_pct <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">dRMSE</span>,</span>
+<span>             MSE_F     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">msef</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
+<span>             ENC_NEW   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">enc</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
+<span>             CW_stat   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>,</span>
+<span>             CW_p      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">cw</span><span class="op">$</span><span class="va">pvalue</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">specs</span>, <span class="va">run_spec</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
 <span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Spec"</span>, <span class="st">"$R$"</span>, <span class="st">"$T$"</span>,</span>
-<span>                <span class="st">"$R^2_{OS}$ (%)"</span>, <span class="st">"$\\bar R^2_{OS}$ (%)"</span>,</span>
-<span>                <span class="st">"$\\Delta\\text{RMSE}$ (%)"</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Spec"</span>, <span class="st">"$T$"</span>,</span>
+<span>                <span class="st">"$\\bar R^2_{OS}$ (%)"</span>,</span>
+<span>                <span class="st">"$\\Delta\\mathrm{RMSE}$ (%)"</span>,</span>
 <span>                <span class="st">"MSE-F"</span>, <span class="st">"ENC-NEW"</span>,</span>
 <span>                <span class="st">"CW stat"</span>, <span class="st">"CW $p$"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="21%">
-<col width="3%">
-<col width="3%">
-<col width="12%">
-<col width="16%">
-<col width="19%">
-<col width="5%">
 <col width="6%">
-<col width="6%">
-<col width="5%">
+<col width="4%">
+<col width="23%">
+<col width="30%">
+<col width="8%">
+<col width="9%">
+<col width="9%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Spec</th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math></th>
 <th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math></th>
-<th align="right">
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
-(%)</th>
 <th align="right">
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
 (%)</th>
 <th align="right">
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mtext mathvariant="normal">RMSE</mtext></mrow><annotation encoding="application/x-tex">\Delta\text{RMSE}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mrow><mi mathvariant="normal">R</mi><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">E</mi></mrow></mrow><annotation encoding="application/x-tex">\Delta\mathrm{RMSE}</annotation></semantics></math>
 (%)</th>
 <th align="right">MSE-F</th>
 <th align="right">ENC-NEW</th>
@@ -251,10 +245,8 @@ parameters (intercept plus predictor).</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">20 yr after start (1892+)</td>
-<td align="right">20</td>
+<td align="left">1892+</td>
 <td align="right">114</td>
-<td align="right">-1.158</td>
 <td align="right">-2.061</td>
 <td align="right">-0.107</td>
 <td align="right">-1.305</td>
@@ -263,10 +255,8 @@ parameters (intercept plus predictor).</p>
 <td align="right">0.356</td>
 </tr>
 <tr class="even">
-<td align="left">1965 onward</td>
-<td align="right">93</td>
+<td align="left">1965+</td>
 <td align="right">41</td>
-<td align="right">-1.135</td>
 <td align="right">-3.729</td>
 <td align="right">-0.088</td>
 <td align="right">-0.460</td>
@@ -275,10 +265,8 @@ parameters (intercept plus predictor).</p>
 <td align="right">0.290</td>
 </tr>
 <tr class="odd">
-<td align="left">1976 onward (recent 30)</td>
-<td align="right">104</td>
+<td align="left">1976+</td>
 <td align="right">30</td>
-<td align="right">-11.252</td>
 <td align="right">-15.225</td>
 <td align="right">-0.765</td>
 <td align="right">-3.034</td>
@@ -290,53 +278,44 @@ parameters (intercept plus predictor).</p>
 </table>
 <p>Compared to WG’s reported d/p numbers:</p>
 <table class="table">
-<colgroup>
-<col width="13%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-<col width="13%">
-</colgroup>
 <thead><tr class="header">
-<th>Spec</th>
-<th align="right">T_oos</th>
-<th align="right">This article
+<th align="left">Spec</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math></th>
+<th align="right">Ours
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
 </th>
 <th align="right">WG
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
 </th>
 <th align="right">Gap</th>
-<th>Source in WG paper</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>1892+ (20 yr after start)</td>
+<td align="left">1892+</td>
 <td align="right">114</td>
 <td align="right"><strong>-2.06</strong></td>
 <td align="right"><strong>-2.06</strong></td>
 <td align="right">0.00</td>
-<td>p. 1474 in-text table (“All years”)</td>
 </tr>
 <tr class="even">
-<td>1965+</td>
+<td align="left">1965+</td>
 <td align="right">41</td>
 <td align="right">-3.73</td>
 <td align="right">-3.69</td>
 <td align="right">0.04</td>
-<td>Table 1, “Forecasts begin 1965” column</td>
 </tr>
 <tr class="odd">
-<td>Recent 30 yr (1976+)</td>
+<td align="left">1976+</td>
 <td align="right">30</td>
 <td align="right">-15.22</td>
 <td align="right">-15.14</td>
 <td align="right">0.09</td>
-<td>p. 1474 in-text table (“Recent 30 years”)</td>
 </tr>
 </tbody>
 </table>
+<p>The WG figures come from p. 1474 of the published paper (in-text
+table for 1892+ and 1976+) and from Table 1 column “Forecasts begin
+1965” (1965+).</p>
 <p>The longest window matches WG <strong>exactly to two
 decimals</strong>. The two shorter windows are within 0.1 percentage
 points. The pattern of the residual gap (zero on the long sample, small

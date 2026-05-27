@@ -21,6 +21,7 @@ $\widehat{qLL}$ statistic tests $H_{0}:\beta_{t} = \beta$ for all $t$.
 
 ``` r
 library(forecastdom)
+library(ggplot2)
 data(rrz2016)
 ```
 
@@ -31,9 +32,12 @@ linearly-detrended log of the equal-weighted short interest index
 (EWSI), 1973-01 to 2014-12 (504 observations).
 
 ``` r
-plot(rrz2016$date, rrz2016$SII, type = "l", col = "#47A5C5",
-     xlab = NULL, ylab = "SII", main = "Short interest index, 1973-2014")
-abline(h = 0, lty = 2)
+ggplot(rrz2016, aes(date, SII)) +
+  geom_hline(yintercept = 0, linetype = "dashed", colour = "grey60") +
+  geom_line(colour = "#47A5C5", linewidth = 0.6) +
+  labs(x = NULL, y = "SII",
+       title = "Short interest index, 1973-2014") +
+  theme_minimal()
 ```
 
 ![](rrz2016-ivx-qll_files/figure-html/plot-1.png)
@@ -70,15 +74,16 @@ results <- do.call(rbind, lapply(horizons, function(h) {
 }))
 
 knitr::kable(results, digits = 3, row.names = FALSE,
+             col.names = c("$h$", "IVX-Wald", "$\\widehat{qLL}$"),
              caption = "Replication of RRZ (2016) Table A2")
 ```
 
-|   h | IVX_Wald |    qLL |
-|----:|---------:|-------:|
-|   1 |    3.377 | -3.721 |
-|   3 |    4.513 | -4.858 |
-|   6 |    4.603 | -4.909 |
-|  12 |    3.669 | -5.016 |
+| $h$ | IVX-Wald | $\widehat{qLL}$ |
+|----:|---------:|----------------:|
+|   1 |    3.377 |          -3.721 |
+|   3 |    4.513 |          -4.858 |
+|   6 |    4.603 |          -4.909 |
+|  12 |    3.669 |          -5.016 |
 
 Replication of RRZ (2016) Table A2
 

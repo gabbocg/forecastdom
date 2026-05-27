@@ -129,106 +129,120 @@ so that they tell the tests apart.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>  uspa_dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span>,</span>
-<span>  aspa_dataset <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span><span class="op">)</span></span>
+<span><span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  h    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">H</span><span class="op">)</span>,</span>
+<span>  uspa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span>,</span>
+<span>  aspa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">aspa</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">means</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"h"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">H</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">means</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">means</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"$h$"</span>, <span class="st">"uSPA dataset"</span>, <span class="st">"aSPA dataset"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<colgroup>
-<col width="9%">
-<col width="5%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-<col width="4%">
-</colgroup>
 <thead><tr class="header">
-<th align="left"></th>
-<th align="right">h1</th>
-<th align="right">h2</th>
-<th align="right">h3</th>
-<th align="right">h4</th>
-<th align="right">h5</th>
-<th align="right">h6</th>
-<th align="right">h7</th>
-<th align="right">h8</th>
-<th align="right">h9</th>
-<th align="right">h10</th>
-<th align="right">h11</th>
-<th align="right">h12</th>
-<th align="right">h13</th>
-<th align="right">h14</th>
-<th align="right">h15</th>
-<th align="right">h16</th>
-<th align="right">h17</th>
-<th align="right">h18</th>
-<th align="right">h19</th>
-<th align="right">h20</th>
+<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math></th>
+<th align="right">uSPA dataset</th>
+<th align="right">aSPA dataset</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">uspa_dataset</td>
+<td align="right">1</td>
 <td align="right">0.004</td>
-<td align="right">0.136</td>
-<td align="right">0.182</td>
-<td align="right">0.164</td>
-<td align="right">0.135</td>
-<td align="right">0.092</td>
-<td align="right">0.185</td>
-<td align="right">0.224</td>
-<td align="right">0.260</td>
-<td align="right">0.171</td>
-<td align="right">0.272</td>
-<td align="right">0.280</td>
-<td align="right">0.262</td>
-<td align="right">0.232</td>
-<td align="right">0.274</td>
-<td align="right">0.332</td>
-<td align="right">0.383</td>
-<td align="right">0.351</td>
-<td align="right">0.411</td>
-<td align="right">0.425</td>
+<td align="right">-0.014</td>
 </tr>
 <tr class="even">
-<td align="left">aspa_dataset</td>
-<td align="right">-0.014</td>
+<td align="right">2</td>
+<td align="right">0.136</td>
 <td align="right">0.101</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0.182</td>
 <td align="right">0.140</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">0.164</td>
 <td align="right">0.116</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">0.135</td>
 <td align="right">0.082</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">0.092</td>
 <td align="right">0.035</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">0.185</td>
 <td align="right">0.124</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">0.224</td>
 <td align="right">0.160</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">0.260</td>
 <td align="right">0.193</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">0.171</td>
 <td align="right">0.101</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">0.272</td>
 <td align="right">0.199</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">0.280</td>
 <td align="right">0.204</td>
+</tr>
+<tr class="odd">
+<td align="right">13</td>
+<td align="right">0.262</td>
 <td align="right">0.184</td>
+</tr>
+<tr class="even">
+<td align="right">14</td>
+<td align="right">0.232</td>
 <td align="right">0.151</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">0.274</td>
 <td align="right">0.191</td>
+</tr>
+<tr class="even">
+<td align="right">16</td>
+<td align="right">0.332</td>
 <td align="right">0.247</td>
+</tr>
+<tr class="odd">
+<td align="right">17</td>
+<td align="right">0.383</td>
 <td align="right">0.295</td>
+</tr>
+<tr class="even">
+<td align="right">18</td>
+<td align="right">0.351</td>
 <td align="right">0.261</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">0.411</td>
 <td align="right">0.319</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">0.425</td>
 <td align="right">0.330</td>
 </tr>
 </tbody>

@@ -30,7 +30,7 @@ ggplot(rossi2006, aes(date, log(fx))) +
   facet_wrap(~ country, scales = "free_y") +
   labs(x = NULL, y = "log(FX)",
        title = "Log nominal exchange rates vs. USD") +
-  theme_minimal(base_size = 11)
+  theme_minimal()
 ```
 
 ![](rossi2006-dm_files/figure-html/plot-fx-1.png)
@@ -219,7 +219,7 @@ ggplot(data.frame(date = oos_dates, cum = cumsum(loss_diff)),
        y = "Cumulative SE loss (AR(1) - RW)",
        title = "Cumulative squared-error loss differential, Japan",
        subtitle = "Above zero = RW doing better; below = AR(1) doing better") +
-  theme_minimal(base_size = 11)
+  theme_minimal()
 ```
 
 ![](rossi2006-dm_files/figure-html/cum-loss-1.png)

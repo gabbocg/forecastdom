@@ -5,7 +5,6 @@
 ^pkgdown$
 ^\.github$
 ^data-raw$
-^LICENSE\.md$
 ^CLAUDE\.md$
 ^\.claude$
 ^doc$

@@ -21,8 +21,8 @@ data(rossi2006)
 ## The data
 
 Five bilateral nominal exchange rates against the U.S. dollar (Canada,
-France, Germany, Italy, Japan), monthly from March 1973 to December 1998
-– 310 observations per country.
+France, Germany, Italy, Japan), monthly from March 1973 to December
+1998, 310 observations per country.
 
 ``` r
 ggplot(rossi2006, aes(date, log(fx))) +
@@ -38,24 +38,24 @@ ggplot(rossi2006, aes(date, log(fx))) +
 ## Forecasting setup
 
 Let $e_{t}$ denote the log exchange rate and
-$\Delta e_{t} = e_{t} - e_{t - 1}$ its monthly return. Two competing
+$\Delta e_{t} = e_{t} - e_{t - 1}$ its monthly return. We compare two
 one-step-ahead forecasts of $\Delta e_{t + 1}$:
 
-- **Benchmark – driftless random walk:**
+- **Benchmark** (driftless random walk):
   ${\widehat{\Delta e}}_{t + 1}^{RW} = 0$.
-- **Alternative – AR(*p*):**
+- **Alternative** (AR($p$)):
   ${\widehat{\Delta e}}_{t + 1}^{AR} = {\widehat{\alpha}}_{t} + \sum_{k = 1}^{p}{\widehat{\beta}}_{k,t}\,\Delta e_{t - k + 1}$,
   with coefficients re-estimated each period.
 
-Following Rossi, both AR(1) and AR(2) start from the same usable sample
-of $n_{obs} = 307$ returns. The first $R = \lceil n_{obs}/2\rceil = 154$
-are used to fit the initial model and the remaining $P = 153$ are
+Following Rossi, AR(1) and AR(2) share the same usable sample of
+$n_{obs} = 307$ returns. The first $R = \lceil n_{obs}/2\rceil = 154$
+observations fit the initial model, and the remaining $P = 153$ are
 evaluated out of sample. Three estimation schemes are considered:
 
-- **Split** – coefficients estimated once on $1:R$ and held fixed.
-- **Recursive** – coefficients re-estimated each period using all
+- **Split**: coefficients estimated once on $1:R$ and held fixed.
+- **Recursive**: coefficients re-estimated each period using all
   available data.
-- **Rolling** – coefficients re-estimated each period using the most
+- **Rolling**: coefficients re-estimated each period using the most
   recent $R$ observations.
 
 ``` r
@@ -101,13 +101,13 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
 
 ## Replicating the OOS DM panel of Table 1
 
-We use
+We call
 [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
 with `correction = FALSE` to match Rossi’s asymptotic $\chi^{2}(1)$
 reference distribution. Rossi defines the loss differential as
 $f_{t} = u_{t}^{AR} - u_{t}^{RW}$, so a *positive* DM statistic means
-the random walk has lower MSFE. To reproduce her sign we pass the AR
-errors as `e1` and the random-walk errors as `e2`.
+the random walk has the lower MSFE. To reproduce her sign convention we
+pass the AR errors as `e1` and the random-walk errors as `e2`.
 
 ``` r
 countries <- levels(rossi2006$country)
@@ -172,8 +172,8 @@ knitr::kable(run_panel(2), row.names = FALSE,
 $DM_{T}$ statistic ($p$-value), AR(2) vs. RW
 
 These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly.
-The statistics are typically positive – the random walk has lower MSFE
-than the AR model – with two-sided p-values rarely below 5%, the
+The statistics are typically positive (the random walk has the lower
+MSFE), and the two-sided $p$-values rarely fall below 5%. This is the
 classical Meese-Rogoff finding.
 
 ## Single-country deep dive: Japan, AR(1), recursive
@@ -202,10 +202,10 @@ dm_test(fc_jp$e_alt, fc_jp$e_bench, alternative = "two.sided", correction = FALS
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-The cumulative squared-error differential – using Rossi’s sign
-convention so that positive means the *random walk* is winning – shows
-the AR’s edge is concentrated in narrow sub-samples rather than uniform
-across the OOS period:
+The cumulative squared-error differential, using Rossi’s sign convention
+so that positive values mean the *random walk* is winning, shows that
+the AR’s edge is concentrated in narrow sub-samples rather than spread
+uniformly across the OOS period.
 
 ``` r
 loss_diff <- fc_jp$e_alt^2 - fc_jp$e_bench^2

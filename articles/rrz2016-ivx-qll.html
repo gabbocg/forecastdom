@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Rapach et al. (2016)">
@@ -86,26 +86,24 @@ Economics</em>, 121, 46-65), using two functions from
 <strong>forecastdom</strong>:</p>
 <ul>
 <li>
-<code><a href="../reference/ivx_wald.html">ivx_wald()</a></code> – Kostakis, Magdalinos and Stamatogiannis
-(2015) IVX-Wald test for return predictability with persistent
-regressors.</li>
+<code><a href="../reference/ivx_wald.html">ivx_wald()</a></code>: the Kostakis, Magdalinos, and
+Stamatogiannis (2015) IVX-Wald test for return predictability with
+persistent regressors.</li>
 <li>
-<code><a href="../reference/qll_hat.html">qll_hat()</a></code> – Elliott and Müller (2006)
+<code><a href="../reference/qll_hat.html">qll_hat()</a></code>: the Elliott and Müller (2006)
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>q</mi><mi>L</mi><mi>L</mi></mrow><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{qLL}</annotation></semantics></math>
 test for time-varying coefficients.</li>
 </ul>
 <p>The predictive regression is</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>=</mo><mi>α</mi><mo>+</mo><mi>β</mi><mspace width="0.167em"></mspace><msub><mtext mathvariant="normal">SII</mtext><mi>t</mi></msub><mo>+</mo><msub><mi>ε</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>r</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mi>h</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>h</mi></munderover><msub><mi>r</mi><mrow><mi>t</mi><mo>+</mo><mi>j</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
-r_{t:t+h} = \alpha + \beta\,\text{SII}_t + \varepsilon_{t:t+h},
-\qquad r_{t:t+h} = \frac{1}{h}\sum_{j=1}^{h} r_{t+j},
-</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>=</mo><mi>α</mi><mo>+</mo><mi>β</mi><mspace width="0.167em"></mspace><msub><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">I</mi><mi mathvariant="normal">I</mi></mrow><mi>t</mi></msub><mo>+</mo><msub><mi>ε</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>r</mi><mrow><mi>t</mi><mo>:</mo><mi>t</mi><mo>+</mo><mi>h</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mi>h</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>h</mi></munderover><msub><mi>r</mi><mrow><mi>t</mi><mo>+</mo><mi>j</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">r_{t:t+h} = \alpha + \beta\,\mathrm{SII}_t + \varepsilon_{t:t+h}, \qquad r_{t:t+h} = \frac{1}{h}\sum_{j=1}^{h} r_{t+j},</annotation></semantics></math></p>
 <p>at horizons
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>1</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>6</mn><mo>,</mo><mn>12</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">h \in \{1, 3, 6, 12\}</annotation></semantics></math>.
 IVX-Wald tests
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>β</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0:\beta = 0</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>β</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H_0: \beta = 0</annotation></semantics></math>.
+The
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>q</mi><mi>L</mi><mi>L</mi></mrow><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{qLL}</annotation></semantics></math>
-tests
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>β</mi><mi>t</mi></msub><mo>=</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">H_0:\beta_t = \beta</annotation></semantics></math>
+statistic tests
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><msub><mi>β</mi><mi>t</mi></msub><mo>=</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">H_0: \beta_t = \beta</annotation></semantics></math>
 for all
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -126,14 +124,15 @@ index (EWSI), 1973-01 to 2014-12 (504 observations).</p>
 <div class="section level2">
 <h2 id="replicating-table-a2">Replicating Table A2<a class="anchor" aria-label="anchor" href="#replicating-table-a2"></a>
 </h2>
-<p>The original MATLAB program (file <code>Compute_IVX_Wald.m</code> in
-the JFE data archive) calls the IVX-Wald with
-<code>beta = 0.99, M_n = 0</code> and the <strong>negated</strong> SII
-(RRZ hypothesise SII negatively predicts returns; sign does not affect
-the Wald statistic). The
+<p>The original MATLAB program (<code>Compute_IVX_Wald.m</code> in the
+JFE data archive) calls the IVX-Wald with
+<code>beta = 0.99, M_n = 0</code> and the <strong>negated</strong> SII.
+RRZ hypothesise that SII negatively predicts returns, and the sign does
+not affect the Wald statistic. The
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>q</mi><mi>L</mi><mi>L</mi></mrow><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{qLL}</annotation></semantics></math>
-is called with NW truncation <code>L = h</code>. We pass the same
-arguments to <code><a href="../reference/ivx_wald.html">ivx_wald()</a></code> and <code><a href="../reference/qll_hat.html">qll_hat()</a></code>:</p>
+test is called with Newey-West truncation <code>L = h</code>. We pass
+the same arguments to <code><a href="../reference/ivx_wald.html">ivx_wald()</a></code> and
+<code><a href="../reference/qll_hat.html">qll_hat()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">horizons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">12</span><span class="op">)</span></span>
 <span></span>
@@ -190,13 +189,25 @@ arguments to <code><a href="../reference/ivx_wald.html">ivx_wald()</a></code> an
 <li>IVX-Wald: 10% = 2.71, 5% = 3.84, 1% = 6.64.</li>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>q</mi><mi>L</mi><mi>L</mi></mrow><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{qLL}</annotation></semantics></math>:
-10% = -7.14, 5% = -8.36, 1% = -11.05 (reject for small values).</li>
+10% =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>7.14</mn></mrow><annotation encoding="application/x-tex">-7.14</annotation></semantics></math>,
+5% =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>8.36</mn></mrow><annotation encoding="application/x-tex">-8.36</annotation></semantics></math>,
+1% =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>11.05</mn></mrow><annotation encoding="application/x-tex">-11.05</annotation></semantics></math>
+(reject for small values).</li>
 </ul>
 <p>For comparison, the paper reports IVX-Wald = 3.38*, 4.51**, 4.60**,
-3.67* and qLL = -3.72, -4.86, -4.91, -5.02 – our values match to two
-decimal places at every horizon. Conclusion: SII predicts the equity
-premium at all horizons (significant IVX-Wald) with no rejection of
-constant β.</p>
+3.67* and qLL =
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>3.72</mn></mrow><annotation encoding="application/x-tex">-3.72</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>4.86</mn></mrow><annotation encoding="application/x-tex">-4.86</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>4.91</mn></mrow><annotation encoding="application/x-tex">-4.91</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>5.02</mn></mrow><annotation encoding="application/x-tex">-5.02</annotation></semantics></math>.
+Our values match to two decimal places at every horizon. Conclusion: SII
+predicts the equity premium at all horizons (significant IVX-Wald) and
+constant
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+is not rejected.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

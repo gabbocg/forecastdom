@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Clark &amp; McCracken (2001)">
@@ -82,9 +82,9 @@
 <p>This article reproduces the Phillips-curve forecasting illustration
 of Clark and McCracken (2001, Section 5) on the bundled
 <code>cm2001</code> dataset. The benchmark forecasts US unemployment
-from its own lags (univariate AR); the alternative adds lagged
-inflation. <code><a href="../reference/enc_new.html">enc_new()</a></code> tests whether the AR forecasts
-<em>encompass</em> those of the augmented ARX model — i.e., whether
+from its own lags (univariate AR). The alternative adds lagged inflation
+(ARX). <code><a href="../reference/enc_new.html">enc_new()</a></code> tests whether the AR forecasts
+<em>encompass</em> those of the larger ARX model, i.e. whether lagged
 inflation adds any predictive content beyond what lagged unemployment
 already contains.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -231,26 +231,40 @@ remaining observations form the out-of-sample period.</p>
 </tr>
 </tbody>
 </table>
-<p>For every lag order considered, the ARX model achieves a lower MSFE
-than the pure AR — that is, knowing past inflation reduces out-of-sample
-unemployment-forecast error. ENC-NEW values are large relative to the
-Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which are
-tabulated in <code>k2</code> (number of extra regressors =
-<code>p</code>) and <code>π = P/R</code>. For <code>k2 = 6</code>,
-<code>π ≈ 2</code>, the 5% CV is ≈ 8.6; for <code>k2 = 12</code>,
-<code>π ≈ 2</code>, the 5% CV is ≈ 12.0. The realised statistics in the
-table exceed these benchmarks decisively in every specification, so the
-AR forecasts do <strong>not</strong> encompass the ARX — inflation
-carries real predictive content for unemployment.</p>
+<p>At every lag order the ARX model achieves a lower MSFE than the pure
+AR. That is, knowing past inflation reduces out-of-sample
+unemployment-forecast error. The ENC-NEW values are large relative to
+the Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which
+are tabulated in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mn>2</mn></msub><annotation encoding="application/x-tex">k_2</annotation></semantics></math>
+(number of extra regressors, equal to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>)
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mi>P</mi><mi>/</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">\pi = P/R</annotation></semantics></math>.
+For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">k_2 = 6</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>≈</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\pi \approx 2</annotation></semantics></math>
+the 5% critical value is about 8.6; for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">k_2 = 12</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>≈</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\pi \approx 2</annotation></semantics></math>
+it is about 12.0. Our statistics exceed these benchmarks decisively at
+every specification, so the AR forecasts do <strong>not</strong>
+encompass the ARX: lagged inflation carries real predictive content for
+unemployment.</p>
 </div>
 <div class="section level2">
 <h2 id="comparison-with-clark-west-msfe-adjusted">Comparison with Clark-West MSFE-adjusted<a class="anchor" aria-label="anchor" href="#comparison-with-clark-west-msfe-adjusted"></a>
 </h2>
-<p><code><a href="../reference/enc_new.html">enc_new()</a></code> answers an encompassing question;
+<p><code><a href="../reference/enc_new.html">enc_new()</a></code> answers the encompassing question.
 <code><a href="../reference/cw_test.html">cw_test()</a></code> answers the closely related “equal MSFE” question
-with a t-statistic that has a standard normal asymptotic distribution.
-The two tests typically point the same way; reporting both is
-informative.</p>
+using a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-statistic
+that is approximately
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(0, 1)</annotation></semantics></math>
+under the null. The two tests typically point the same way, and
+reporting both is informative.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rows2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">3L</span>, <span class="fl">6L</span>, <span class="fl">12L</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>

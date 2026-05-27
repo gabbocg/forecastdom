@@ -77,9 +77,9 @@ knitr::kable(
 ## Takeaway
 
 Technical indicators deliver positive $R_{OS}^{2}$ with Clark-West
-statistics significant at conventional levels — the central finding of
-Neely et al. (2014) that technical signals carry information beyond what
-macro variables provide.
+statistics that are significant at conventional levels. This is the
+central finding of Neely et al. (2014): technical signals carry
+information beyond what macro variables provide.
 
 ## References
 

@@ -77,8 +77,8 @@ knitr::kable(
 ## Takeaway
 
 Out-of-sample gains over the historical mean are economically small
-across the Goyal-Welch macro predictors — the well-known Goyal-Welch
-puzzle that motivated Rapach and Zhou (2013).
+across the Goyal-Welch macro predictors. This is the well-known
+Goyal-Welch puzzle that motivated Rapach and Zhou (2013).
 
 ## References
 

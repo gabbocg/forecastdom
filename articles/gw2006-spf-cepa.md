@@ -1,14 +1,14 @@
 # Replicating Giacomini & White (2006)
 
 This article applies
-[`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
-— Giacomini and White (2006) conditional equal predictive ability (CEPA)
-test — to the Survey of Professional Forecasters’ mean CPI inflation
-forecasts. The benchmark is a naive random walk in inflation (next
-quarter’s forecast = this quarter’s realised inflation); the alternative
-is the SPF mean at horizons $h = 0,1,2,3,4$ quarters. The bundled
-`gw2006` dataset extends GW’s quarterly sample to the present using the
-same Philadelphia Fed SPF source.
+[`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md),
+the Giacomini and White (2006) test of conditional equal predictive
+ability (CEPA), to the Survey of Professional Forecasters’ mean CPI
+inflation forecasts. The benchmark is a naive random walk in inflation
+(next quarter’s forecast equals this quarter’s realised inflation). The
+alternative is the SPF mean at horizons $h \in \{ 0,1,2,3,4\}$ quarters.
+The bundled `gw2006` dataset extends GW’s quarterly sample to the
+present using the same Philadelphia Fed SPF source.
 
 ``` r
 library(forecastdom)
@@ -65,21 +65,21 @@ knitr::kable(
 |   3 | 174 |       4.708 |      5.434 | 3.581 |     0.167 | FALSE  |
 |   4 | 173 |       4.884 |      5.435 | 2.908 |     0.234 | FALSE  |
 
-At every horizon SPF has lower mean squared error than the random-walk
+At every horizon SPF has a lower mean squared error than the random-walk
 benchmark, yet the GW test fails to reject conditional equal predictive
-ability at the 5% level. The pattern is consistent with Atkeson and
-Ohanian (2001): once the autocorrelation of the loss differential is
-accounted for, sophisticated inflation forecasts are hard to distinguish
-from a “no-change” benchmark in a formal test.
+ability at the 5% level. The pattern matches Atkeson and Ohanian (2001):
+once the autocorrelation of the loss differential is taken into account,
+sophisticated inflation forecasts are hard to tell apart from a
+“no-change” benchmark in a formal test.
 
 ## Choice of instruments
 
 [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
-defaults to two instruments: a constant and the lagged loss
+uses two instruments by default: a constant and the lagged loss
 differential. Different instruments target different features of the
 conditioning information set. Below we replace the lag with the lagged
-inflation level — a regime indicator that captures high/low inflation
-environments — at horizon $h = 1$.
+inflation level (a regime indicator that captures high- and
+low-inflation environments) at horizon $h = 1$.
 
 ``` r
 h <- 1L
@@ -128,11 +128,11 @@ regardless of which conditioning instruments or loss function we choose.
 ## Note on the original paper
 
 Giacomini and White (2006, Section 4) compare SPF nowcasts to the
-*Greenbook* — the Federal Reserve staff’s internal inflation forecast —
+*Greenbook* (the Federal Reserve staff’s internal inflation forecast)
 using a richer instrument set. They find that the test *does* reject
 equal conditional predictive ability between the two *sophisticated*
-forecasts in some conditioning states. Replicating that result requires
-Greenbook data with its five-year embargo; this article instead
+forecasts in some conditioning states. Replicating that result needs
+Greenbook data with its five-year embargo. This article instead
 demonstrates the test mechanics against the simpler random-walk
 benchmark, which is freely available.
 

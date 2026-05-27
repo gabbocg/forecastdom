@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Quaedvlieg (2021)">
@@ -80,33 +80,35 @@
     
     
 <p>This article demonstrates the two multi-horizon superior predictive
-ability tests from Quaedvlieg (2021), implemented in
+ability tests of Quaedvlieg (2021), implemented in
 <strong>forecastdom</strong> as <code><a href="../reference/uspa_mh_test.html">uspa_mh_test()</a></code> and
-<code><a href="../reference/aspa_mh_test.html">aspa_mh_test()</a></code>. Both tests compare a <em>path</em> of
+<code><a href="../reference/aspa_mh_test.html">aspa_mh_test()</a></code>. Both compare a whole <em>path</em> of
 forecasts at horizons
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">h = 1, \dots, H</annotation></semantics></math>
-rather than each horizon in isolation, and use a moving-block bootstrap
-to obtain critical values that account for serial dependence in the
+rather than each horizon in isolation, and both use a moving-block
+bootstrap whose critical values absorb the serial dependence in the
 loss-differential path.</p>
 <ul>
 <li>
 <strong>Uniform SPA</strong>
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">u</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">P</mi><mi mathvariant="normal">A</mi></mrow><annotation encoding="application/x-tex">\mathrm{uSPA}</annotation></semantics></math>)
-— null: the benchmark is at least as good as the competitor at
-<em>every</em> horizon. Test statistic is the minimum of horizon-wise
-standardized loss differentials.</li>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">u</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">P</mi><mi mathvariant="normal">A</mi></mrow><annotation encoding="application/x-tex">\mathrm{uSPA}</annotation></semantics></math>).
+The null is that the benchmark is at least as good as the competitor at
+<em>every</em> horizon. The test statistic is the minimum of the
+horizon-wise standardized loss differentials.</li>
 <li>
 <strong>Average SPA</strong>
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">a</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">P</mi><mi mathvariant="normal">A</mi></mrow><annotation encoding="application/x-tex">\mathrm{aSPA}</annotation></semantics></math>)
-— null: the benchmark is at least as good as the competitor on a
-(user-specified) weighted average of horizons. Test statistic is the
-standardized weighted average loss differential.</li>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">a</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">P</mi><mi mathvariant="normal">A</mi></mrow><annotation encoding="application/x-tex">\mathrm{aSPA}</annotation></semantics></math>).
+The null is that the benchmark is at least as good as the competitor on
+a user-specified weighted average of horizons. The test statistic is the
+standardized weighted-average loss differential.</li>
 </ul>
-<p>Throughout, the loss differential is defined as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><msub><mi>L</mi><mrow><mtext mathvariant="normal">bench</mtext><mo>,</mo><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>L</mi><mrow><mtext mathvariant="normal">comp</mtext><mo>,</mo><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{h,t} = L_{\text{bench},h,t} - L_{\text{comp},h,t}</annotation></semantics></math>,
-so positive entries indicate the benchmark has <em>higher</em> loss (is
-worse) at that horizon, and rejection of either null requires the
-benchmark to be uniformly (or on average) worse.</p>
+<p>The loss differential is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><msub><mi>L</mi><mrow><mtext mathvariant="normal">bench</mtext><mo>,</mo><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>L</mi><mrow><mtext mathvariant="normal">comp</mtext><mo>,</mo><mi>h</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">d_{h,t} = L_{\text{bench},h,t} - L_{\text{comp},h,t},</annotation></semantics></math></p>
+<p>so a positive entry means the benchmark has <em>higher</em> loss (is
+worse) at horizon
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>.
+Either null is rejected when the benchmark is worse uniformly (uSPA) or
+worse on average (aSPA).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">)</span></span>
@@ -121,9 +123,9 @@ archive: <code>$uspa</code> and <code>$aspa</code>, each
 <div class="section level2">
 <h2 id="per-horizon-picture">Per-horizon picture<a class="anchor" aria-label="anchor" href="#per-horizon-picture"></a>
 </h2>
-<p>Before running the tests, it’s worth looking at the per-horizon mean
-loss differentials. The two example matrices are constructed so that
-they discriminate between the tests.</p>
+<p>Before running the tests it is worth looking at the per-horizon mean
+loss differentials. The two example matrices are constructed precisely
+so that they tell the tests apart.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">quaedvlieg2021</span><span class="op">$</span><span class="va">uspa</span><span class="op">)</span></span>
 <span></span>
@@ -232,7 +234,7 @@ they discriminate between the tests.</p>
 </tbody>
 </table>
 <p><code>$uspa</code> shows positive mean loss differentials at
-<em>every</em> horizon — the benchmark is worse uniformly.
+<em>every</em> horizon, so the benchmark is worse uniformly.
 <code>$aspa</code> shows positive means at most horizons but a near-zero
 mean at the shortest horizon, so the benchmark is worse on average but
 not uniformly.</p>
@@ -307,11 +309,11 @@ not uniformly.</p>
 <span><span class="co">#&gt; │  Bootstrap replications: 999                       │</span></span>
 <span><span class="co">#&gt; │  Significance level: 0.0500                        │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The uSPA test rejects on <code>$uspa</code> (all horizons show the
+<p>The uSPA test rejects on <code>$uspa</code> (every horizon shows the
 benchmark losing) but fails to reject on <code>$aspa</code> at the 5%
-level, because the shortest horizon’s mean is essentially zero — the
-<code>min</code> of standardized horizon-wise means is pulled down by
-that single horizon.</p>
+level. The reason is that the shortest horizon’s mean is essentially
+zero, and the <code>min</code> over standardized horizon-wise means is
+pulled down by that single horizon.</p>
 </div>
 <div class="section level2">
 <h2 id="average-multi-horizon-spa">Average multi-horizon SPA<a class="anchor" aria-label="anchor" href="#average-multi-horizon-spa"></a>
@@ -319,7 +321,7 @@ that single horizon.</p>
 <p>With uniform weights
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>h</mi></msub><mo>=</mo><mn>1</mn><mi>/</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">w_h = 1/H</annotation></semantics></math>
 the aSPA statistic is the standardized unweighted average loss
-differential:</p>
+differential.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">w_unif</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="va">H</span>, <span class="va">H</span><span class="op">)</span></span>
 <span></span>
@@ -372,12 +374,14 @@ differential:</p>
 <span><span class="co">#&gt; │  Bootstrap replications: 999                       │</span></span>
 <span><span class="co">#&gt; │  Significance level: 0.0500                        │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The aSPA test rejects on <em>both</em> datasets — the negative h=1
+<p>The aSPA test rejects on <em>both</em> datasets. The slightly
+negative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">h = 1</annotation></semantics></math>
 mean of <code>$aspa</code> is more than compensated by positive means at
 longer horizons, so the weighted average favours rejection. This is the
 power gain Quaedvlieg (2021) emphasises: by aggregating across the
-forecast path, the average test detects model-level differences that the
-per-horizon Diebold-Mariano machinery would miss because of the
+forecast path the average test detects model-level differences that
+horizon-by-horizon Diebold-Mariano comparisons miss under the
 multiple-testing burden.</p>
 <div class="section level3">
 <h3 id="custom-weights">Custom weights<a class="anchor" aria-label="anchor" href="#custom-weights"></a>
@@ -442,9 +446,13 @@ zero:</p>
 <h2 id="block-length-sensitivity">Block-length sensitivity<a class="anchor" aria-label="anchor" href="#block-length-sensitivity"></a>
 </h2>
 <p>The moving-block bootstrap depends on the block length
-<code>L</code>. The p-value is robust over a reasonable range — small
-enough to keep many blocks, large enough to capture the path’s serial
-dependence:</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>.
+The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
+is robust over a reasonable range:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+should be small enough to keep many blocks and large enough to capture
+the path’s serial dependence.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span></span>
 <span></span>
@@ -517,9 +525,14 @@ dependence:</p>
 </tr>
 </tbody>
 </table>
-<p>The statistics are independent of <code>L</code> (they depend only on
-the QS HAC long-run variance, not on the bootstrap), and the p-values
-are stable across <code>L</code> for this dataset.</p>
+<p>The statistics are independent of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+because they depend only on the QS HAC long-run variance, not on the
+bootstrap, and the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
+are stable across
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+for this dataset.</p>
 </div>
 <div class="section level2">
 <h2 id="takeaways">Takeaways<a class="anchor" aria-label="anchor" href="#takeaways"></a>
@@ -527,16 +540,17 @@ are stable across <code>L</code> for this dataset.</p>
 <ul>
 <li>
 <code><a href="../reference/uspa_mh_test.html">uspa_mh_test()</a></code> rejects only when the benchmark loses at
-<em>every</em> horizon — strong power against uniform underperformance,
-limited power against horizon-specific failures.</li>
+<em>every</em> horizon. It has strong power against uniform
+underperformance and limited power against horizon-specific
+failures.</li>
 <li>
 <code><a href="../reference/aspa_mh_test.html">aspa_mh_test()</a></code> rejects when the
 <em>weighted-average</em> differential favours the competitor, even if
 performance at individual horizons is mixed. The choice of weights
-determines which segment of the forecast path drives the decision.</li>
-<li>The moving-block bootstrap is essential: forecast paths exhibit
-natural serial dependence, especially when the same model is evaluated
-at successive horizons.</li>
+determines which part of the forecast path drives the decision.</li>
+<li>The moving-block bootstrap is essential. Forecast paths show natural
+serial dependence, especially when the same model is evaluated at
+successive horizons.</li>
 </ul>
 </div>
 <div class="section level2">

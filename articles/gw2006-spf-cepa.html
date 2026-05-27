@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Giacomini &amp; White (2006)">
@@ -79,13 +79,13 @@
 
     
     
-<p>This article applies <code><a href="../reference/gw_test.html">gw_test()</a></code> — Giacomini and White
-(2006) conditional equal predictive ability (CEPA) test — to the Survey
-of Professional Forecasters’ mean CPI inflation forecasts. The benchmark
-is a naive random walk in inflation (next quarter’s forecast = this
-quarter’s realised inflation); the alternative is the SPF mean at
-horizons
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">h = 0, 1, 2, 3, 4</annotation></semantics></math>
+<p>This article applies <code><a href="../reference/gw_test.html">gw_test()</a></code>, the Giacomini and White
+(2006) test of conditional equal predictive ability (CEPA), to the
+Survey of Professional Forecasters’ mean CPI inflation forecasts. The
+benchmark is a naive random walk in inflation (next quarter’s forecast
+equals this quarter’s realised inflation). The alternative is the SPF
+mean at horizons
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mn>4</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">h \in \{0, 1, 2, 3, 4\}</annotation></semantics></math>
 quarters. The bundled <code>gw2006</code> dataset extends GW’s quarterly
 sample to the present using the same Philadelphia Fed SPF source.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -191,21 +191,21 @@ sample to the present using the same Philadelphia Fed SPF source.</p>
 </tr>
 </tbody>
 </table>
-<p>At every horizon SPF has lower mean squared error than the
+<p>At every horizon SPF has a lower mean squared error than the
 random-walk benchmark, yet the GW test fails to reject conditional equal
-predictive ability at the 5% level. The pattern is consistent with
-Atkeson and Ohanian (2001): once the autocorrelation of the loss
-differential is accounted for, sophisticated inflation forecasts are
-hard to distinguish from a “no-change” benchmark in a formal test.</p>
+predictive ability at the 5% level. The pattern matches Atkeson and
+Ohanian (2001): once the autocorrelation of the loss differential is
+taken into account, sophisticated inflation forecasts are hard to tell
+apart from a “no-change” benchmark in a formal test.</p>
 </div>
 <div class="section level2">
 <h2 id="choice-of-instruments">Choice of instruments<a class="anchor" aria-label="anchor" href="#choice-of-instruments"></a>
 </h2>
-<p><code><a href="../reference/gw_test.html">gw_test()</a></code> defaults to two instruments: a constant and
-the lagged loss differential. Different instruments target different
+<p><code><a href="../reference/gw_test.html">gw_test()</a></code> uses two instruments by default: a constant
+and the lagged loss differential. Different instruments target different
 features of the conditioning information set. Below we replace the lag
-with the lagged inflation level — a regime indicator that captures
-high/low inflation environments — at horizon
+with the lagged inflation level (a regime indicator that captures high-
+and low-inflation environments) at horizon
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">h = 1</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span>
@@ -277,13 +277,13 @@ choose.</p>
 <h2 id="note-on-the-original-paper">Note on the original paper<a class="anchor" aria-label="anchor" href="#note-on-the-original-paper"></a>
 </h2>
 <p>Giacomini and White (2006, Section 4) compare SPF nowcasts to the
-<em>Greenbook</em> — the Federal Reserve staff’s internal inflation
-forecast — using a richer instrument set. They find that the test
+<em>Greenbook</em> (the Federal Reserve staff’s internal inflation
+forecast) using a richer instrument set. They find that the test
 <em>does</em> reject equal conditional predictive ability between the
 two <em>sophisticated</em> forecasts in some conditioning states.
-Replicating that result requires Greenbook data with its five-year
-embargo; this article instead demonstrates the test mechanics against
-the simpler random-walk benchmark, which is freely available.</p>
+Replicating that result needs Greenbook data with its five-year embargo.
+This article instead demonstrates the test mechanics against the simpler
+random-walk benchmark, which is freely available.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

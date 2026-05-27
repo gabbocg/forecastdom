@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Get Started with forecastdom">
@@ -82,14 +82,13 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><strong>forecastdom</strong> provides a comprehensive suite of
-forecast evaluation tests organized around the taxonomy proposed by Li,
-Liao, and Quaedvlieg (2022):</p>
+<p><strong>forecastdom</strong> collects forecast evaluation tests under
+the taxonomy of Li, Liao, and Quaedvlieg (2022):</p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
-<th><strong>Equal</strong></th>
-<th><strong>Superior</strong></th>
+<th><strong>Equal accuracy</strong></th>
+<th><strong>Superior accuracy</strong></th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -104,9 +103,10 @@ Liao, and Quaedvlieg (2022):</p>
 </tr>
 </tbody>
 </table>
-<p>Along with complementary tests for nested models
-(<code><a href="../reference/cw_test.html">cw_test()</a></code>, <code><a href="../reference/enc_new.html">enc_new()</a></code>), predictive regressions
-(<code><a href="../reference/ivx_wald.html">ivx_wald()</a></code>), and parameter instability
+<p>It also bundles the tests usually paired with these in applied work:
+nested-model comparisons (<code><a href="../reference/cw_test.html">cw_test()</a></code>,
+<code><a href="../reference/enc_new.html">enc_new()</a></code>, <code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>), return
+predictability (<code><a href="../reference/ivx_wald.html">ivx_wald()</a></code>), and parameter instability
 (<code><a href="../reference/qll_hat.html">qll_hat()</a></code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
@@ -116,9 +116,10 @@ Liao, and Quaedvlieg (2022):</p>
 <h2 id="pairwise-forecast-comparison">Pairwise Forecast Comparison<a class="anchor" aria-label="anchor" href="#pairwise-forecast-comparison"></a>
 </h2>
 <div class="section level3">
-<h3 id="diebold-mariano-test">Diebold-Mariano Test<a class="anchor" aria-label="anchor" href="#diebold-mariano-test"></a>
+<h3 id="diebold-mariano-test">Diebold-Mariano test<a class="anchor" aria-label="anchor" href="#diebold-mariano-test"></a>
 </h3>
-<p>The simplest starting point: compare two sets of forecast errors.</p>
+<p>Compares two sets of forecast errors and asks whether the average
+loss differential is zero.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">e2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, mean <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span></span>
@@ -141,15 +142,22 @@ Liao, and Quaedvlieg (2022):</p>
 <span><span class="co">#&gt; │  Loss function: SE                                 │</span></span>
 <span><span class="co">#&gt; │  Reference distribution: t(199)                    │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The <code>correction = TRUE</code> default applies the Harvey,
-Leybourne, and Newbold (1997) small-sample correction with
-t-distribution critical values.</p>
+<p>The default <code>correction = TRUE</code> applies the Harvey,
+Leybourne, and Newbold (1997) small-sample correction, which uses a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+distribution with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">T - 1</annotation></semantics></math>
+degrees of freedom in place of the asymptotic normal.</p>
 </div>
 <div class="section level3">
-<h3 id="clark-west-test">Clark-West Test<a class="anchor" aria-label="anchor" href="#clark-west-test"></a>
+<h3 id="clark-west-test">Clark-West test<a class="anchor" aria-label="anchor" href="#clark-west-test"></a>
 </h3>
-<p>For nested models, the standard DM test is undersized. The Clark-West
-(2007) MSFE-adjusted test corrects for this:</p>
+<p>The standard DM test is undersized when the two models are nested.
+The Clark-West (2007) MSFE-adjusted statistic fixes this by adding a
+correction term for the extra parameters in the larger model and is
+approximately
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">N(0,1)</annotation></semantics></math>
+under the null.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span><span class="op">)</span></span>
 <span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="va">actual</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">200</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="co"># benchmark (restricted)</span></span>
@@ -174,10 +182,11 @@ t-distribution critical values.</p>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="giacomini-white-test">Giacomini-White Test<a class="anchor" aria-label="anchor" href="#giacomini-white-test"></a>
+<h3 id="giacomini-white-test">Giacomini-White test<a class="anchor" aria-label="anchor" href="#giacomini-white-test"></a>
 </h3>
-<p>Tests whether two methods have <em>conditionally</em> equal
-predictive ability, using instruments from the information set:</p>
+<p>Asks whether two methods have equal predictive ability <em>given</em>
+the information available to the forecaster. The default instruments are
+a constant and the lagged loss differential.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gw_test.html">gw_test</a></span><span class="op">(</span><span class="va">e1</span>, <span class="va">e2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -204,10 +213,13 @@ predictive ability, using instruments from the information set:</p>
 <h2 id="multiple-forecast-comparison">Multiple Forecast Comparison<a class="anchor" aria-label="anchor" href="#multiple-forecast-comparison"></a>
 </h2>
 <div class="section level3">
-<h3 id="hansens-spa-test">Hansen’s SPA Test<a class="anchor" aria-label="anchor" href="#hansens-spa-test"></a>
+<h3 id="hansens-spa-test">Hansen’s SPA test<a class="anchor" aria-label="anchor" href="#hansens-spa-test"></a>
 </h3>
-<p>Tests whether a benchmark is unconditionally superior to all
-competitors simultaneously:</p>
+<p>Asks whether the benchmark has the lowest expected loss among all
+competitors. The null is that no competitor beats the benchmark on
+average; the bootstrap controls family-wise error across the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>J</mi><annotation encoding="application/x-tex">J</annotation></semantics></math>
+comparisons.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">250</span>, a <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/spa_test.html">spa_test</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">Y</span>, level <span class="op">=</span> <span class="fl">0.05</span>, B <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
@@ -232,14 +244,20 @@ competitors simultaneously:</p>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="cspa-test">CSPA Test<a class="anchor" aria-label="anchor" href="#cspa-test"></a>
+<h3 id="cspa-test">CSPA test<a class="anchor" aria-label="anchor" href="#cspa-test"></a>
 </h3>
-<p>The main contribution of Li, Liao, and Quaedvlieg (2022). Tests
-whether the benchmark’s conditional expected loss is no more than that
-of any competitor, <em>uniformly</em> across all conditioning
-states:</p>
+<p>Li, Liao, and Quaedvlieg (2022) ask the same question conditional on
+a state variable
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mi>t</mi></msub><annotation encoding="application/x-tex">X_t</annotation></semantics></math>.
+The null is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><munder><mo>min</mo><mi>j</mi></munder><mspace width="0.167em"></mspace><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>L</mi><mrow><mn>0</mn><mo>,</mo><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>L</mi><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>∣</mo><msub><mi>X</mi><mi>t</mi></msub><mo>=</mo><mi>x</mi><mo stretchy="true" form="postfix">]</mo></mrow><mo>≤</mo><mn>0</mn><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for all </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">H_0:\ \min_{j}\, \mathbb{E}[L_{0,t} - L_{j,t} \mid X_t = x] \le 0 \quad \text{for all } x,</annotation></semantics></math></p>
+<p>i.e. there is no competitor and no state value where the benchmark is
+strictly worse. The test combines a Legendre-polynomial series estimate
+of the conditional mean differentials
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>j</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">h_j(x)</annotation></semantics></math>
+with an HAC-based Gaussian-process critical value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Under the null (a = 1): benchmark weakly dominates</span></span>
+<code class="sourceCode R"><span><span class="co"># Under the null (a = 1) the benchmark is weakly dominant</span></span>
 <span><span class="va">sim_null</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">500</span>, a <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">sim_null</span><span class="op">$</span><span class="va">Y</span>, <span class="va">sim_null</span><span class="op">$</span><span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -266,7 +284,7 @@ states:</p>
 <span><span class="co">#&gt; │  Selected (j,x) pairs: 1440 / 1440 (100.0%)        │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Under the alternative (a = 1.5): a competitor outperforms in some states</span></span>
+<code class="sourceCode R"><span><span class="co"># Under the alternative (a = 1.5) one competitor beats the benchmark in some states</span></span>
 <span><span class="va">sim_alt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">500</span>, a <span class="op">=</span> <span class="fl">1.5</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">sim_alt</span><span class="op">$</span><span class="va">Y</span>, <span class="va">sim_alt</span><span class="op">$</span><span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -298,20 +316,24 @@ states:</p>
 <div class="section level3">
 <h3 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h3>
-<p>The <code><a href="../reference/cspa_test_plot.html">cspa_test_plot()</a></code> function displays the estimated
-conditional mean functions
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>h</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{h}_j(x)</annotation></semantics></math>,
-their lower envelope, and the confidence bound:</p>
+<p><code><a href="../reference/cspa_test_plot.html">cspa_test_plot()</a></code> draws the estimated conditional means
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>h</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat h_j(x)</annotation></semantics></math>,
+their lower envelope, and the upper confidence bound on that envelope.
+The CSPA null is rejected when the dashed bound drops below zero
+anywhere on the support of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cspa_test_plot.html">cspa_test_plot</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <p><img src="forecastdom_files/figure-html/cspa-plot-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
-<h3 id="csms-confidence-set-for-the-most-superior">CSMS: Confidence Set for the Most Superior<a class="anchor" aria-label="anchor" href="#csms-confidence-set-for-the-most-superior"></a>
+<h3 id="csms-confidence-set-for-the-most-superior">CSMS: confidence set for the most superior<a class="anchor" aria-label="anchor" href="#csms-confidence-set-for-the-most-superior"></a>
 </h3>
-<p>When there is no <em>a priori</em> benchmark, the CSMS inverts the
-CSPA test for each candidate and collects those that are not
-rejected:</p>
+<p>If no model is singled out as the benchmark, <code><a href="../reference/csms.html">csms()</a></code> runs
+the CSPA test once per candidate and keeps the candidates that are
+<em>not</em> rejected. The resulting set is asymptotically a
+level-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1-\alpha)</annotation></semantics></math>
+confidence set for the conditionally most-superior method.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/csms.html">csms</a></span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span>, method_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"LASSO"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -320,10 +342,13 @@ rejected:</p>
 <h2 id="predictive-regressions">Predictive Regressions<a class="anchor" aria-label="anchor" href="#predictive-regressions"></a>
 </h2>
 <div class="section level3">
-<h3 id="ivx-wald-test">IVX-Wald Test<a class="anchor" aria-label="anchor" href="#ivx-wald-test"></a>
+<h3 id="ivx-wald-test">IVX-Wald test<a class="anchor" aria-label="anchor" href="#ivx-wald-test"></a>
 </h3>
-<p>Robust test for return predictability with potentially persistent
-predictors:</p>
+<p>Kostakis, Magdalinos, and Stamatogiannis (2015) build an instrument
+from a near-stationary transformation of the regressor so that the
+predictability test has a standard
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>χ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\chi^2</annotation></semantics></math>
+distribution even when the predictor is near-unit-root.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">300</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
@@ -353,10 +378,17 @@ predictors:</p>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="elliott-muller-test">Elliott-Muller Test<a class="anchor" aria-label="anchor" href="#elliott-muller-test"></a>
+<h3 id="elliott-muller-test">Elliott-Muller test<a class="anchor" aria-label="anchor" href="#elliott-muller-test"></a>
 </h3>
-<p>Tests the null hypothesis of constant regression coefficients against
-the alternative of general time variation:</p>
+<p>Tests
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mspace width="0.222em"></mspace><msub><mi>β</mi><mi>t</mi></msub><mo>=</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">H_0:\ \beta_t = \beta</annotation></semantics></math>
+for all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+against the alternative that the regression coefficient drifts. The
+statistic
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mrow><mi>q</mi><mi>L</mi><mi>L</mi></mrow><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{qLL}</annotation></semantics></math>
+has a non-standard limit; critical values are tabulated in Elliott and
+Muller (2006, Table 1).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, <span class="va">n</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">y2</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>

@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Rossi (2006)">
@@ -98,7 +98,7 @@ beat a driftless random walk out of sample?</p>
 </h2>
 <p>Five bilateral nominal exchange rates against the U.S. dollar
 (Canada, France, Germany, Italy, Japan), monthly from March 1973 to
-December 1998 – 310 observations per country.</p>
+December 1998, 310 observations per country.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">rossi2006</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">fx</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"#47A5C5"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -115,36 +115,36 @@ December 1998 – 310 observations per country.</p>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>t</mi></msub><annotation encoding="application/x-tex">e_t</annotation></semantics></math>
 denote the log exchange rate and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><msub><mi>e</mi><mi>t</mi></msub><mo>=</mo><msub><mi>e</mi><mi>t</mi></msub><mo>−</mo><msub><mi>e</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\Delta e_t = e_t - e_{t-1}</annotation></semantics></math>
-its monthly return. Two competing one-step-ahead forecasts of
+its monthly return. We compare two one-step-ahead forecasts of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><msub><mi>e</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\Delta e_{t+1}</annotation></semantics></math>:</p>
 <ul>
 <li>
-<strong>Benchmark – driftless random walk:</strong>
+<strong>Benchmark</strong> (driftless random walk):
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mrow><mi>Δ</mi><mi>e</mi></mrow><mo accent="true">̂</mo></mover><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>R</mi><mi>W</mi></mrow></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\widehat{\Delta e}^{RW}_{t+1} = 0</annotation></semantics></math>.</li>
 <li>
-<strong>Alternative – AR(<em>p</em>):</strong>
+<strong>Alternative</strong>
+(AR(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>)):
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mrow><mi>Δ</mi><mi>e</mi></mrow><mo accent="true">̂</mo></mover><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>=</mo><msub><mover><mi>α</mi><mo accent="true">̂</mo></mover><mi>t</mi></msub><mo>+</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>p</mi></msubsup><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mrow><mi>k</mi><mo>,</mo><mi>t</mi></mrow></msub><mspace width="0.167em"></mspace><mi>Δ</mi><msub><mi>e</mi><mrow><mi>t</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\widehat{\Delta e}^{AR}_{t+1} = \hat\alpha_t + \sum_{k=1}^{p} \hat\beta_{k,t}\, \Delta e_{t-k+1}</annotation></semantics></math>,
 with coefficients re-estimated each period.</li>
 </ul>
-<p>Following Rossi, both AR(1) and AR(2) start from the same usable
-sample of
+<p>Following Rossi, AR(1) and AR(2) share the same usable sample of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mo>=</mo><mn>307</mn></mrow><annotation encoding="application/x-tex">n_{obs} = 307</annotation></semantics></math>
 returns. The first
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">⌈</mo><msub><mi>n</mi><mrow><mi>o</mi><mi>b</mi><mi>s</mi></mrow></msub><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌉</mo><mo>=</mo><mn>154</mn></mrow><annotation encoding="application/x-tex">R = \lceil n_{obs}/2 \rceil = 154</annotation></semantics></math>
-are used to fit the initial model and the remaining
+observations fit the initial model, and the remaining
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>153</mn></mrow><annotation encoding="application/x-tex">P = 153</annotation></semantics></math>
 are evaluated out of sample. Three estimation schemes are
 considered:</p>
 <ul>
 <li>
-<strong>Split</strong> – coefficients estimated once on
+<strong>Split</strong>: coefficients estimated once on
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>:</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">1{:}R</annotation></semantics></math>
 and held fixed.</li>
 <li>
-<strong>Recursive</strong> – coefficients re-estimated each period
+<strong>Recursive</strong>: coefficients re-estimated each period
 using all available data.</li>
 <li>
-<strong>Rolling</strong> – coefficients re-estimated each period
+<strong>Rolling</strong>: coefficients re-estimated each period
 using the most recent
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
 observations.</li>
@@ -192,14 +192,14 @@ observations.</li>
 <div class="section level2">
 <h2 id="replicating-the-oos-dm-panel-of-table-1">Replicating the OOS DM panel of Table 1<a class="anchor" aria-label="anchor" href="#replicating-the-oos-dm-panel-of-table-1"></a>
 </h2>
-<p>We use <code><a href="../reference/dm_test.html">dm_test()</a></code> with <code>correction = FALSE</code> to
-match Rossi’s asymptotic
+<p>We call <code><a href="../reference/dm_test.html">dm_test()</a></code> with <code>correction = FALSE</code>
+to match Rossi’s asymptotic
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>χ</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\chi^2(1)</annotation></semantics></math>
 reference distribution. Rossi defines the loss differential as
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>t</mi></msub><mo>=</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>A</mi><mi>R</mi></mrow></msubsup><mo>−</mo><msubsup><mi>u</mi><mi>t</mi><mrow><mi>R</mi><mi>W</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">f_t = u^{AR}_t - u^{RW}_t</annotation></semantics></math>,
-so a <em>positive</em> DM statistic means the random walk has lower
-MSFE. To reproduce her sign we pass the AR errors as <code>e1</code> and
-the random-walk errors as <code>e2</code>.</p>
+so a <em>positive</em> DM statistic means the random walk has the lower
+MSFE. To reproduce her sign convention we pass the AR errors as
+<code>e1</code> and the random-walk errors as <code>e2</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">country</span><span class="op">)</span></span>
 <span><span class="va">schemes</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"split"</span>, <span class="st">"recursive"</span>, <span class="st">"rolling"</span><span class="op">)</span></span>
@@ -342,9 +342,10 @@ AR(2) vs. RW</caption>
 </tbody>
 </table>
 <p>These cells reproduce the OOS DM panel of Rossi (2006) Table 1
-exactly. The statistics are typically positive – the random walk has
-lower MSFE than the AR model – with two-sided p-values rarely below 5%,
-the classical Meese-Rogoff finding.</p>
+exactly. The statistics are typically positive (the random walk has the
+lower MSFE), and the two-sided
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
+rarely fall below 5%. This is the classical Meese-Rogoff finding.</p>
 </div>
 </div>
 <div class="section level2">
@@ -372,10 +373,10 @@ the classical Meese-Rogoff finding.</p>
 <span><span class="co">#&gt; │  Loss function: SE                                 │</span></span>
 <span><span class="co">#&gt; │  Reference distribution: N(0,1)                    │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The cumulative squared-error differential – using Rossi’s sign
-convention so that positive means the <em>random walk</em> is winning –
-shows the AR’s edge is concentrated in narrow sub-samples rather than
-uniform across the OOS period:</p>
+<p>The cumulative squared-error differential, using Rossi’s sign
+convention so that positive values mean the <em>random walk</em> is
+winning, shows that the AR’s edge is concentrated in narrow sub-samples
+rather than spread uniformly across the OOS period.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">loss_diff</span> <span class="op">&lt;-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_alt</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">fc_jp</span><span class="op">$</span><span class="va">e_bench</span><span class="op">^</span><span class="fl">2</span></span>
 <span><span class="va">oos_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">rossi2006</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>, <span class="va">fc_jp</span><span class="op">$</span><span class="va">P</span><span class="op">)</span></span>

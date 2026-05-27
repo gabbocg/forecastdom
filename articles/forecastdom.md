@@ -2,19 +2,20 @@
 
 ## Overview
 
-**forecastdom** provides a comprehensive suite of forecast evaluation
-tests organized around the taxonomy proposed by Li, Liao, and Quaedvlieg
-(2022):
+**forecastdom** collects forecast evaluation tests under the taxonomy of
+Li, Liao, and Quaedvlieg (2022):
 
-|                   | **Equal**                                                                 | **Superior**                                                                  |
+|                   | **Equal accuracy**                                                        | **Superior accuracy**                                                         |
 |-------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | **Unconditional** | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)   |
 | **Conditional**   | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) |
 
-Along with complementary tests for nested models
+It also bundles the tests usually paired with these in applied work:
+nested-model comparisons
 ([`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md),
-[`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)),
-predictive regressions
+[`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md),
+[`mse_f_test()`](https://gabbocg.github.io/forecastdom/reference/mse_f_test.md)),
+return predictability
 ([`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md)),
 and parameter instability
 ([`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md)).
@@ -26,9 +27,10 @@ set.seed(42)
 
 ## Pairwise Forecast Comparison
 
-### Diebold-Mariano Test
+### Diebold-Mariano test
 
-The simplest starting point: compare two sets of forecast errors.
+Compares two sets of forecast errors and asks whether the average loss
+differential is zero.
 
 ``` r
 e1 <- rnorm(200)
@@ -54,14 +56,16 @@ dm_test(e1, e2)
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-The `correction = TRUE` default applies the Harvey, Leybourne, and
-Newbold (1997) small-sample correction with t-distribution critical
-values.
+The default `correction = TRUE` applies the Harvey, Leybourne, and
+Newbold (1997) small-sample correction, which uses a $t$ distribution
+with $T - 1$ degrees of freedom in place of the asymptotic normal.
 
-### Clark-West Test
+### Clark-West test
 
-For nested models, the standard DM test is undersized. The Clark-West
-(2007) MSFE-adjusted test corrects for this:
+The standard DM test is undersized when the two models are nested. The
+Clark-West (2007) MSFE-adjusted statistic fixes this by adding a
+correction term for the extra parameters in the larger model and is
+approximately $N(0,1)$ under the null.
 
 ``` r
 actual <- rnorm(200)
@@ -87,10 +91,11 @@ cw_test(actual - f1, actual - f2, f1, f2)
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-### Giacomini-White Test
+### Giacomini-White test
 
-Tests whether two methods have *conditionally* equal predictive ability,
-using instruments from the information set:
+Asks whether two methods have equal predictive ability *given* the
+information available to the forecaster. The default instruments are a
+constant and the lagged loss differential.
 
 ``` r
 gw_test(e1, e2)
@@ -116,10 +121,12 @@ gw_test(e1, e2)
 
 ## Multiple Forecast Comparison
 
-### Hansen’s SPA Test
+### Hansen’s SPA test
 
-Tests whether a benchmark is unconditionally superior to all competitors
-simultaneously:
+Asks whether the benchmark has the lowest expected loss among all
+competitors. The null is that no competitor beats the benchmark on
+average; the bootstrap controls family-wise error across the $J$
+comparisons.
 
 ``` r
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
@@ -145,14 +152,20 @@ spa_test(sim$Y, level = 0.05, B = 1000)
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-### CSPA Test
+### CSPA test
 
-The main contribution of Li, Liao, and Quaedvlieg (2022). Tests whether
-the benchmark’s conditional expected loss is no more than that of any
-competitor, *uniformly* across all conditioning states:
+Li, Liao, and Quaedvlieg (2022) ask the same question conditional on a
+state variable $X_{t}$. The null is
+
+$$H_{0}:\ \min\limits_{j}\,{\mathbb{E}}\left\lbrack L_{0,t} - L_{j,t} \mid X_{t} = x \right\rbrack \leq 0\quad{\text{for all}\mspace{6mu}}x,$$
+
+i.e. there is no competitor and no state value where the benchmark is
+strictly worse. The test combines a Legendre-polynomial series estimate
+of the conditional mean differentials $h_{j}(x)$ with an HAC-based
+Gaussian-process critical value.
 
 ``` r
-# Under the null (a = 1): benchmark weakly dominates
+# Under the null (a = 1) the benchmark is weakly dominant
 sim_null <- do_sim(J = 3, n = 500, a = 1, c = 0, rho_u = 0.4)
 cspa_test(sim_null$Y, sim_null$X, level = 0.05, trim = 2)
 #> 
@@ -181,7 +194,7 @@ cspa_test(sim_null$Y, sim_null$X, level = 0.05, trim = 2)
 ```
 
 ``` r
-# Under the alternative (a = 1.5): a competitor outperforms in some states
+# Under the alternative (a = 1.5) one competitor beats the benchmark in some states
 sim_alt <- do_sim(J = 3, n = 500, a = 1.5, c = 0, rho_u = 0.4)
 result <- cspa_test(sim_alt$Y, sim_alt$X, level = 0.05, trim = 2)
 
@@ -213,10 +226,11 @@ result
 
 ### Visualization
 
-The
 [`cspa_test_plot()`](https://gabbocg.github.io/forecastdom/reference/cspa_test_plot.md)
-function displays the estimated conditional mean functions
-${\widehat{h}}_{j}(x)$, their lower envelope, and the confidence bound:
+draws the estimated conditional means ${\widehat{h}}_{j}(x)$, their
+lower envelope, and the upper confidence bound on that envelope. The
+CSPA null is rejected when the dashed bound drops below zero anywhere on
+the support of $x$.
 
 ``` r
 cspa_test_plot(result)
@@ -224,10 +238,13 @@ cspa_test_plot(result)
 
 ![](forecastdom_files/figure-html/cspa-plot-1.png)
 
-### CSMS: Confidence Set for the Most Superior
+### CSMS: confidence set for the most superior
 
-When there is no *a priori* benchmark, the CSMS inverts the CSPA test
-for each candidate and collects those that are not rejected:
+If no model is singled out as the benchmark,
+[`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md) runs
+the CSPA test once per candidate and keeps the candidates that are *not*
+rejected. The resulting set is asymptotically a level-$(1 - \alpha)$
+confidence set for the conditionally most-superior method.
 
 ``` r
 csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "LASSO"))
@@ -235,10 +252,12 @@ csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "
 
 ## Predictive Regressions
 
-### IVX-Wald Test
+### IVX-Wald test
 
-Robust test for return predictability with potentially persistent
-predictors:
+Kostakis, Magdalinos, and Stamatogiannis (2015) build an instrument from
+a near-stationary transformation of the regressor so that the
+predictability test has a standard $\chi^{2}$ distribution even when the
+predictor is near-unit-root.
 
 ``` r
 n <- 300
@@ -269,10 +288,12 @@ ivx_wald(y, as.matrix(x), K = 1, M_n = floor(n^(1/3)))
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-### Elliott-Muller Test
+### Elliott-Muller test
 
-Tests the null hypothesis of constant regression coefficients against
-the alternative of general time variation:
+Tests $H_{0}:\ \beta_{t} = \beta$ for all $t$ against the alternative
+that the regression coefficient drifts. The statistic $\widehat{qLL}$
+has a non-standard limit; critical values are tabulated in Elliott and
+Muller (2006, Table 1).
 
 ``` r
 X <- matrix(rnorm(n * 2), n, 2)

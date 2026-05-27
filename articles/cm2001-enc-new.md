@@ -3,11 +3,11 @@
 This article reproduces the Phillips-curve forecasting illustration of
 Clark and McCracken (2001, Section 5) on the bundled `cm2001` dataset.
 The benchmark forecasts US unemployment from its own lags (univariate
-AR); the alternative adds lagged inflation.
+AR). The alternative adds lagged inflation (ARX).
 [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
-tests whether the AR forecasts *encompass* those of the augmented ARX
-model — i.e., whether inflation adds any predictive content beyond what
-lagged unemployment already contains.
+tests whether the AR forecasts *encompass* those of the larger ARX
+model, i.e. whether lagged inflation adds any predictive content beyond
+what lagged unemployment already contains.
 
 ``` r
 library(forecastdom)
@@ -105,25 +105,25 @@ knitr::kable(
 |   6 |       362 |        3.02 |       0.031 |        0.031 |            1.833 |  14.754 |
 |  12 |       356 |        2.97 |       0.032 |        0.033 |           -2.459 |  20.984 |
 
-For every lag order considered, the ARX model achieves a lower MSFE than
-the pure AR — that is, knowing past inflation reduces out-of-sample
-unemployment-forecast error. ENC-NEW values are large relative to the
-Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which are
-tabulated in `k2` (number of extra regressors = `p`) and `π = P/R`. For
-`k2 = 6`, `π ≈ 2`, the 5% CV is ≈ 8.6; for `k2 = 12`, `π ≈ 2`, the 5% CV
-is ≈ 12.0. The realised statistics in the table exceed these benchmarks
-decisively in every specification, so the AR forecasts do **not**
-encompass the ARX — inflation carries real predictive content for
-unemployment.
+At every lag order the ARX model achieves a lower MSFE than the pure AR.
+That is, knowing past inflation reduces out-of-sample
+unemployment-forecast error. The ENC-NEW values are large relative to
+the Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which
+are tabulated in $k_{2}$ (number of extra regressors, equal to $p$) and
+$\pi = P/R$. For $k_{2} = 6$ and $\pi \approx 2$ the 5% critical value
+is about 8.6; for $k_{2} = 12$ and $\pi \approx 2$ it is about 12.0. Our
+statistics exceed these benchmarks decisively at every specification, so
+the AR forecasts do **not** encompass the ARX: lagged inflation carries
+real predictive content for unemployment.
 
 ## Comparison with Clark-West MSFE-adjusted
 
 [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
-answers an encompassing question;
+answers the encompassing question.
 [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
-answers the closely related “equal MSFE” question with a t-statistic
-that has a standard normal asymptotic distribution. The two tests
-typically point the same way; reporting both is informative.
+answers the closely related “equal MSFE” question using a $t$-statistic
+that is approximately $N(0,1)$ under the null. The two tests typically
+point the same way, and reporting both is informative.
 
 ``` r
 rows2 <- lapply(c(1L, 3L, 6L, 12L), function(p) {

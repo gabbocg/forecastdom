@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Welch &amp; Goyal (2008)">
@@ -83,46 +83,47 @@
 (2008, <em>RFS</em>) for the <strong>log dividend-price ratio</strong>
 as a predictor of the annual log equity premium. The bundled
 <code>wg2008</code> dataset is built from WG’s original
-<code>PredictorData.xls</code> (annual sheet) — the data vintage shipped
+<code>PredictorData.xls</code> (annual sheet), the data vintage shipped
 with the published paper. The effective sample is <strong>1872-2005 (134
 annual observations)</strong>, matching WG: the file itself begins in
-1871, but the one-year lag in the predictor consumes that row.</p>
-<p>The benchmark is the prevailing historical mean (NULL); the
+1871, but the one-year lag in the predictor consumes that first row.</p>
+<p>The benchmark is the prevailing historical mean (NULL). The
 alternative is a predictive regression on the lagged predictor
-(ALTERNATIVE). The predictor is constructed as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><msub><mn>12</mn><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mtext mathvariant="normal">Index</mtext><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(D12_{t-1}) - \log(\text{Index}_{t-1})</annotation></semantics></math>
-per WG Section 1, where
+(ALTERNATIVE). The predictor is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><msub><mn>12</mn><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mtext mathvariant="normal">Index</mtext><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">x_{t-1} = \log(D12_{t-1}) - \log(\text{Index}_{t-1}),</annotation></semantics></math></p>
+<p>per WG Section 1, where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mn>12</mn></mrow><annotation encoding="application/x-tex">D12</annotation></semantics></math>
 is the 12-month moving sum of dividends and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtext mathvariant="normal">Index</mtext><annotation encoding="application/x-tex">\text{Index}</annotation></semantics></math>
-is the S&amp;P 500 price level. (WG’s public plotting script
-<code>goyal-welch-plots.R</code> uses the level D/P instead, but their
-paper text and Table 1 use the log form.)</p>
-<p>WG report five OOS statistics per predictor in Table 1; this article
-computes each on the same data:</p>
+is the S&amp;P 500 price level. (The public plotting script
+<code>goyal-welch-plots.R</code> uses the level D/P, but WG’s paper text
+and Table 1 use the log form.)</p>
+<p>WG report five OOS statistics per predictor in Table 1, all of which
+we compute on the same data:</p>
 <ul>
 <li>
-<strong>R²_OS</strong> — out-of-sample R² (Campbell-Thompson
-2008).</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>:
+out-of-sample
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
+(Campbell-Thompson 2008).</li>
 <li>
-<strong>ΔRMSE</strong> —
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><msub><mtext mathvariant="normal">MSE</mtext><mi>N</mi></msub></msqrt><mo>−</mo><msqrt><msub><mtext mathvariant="normal">MSE</mtext><mi>A</mi></msub></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{\text{MSE}_N} - \sqrt{\text{MSE}_A}</annotation></semantics></math>.</li>
-<li>
-<strong>MSE-F</strong> — McCracken (2007) F-statistic for equal MSE
-(<code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>).</li>
-<li>
-<strong>ENC-NEW</strong> — Clark-McCracken (2001) encompassing test
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mtext mathvariant="normal">RMSE</mtext></mrow><annotation encoding="application/x-tex">\Delta\text{RMSE}</annotation></semantics></math>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><msub><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">E</mi></mrow><mi>N</mi></msub></msqrt><mo>−</mo><msqrt><msub><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">E</mi></mrow><mi>A</mi></msub></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{\mathrm{MSE}_N} - \sqrt{\mathrm{MSE}_A}</annotation></semantics></math>.</li>
+<li>MSE-F: McCracken (2007)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>-statistic
+for equal MSE (<code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>).</li>
+<li>ENC-NEW: Clark-McCracken (2001) encompassing test
 (<code><a href="../reference/enc_new.html">enc_new()</a></code>).</li>
-<li>
-<strong>CW MSFE-adj</strong> — Clark-West (2007) MSFE-adjusted
-t-statistic (<code><a href="../reference/cw_test.html">cw_test()</a></code>), reported by WG in footnote 2.</li>
+<li>CW MSFE-adj: Clark-West (2007) MSFE-adjusted
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-statistic
+(<code><a href="../reference/cw_test.html">cw_test()</a></code>), which WG report in footnote 2.</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wg2008</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># WG (2008) Table 1 covers 1872-2005 — the entire bundled file.</span></span>
+<span><span class="co"># WG (2008) Table 1 covers 1872-2005, the entire bundled file.</span></span>
 <span><span class="va">wg</span> <span class="op">&lt;-</span> <span class="va">wg2008</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>first_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, last_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">wg</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">wg</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; first_year  last_year          n </span></span>
@@ -162,14 +163,18 @@ contemporaneous <code>log_dp_lag[t]</code>.</li>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="table-1-five-tests-across-three-oos-specifications">Table 1 — five tests across three OOS specifications<a class="anchor" aria-label="anchor" href="#table-1-five-tests-across-three-oos-specifications"></a>
+<h2 id="table-1-five-tests-across-three-oos-specifications">Table 1: five tests across three OOS specifications<a class="anchor" aria-label="anchor" href="#table-1-five-tests-across-three-oos-specifications"></a>
 </h2>
-<p>WG explore three OOS-start dates: 20 years after the data begins (≈
-1892), 1965, and the most recent 30 years (1976-2005). The column
-<code>R2_bar_OS</code> is the <em>adjusted</em> out-of-sample R² that WG
-report in Table 1, applied to the OOS sample of size T:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>T</mi><mo>−</mo><mi>k</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,(T-1)/(T-k)</annotation></semantics></math>
-with k = 2 parameters (intercept + predictor).</p>
+<p>WG explore three OOS-start dates: 20 years after the data begins
+(around 1892), 1965, and the most recent 30 years (1976-2005). The
+column <code>R2_bar_OS</code> is the <em>adjusted</em> out-of-sample
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mn>2</mn></msup><annotation encoding="application/x-tex">R^2</annotation></semantics></math>
+that WG report in Table 1, applied to the OOS sample of size
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>1</mn><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mfrac><mrow><mi>T</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>T</mi><mo>−</mo><mi>k</mi></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\bar R^2_{OS} = 1 - (1 - R^2_{OS})\,\frac{T-1}{T-k},</annotation></semantics></math></p>
+<p>with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">k = 2</annotation></semantics></math>
+parameters (intercept plus predictor).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">specs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"20 yr after start (1892+)"</span>, R <span class="op">=</span> <span class="fl">20L</span><span class="op">)</span>,</span>
@@ -334,22 +339,25 @@ with k = 2 parameters (intercept + predictor).</p>
 </table>
 <p>The longest window matches WG <strong>exactly to two
 decimals</strong>. The two shorter windows are within 0.1 percentage
-points. The pattern of the residual gap — zero on the long sample, small
-on the short samples that are entirely post-1965 — is consistent with
+points. The pattern of the residual gap (zero on the long sample, small
+on the short samples that are entirely post-1965) is consistent with
 minor revisions to Goyal’s annual data file between the 2007 vintage
-that fed the published paper and the version currently distributed
-through Goyal’s website. The longest window draws most of its weight
-from pre-1965 data that hasn’t been revised; the shorter windows are
+that fed the published paper and the version currently distributed on
+Goyal’s website. The longest window draws most of its weight from
+pre-1965 data that has not been revised. The shorter windows are
 entirely post-1965 and show small drift in proportion to how
 concentrated they are. Other plausible reconstructions (WG’s
-<code>log(1 + R − Rfree)</code> plotting-script formula, hybrid
+<code>log(1 + R - Rfree)</code> plotting-script formula, hybrid
 Shiller/CRSP returns, alternative OOS-start boundaries) do not close the
 gap.</p>
 <p>The deterioration of DP through time is unmistakable: a small
-negative R²_OS in the long sample, deeper-negative in 1965+, and
-substantially negative for 1976-2005. McCracken (2004) and
-Clark-McCracken (2001) asymptotic 5% critical values for k₂ = 1 extra
-regressor:</p>
+negative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
+in the long sample, more negative in 1965+, and substantially negative
+for 1976-2005. The McCracken (2004) and Clark-McCracken (2001)
+asymptotic 5% critical values for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k_2 = 1</annotation></semantics></math>
+extra regressor are:</p>
 <table class="table">
 <thead><tr class="header">
 <th align="right">π = P/R</th>
@@ -374,17 +382,18 @@ regressor:</p>
 </tr>
 </tbody>
 </table>
-<p>For the 1892+ window (π ≈ 6.4) MSE-F is small and ENC-NEW is below
-the 5% threshold; for the recent 30 years both statistics are firmly
-negative or near zero. No window supports a “DP beats the mean”
-conclusion under WG’s tests.</p>
+<p>For the 1892+ window
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>≈</mo><mn>6.4</mn></mrow><annotation encoding="application/x-tex">\pi \approx 6.4</annotation></semantics></math>)
+MSE-F is small and ENC-NEW is below the 5% threshold. For the recent 30
+years both statistics are firmly negative or near zero. No window
+supports a “DP beats the mean” conclusion under WG’s tests.</p>
 </div>
 <div class="section level2">
-<h2 id="wg-figure-1-cumulative-sse-difference-for-dp">WG Figure 1 — cumulative SSE difference for DP<a class="anchor" aria-label="anchor" href="#wg-figure-1-cumulative-sse-difference-for-dp"></a>
+<h2 id="wg-figure-1-cumulative-sse-difference-for-dp">WG Figure 1: cumulative SSE difference for DP<a class="anchor" aria-label="anchor" href="#wg-figure-1-cumulative-sse-difference-for-dp"></a>
 </h2>
-<p>WG’s signature visual is the cumulative squared-error difference
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mrow><mi>s</mi><mo>≤</mo><mi>t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>e</mi><mrow><mi>N</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>e</mi><mrow><mi>A</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2)</annotation></semantics></math>:
-a rising line means the ALTERNATIVE beats the NULL up to that date, a
+<p>WG’s signature visual is the cumulative squared-error difference</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>∑</mo><mrow><mi>s</mi><mo>≤</mo><mi>t</mi></mrow></munder><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>e</mi><mrow><mi>N</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>e</mi><mrow><mi>A</mi><mo>,</mo><mi>s</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\sum_{s \le t}(e_{N,s}^2 - e_{A,s}^2).</annotation></semantics></math></p>
+<p>A rising line means the ALTERNATIVE beats the NULL up to that date, a
 falling line the opposite. The plot below mirrors the <em>d/p</em> panel
 of WG Figure 1 (IS = dotted, OOS = solid; Oil Shock 1973-1975 shaded in
 red).</p>
@@ -428,10 +437,10 @@ red).</p>
 a quiet first half-century, a climb from WW II to the early 1970s where
 DP modestly beats the historical mean, a peak around the Oil Shock, and
 a steep decline through the 1990s as the dividend yield collapsed during
-the dot-com bull market. The IS line (dashed) sits steadily above zero —
-DP looks like a useful in-sample predictor — while the OOS line (solid)
-eventually crashes through zero in the late 1990s, the gap between IS
-and OOS that motivated WG’s “comprehensive look”.</p>
+the dot-com bull market. The IS line (dashed) sits steadily above zero,
+so DP looks like a useful in-sample predictor. The OOS line (solid)
+eventually crashes through zero in the late 1990s. This gap between IS
+and OOS is what motivated WG’s “comprehensive look”.</p>
 </div>
 <div class="section level2">
 <h2 id="takeaway">Takeaway<a class="anchor" aria-label="anchor" href="#takeaway"></a>
@@ -440,20 +449,22 @@ and OOS that motivated WG’s “comprehensive look”.</p>
 own data and procedure:</p>
 <ul>
 <li>
-<strong>Long sample (1892+)</strong> — every OOS statistic agrees
+<strong>Long sample (1892+)</strong>: every OOS statistic agrees
 that DP does not significantly beat the historical mean; the
 encompassing evidence is weak.</li>
 <li>
-<strong>1965+ window</strong> — both R²_OS and MSE-F turn clearly
-negative.</li>
+<strong>1965+ window</strong>: both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
+and MSE-F turn clearly negative.</li>
 <li>
-<strong>Recent 30 years (1976+)</strong> — the DP-augmented forecast
+<strong>Recent 30 years (1976+)</strong>: the DP-augmented forecast
 is decisively worse than the historical mean.</li>
 </ul>
-<p>This is precisely WG’s central message about the dividend-price
-ratio: in-sample significance does not survive an honest out-of-sample
-evaluation, and the cumulative-SSE plot makes the structural break
-around the Oil Shock and the late-1990s decline immediate.</p>
+<p>This is the central message of Welch and Goyal about the
+dividend-price ratio: in-sample significance does not survive an honest
+out-of-sample evaluation, and the cumulative-SSE plot makes the
+structural break around the Oil Shock and the late-1990s decline
+immediate.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

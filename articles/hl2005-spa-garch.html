@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Hansen &amp; Lunde (2005)">
@@ -80,11 +80,11 @@
     
     
 <p>This article reproduces the central question of Hansen and Lunde
-(2005, <em>JAE</em>) — <em>Does anything beat a GARCH(1,1)?</em> — using
+(2005, <em>JAE</em>), <em>Does anything beat a GARCH(1,1)?</em>, using
 <code><a href="../reference/spa_test.html">spa_test()</a></code> on the bundled <code>hl2005</code> dataset. The
-benchmark is GARCH(1,1) with constant mean and Gaussian errors; the
-alternatives are 329 other GARCH-family specifications. The
-realized-variance proxy choice turns out to matter for the decision.</p>
+benchmark is GARCH(1,1) with constant mean and Gaussian errors. The
+alternatives are 329 other GARCH-family specifications. The choice of
+realized-variance proxy turns out to matter for the decision.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">hl2005</span><span class="op">)</span></span>
@@ -119,10 +119,10 @@ GARCH(1,1) wins.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span>, <span class="st">"of"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Competitors with lower MSE than GARCH(1,1): 187 of 329</span></span></code></pre></div>
 <p>More than half of the 329 alternatives beat GARCH(1,1) on average
-loss — the unconditional ranking does not single out GARCH(1,1). The
+loss, so the unconditional ranking does not single out GARCH(1,1). The
 question is whether any of them does so by a <em>statistically
 significant</em> margin after correcting for multiple testing. That is
-exactly what <code><a href="../reference/spa_test.html">spa_test()</a></code> answers.</p>
+what <code><a href="../reference/spa_test.html">spa_test()</a></code> answers.</p>
 </div>
 <div class="section level2">
 <h2 id="spa-test-against-the-primary-rv-proxy">SPA test against the primary RV proxy<a class="anchor" aria-label="anchor" href="#spa-test-against-the-primary-rv-proxy"></a>
@@ -152,10 +152,12 @@ exactly what <code><a href="../reference/spa_test.html">spa_test()</a></code> an
 <span><span class="co">#&gt; │  Bootstrap replications: 5000                      │</span></span>
 <span><span class="co">#&gt; │  Significance level: 0.0500                        │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>T_SPA is large but the bootstrap p-value sits just above 5%.
-Conclusion: at the 5% level, with the 5-minute linear-interpolation
-proxy, <em>nothing significantly beats GARCH(1,1)</em> — Hansen and
-Lunde’s headline finding.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>T</mi><mrow><mi>S</mi><mi>P</mi><mi>A</mi></mrow></msup><annotation encoding="application/x-tex">T^{SPA}</annotation></semantics></math>
+is large but the bootstrap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
+sits just above 5%. Conclusion: at the 5% level, with the 5-minute
+linear-interpolation proxy, <em>nothing significantly beats
+GARCH(1,1)</em>. This is Hansen and Lunde’s headline finding.</p>
 </div>
 <div class="section level2">
 <h2 id="robustness-across-realised-variance-proxies">Robustness across realised-variance proxies<a class="anchor" aria-label="anchor" href="#robustness-across-realised-variance-proxies"></a>
@@ -257,22 +259,28 @@ robustness table.</p>
 <ul>
 <li>
 <strong>Noisy proxy</strong> (<code>sq_ccr</code>, squared
-close-to-close returns): T_SPA much smaller and p-value far from
-rejection. With a noisy target no model can be confidently ranked
-against any other.</li>
+close-to-close returns):
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>T</mi><mrow><mi>S</mi><mi>P</mi><mi>A</mi></mrow></msup><annotation encoding="application/x-tex">T^{SPA}</annotation></semantics></math>
+is much smaller and the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
+is far from rejection. With a noisy target no model can be confidently
+ranked against any other.</li>
 <li>
-<strong>Coarse intraday proxies</strong> (5-min
-linear/previous-tick): p-values hover near 0.07-0.08 — just
-<em>failing</em> to reject GARCH(1,1).</li>
+<strong>Coarse intraday proxies</strong> (5-min linear /
+previous-tick):
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
+hover near 0.07-0.08, just <em>failing</em> to reject GARCH(1,1).</li>
 <li>
-<strong>Fine intraday proxies</strong> (1-min linear/previous-tick,
-Fourier, Spline-250): p-values fall below 5% and the SPA <em>does</em>
-reject — with a sufficiently accurate volatility proxy, some competitor
-models can be shown to beat GARCH(1,1).</li>
+<strong>Fine intraday proxies</strong> (1-min linear /
+previous-tick, Fourier, Spline-250):
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
+fall below 5% and the SPA <em>does</em> reject. With a sufficiently
+accurate volatility proxy some competitor models can be shown to beat
+GARCH(1,1).</li>
 </ul>
-<p>This is precisely Hansen and Lunde’s nuanced answer: GARCH(1,1) is
-hard to beat in any <em>concrete</em> unconditional comparison, but the
-decision is sensitive to how cleanly we measure realised volatility.</p>
+<p>This is the nuanced answer of Hansen and Lunde: GARCH(1,1) is hard to
+beat in any <em>concrete</em> unconditional comparison, but the decision
+is sensitive to how cleanly we measure realised volatility.</p>
 </div>
 <div class="section level2">
 <h2 id="top-10-alternatives-by-mean-loss-5-min-proxy">Top 10 alternatives by mean loss (5-min proxy)<a class="anchor" aria-label="anchor" href="#top-10-alternatives-by-mean-loss-5-min-proxy"></a>
@@ -296,11 +304,12 @@ decision is sensitive to how cleanly we measure realised volatility.</p>
 <span><span class="co">#&gt; V100    9             99         -2.385</span></span>
 <span><span class="co">#&gt; V275   10            274         -2.337</span></span></code></pre></div>
 <p><code>mean_loss_diff</code> is the average of
-<code>L_competitor − L_GARCH(1,1)</code>; negative values mean the
-competitor has lower mean MSE than GARCH(1,1). Columns 261-265
-correspond to the EGARCH family with constant mean and t-distributed
-errors (per the README’s grouping of the 330 specifications) — the most
-consistent winners across proxies.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mtext mathvariant="normal">competitor</mtext></msub><mo>−</mo><msub><mi>L</mi><mtext mathvariant="normal">GARCH(1,1)</mtext></msub></mrow><annotation encoding="application/x-tex">L_{\text{competitor}} - L_{\text{GARCH(1,1)}}</annotation></semantics></math>.
+Negative values mean the competitor has lower mean MSE than GARCH(1,1).
+Columns 261-265 correspond to the EGARCH family with constant mean and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>-distributed
+errors (per the README’s grouping of the 330 specifications). These are
+the most consistent winners across proxies.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

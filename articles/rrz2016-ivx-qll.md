@@ -5,19 +5,19 @@ Ringgenberg, and Zhou (2016), *“Short interest and aggregate stock
 returns”* (*Journal of Financial Economics*, 121, 46-65), using two
 functions from **forecastdom**:
 
-- [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md)
-  – Kostakis, Magdalinos and Stamatogiannis (2015) IVX-Wald test for
+- [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md):
+  the Kostakis, Magdalinos, and Stamatogiannis (2015) IVX-Wald test for
   return predictability with persistent regressors.
-- [`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md)
-  – Elliott and Müller (2006) $\widehat{qLL}$ test for time-varying
+- [`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md):
+  the Elliott and Müller (2006) $\widehat{qLL}$ test for time-varying
   coefficients.
 
 The predictive regression is
 
-$$r_{t:t + h} = \alpha + \beta\,\text{SII}_{t} + \varepsilon_{t:t + h},\qquad r_{t:t + h} = \frac{1}{h}\sum\limits_{j = 1}^{h}r_{t + j},$$
+$$r_{t:t + h} = \alpha + \beta\,{SII}_{t} + \varepsilon_{t:t + h},\qquad r_{t:t + h} = \frac{1}{h}\sum\limits_{j = 1}^{h}r_{t + j},$$
 
-at horizons $h \in \{ 1,3,6,12\}$. IVX-Wald tests $H_{0}:\beta = 0$;
-$\widehat{qLL}$ tests $H_{0}:\beta_{t} = \beta$ for all $t$.
+at horizons $h \in \{ 1,3,6,12\}$. IVX-Wald tests $H_{0}:\beta = 0$. The
+$\widehat{qLL}$ statistic tests $H_{0}:\beta_{t} = \beta$ for all $t$.
 
 ``` r
 library(forecastdom)
@@ -40,14 +40,15 @@ abline(h = 0, lty = 2)
 
 ## Replicating Table A2
 
-The original MATLAB program (file `Compute_IVX_Wald.m` in the JFE data
+The original MATLAB program (`Compute_IVX_Wald.m` in the JFE data
 archive) calls the IVX-Wald with `beta = 0.99, M_n = 0` and the
-**negated** SII (RRZ hypothesise SII negatively predicts returns; sign
-does not affect the Wald statistic). The $\widehat{qLL}$ is called with
-NW truncation `L = h`. We pass the same arguments to
+**negated** SII. RRZ hypothesise that SII negatively predicts returns,
+and the sign does not affect the Wald statistic. The $\widehat{qLL}$
+test is called with Newey-West truncation `L = h`. We pass the same
+arguments to
 [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md)
 and
-[`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md):
+[`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md).
 
 ``` r
 horizons <- c(1, 3, 6, 12)
@@ -84,14 +85,14 @@ Replication of RRZ (2016) Table A2
 Critical values (from RRZ 2016, online appendix):
 
 - IVX-Wald: 10% = 2.71, 5% = 3.84, 1% = 6.64.
-- $\widehat{qLL}$: 10% = -7.14, 5% = -8.36, 1% = -11.05 (reject for
-  small values).
+- $\widehat{qLL}$: 10% = $- 7.14$, 5% = $- 8.36$, 1% = $- 11.05$ (reject
+  for small values).
 
 For comparison, the paper reports IVX-Wald = 3.38\*, 4.51\*\*, 4.60\*\*,
-3.67\* and qLL = -3.72, -4.86, -4.91, -5.02 – our values match to two
-decimal places at every horizon. Conclusion: SII predicts the equity
-premium at all horizons (significant IVX-Wald) with no rejection of
-constant β.
+3.67\* and qLL = $- 3.72$, $- 4.86$, $- 4.91$, $- 5.02$. Our values
+match to two decimal places at every horizon. Conclusion: SII predicts
+the equity premium at all horizons (significant IVX-Wald) and constant
+$\beta$ is not rejected.
 
 ## References
 

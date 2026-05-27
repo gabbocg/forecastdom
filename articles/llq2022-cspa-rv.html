@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Replicating Li et al. (2022)">
@@ -80,11 +80,11 @@
     
     
 <p>This article reproduces the volatility-forecasting application of Li,
-Liao and Quaedvlieg (2022, <em>RFS</em>), Section 4: Figure 2
-(one-vs-one CSPA on JNJ), Figure 3 (one-vs-all CSPA on JNJ), and Table 4
-Panel A (cross-stock rejection counts). All numbers and plots are
-generated from the bundled <code>llq2022_jnj</code>,
-<code>llq2022</code> and <code>llq2022_uv_cspa</code> datasets.</p>
+Liao and Quaedvlieg (2022, <em>RES</em>), Section 4. We replicate Figure
+2 (one-vs-one CSPA on JNJ), Figure 3 (one-vs-all CSPA on JNJ), and Table
+4 Panel A (cross-stock rejection counts). All numbers and plots come
+from the bundled <code>llq2022_jnj</code>, <code>llq2022</code>, and
+<code>llq2022_uv_cspa</code> datasets.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gabbocg.github.io/forecastdom/">forecastdom</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">llq2022_jnj</span><span class="op">)</span>      <span class="co"># JNJ realized variance + 6 forecasts + lagged VIX</span></span>
@@ -93,22 +93,25 @@ generated from the bundled <code>llq2022_jnj</code>,
 <span></span>
 <span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AR1"</span>, <span class="st">"AR22"</span>, <span class="st">"AR22_Lasso"</span>, <span class="st">"HAR"</span>, <span class="st">"HARQ"</span>, <span class="st">"ARFIMA"</span><span class="op">)</span></span>
 <span><span class="va">qlike</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">f</span>, <span class="va">y</span><span class="op">)</span> <span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">f</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span></code></pre></div>
-<p>QLIKE loss <code>(f / y) - log(f / y) - 1</code>, conditioning
-variable one-day-lagged VIX, AIC pre-whitening
+<p>Throughout we use the QLIKE loss
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>f</mi><mi>/</mi><mi>y</mi><mo>−</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mi>/</mi><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">L(f, y) = f/y - \log(f/y) - 1</annotation></semantics></math>,
+one-day-lagged VIX as the conditioning variable, AIC pre-whitening
 (<code>prewhiten = -1</code>, equivalent to Ox
-<code>PreWhiten = 2</code>), no trimming, and <code>R = 10000</code>
-bootstrap replications throughout — matching the call signature in
-<code>Empirics_Volatility.ox</code>.</p>
+<code>PreWhiten = 2</code>), no trimming, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">R = 10{,}000</annotation></semantics></math>
+bootstrap replications. These settings match the call signature in the
+paper’s <code>Empirics_Volatility.ox</code> script.</p>
 <div class="section level2">
-<h2 id="figure-2-jnj-one-versus-one-cspa">Figure 2 — JNJ, one-versus-one CSPA<a class="anchor" aria-label="anchor" href="#figure-2-jnj-one-versus-one-cspa"></a>
+<h2 id="figure-2-jnj-one-versus-one-cspa">Figure 2: JNJ, one-versus-one CSPA<a class="anchor" aria-label="anchor" href="#figure-2-jnj-one-versus-one-cspa"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">L_jnj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="fu">qlike</span><span class="op">(</span><span class="va">llq2022_jnj</span><span class="op">[[</span><span class="va">m</span><span class="op">]</span><span class="op">]</span>, <span class="va">llq2022_jnj</span><span class="op">$</span><span class="va">rv</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">X_jnj</span> <span class="op">&lt;-</span> <span class="va">llq2022_jnj</span><span class="op">$</span><span class="va">vix_lag</span></span></code></pre></div>
-<p>Benchmark is HAR throughout; competitors are AR(1) (left panel) and
-HARQ (right panel). A negative loss differential indicates the benchmark
-is outperformed; the CSPA test rejects if the dashed confidence bound
-dips below zero anywhere over the support of VIX.</p>
+<p>HAR is the benchmark in both panels. The competitor is AR(1) in the
+left panel and HARQ in the right panel. A negative loss differential
+means the benchmark is being beaten at that level of VIX. The CSPA test
+rejects when the dashed upper confidence bound dips below zero anywhere
+on the support of VIX.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
 <span></span>
@@ -177,22 +180,24 @@ dips below zero anywhere over the support of VIX.</p>
 </tr>
 </tbody>
 </table>
-<p>The left panel — AR(1) as the only competitor to HAR — shows the
-conditional loss differential staying above zero throughout the VIX
-support; the test does not reject. The right panel — HARQ as competitor
-— shows the differential dipping clearly below zero in the VIX ≈ 13-19
-range and the confidence bound follows it, so the CSPA null is rejected.
-This matches the paper’s Figure 2 and the accompanying text.</p>
+<p>In the left panel (AR(1) as the only competitor to HAR) the
+conditional loss differential stays above zero across the support of
+VIX, so the test does not reject. In the right panel (HARQ as
+competitor) the differential dips clearly below zero for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">VIX</mtext><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>13</mn><mo>,</mo><mn>19</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\text{VIX} \in [13, 19]</annotation></semantics></math>
+and the confidence bound follows it, so the CSPA null is rejected. This
+matches Figure 2 of the paper and the accompanying text.</p>
 </div>
 <div class="section level2">
-<h2 id="figure-3-jnj-one-versus-all-cspa">Figure 3 — JNJ, one-versus-all CSPA<a class="anchor" aria-label="anchor" href="#figure-3-jnj-one-versus-all-cspa"></a>
+<h2 id="figure-3-jnj-one-versus-all-cspa">Figure 3: JNJ, one-versus-all CSPA<a class="anchor" aria-label="anchor" href="#figure-3-jnj-one-versus-all-cspa"></a>
 </h2>
-<p>Now use all five other models simultaneously as competitors and plot
-each
+<p>Now all five other models are competitors against the same benchmark,
+simultaneously. The plot shows each conditional mean function
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>h</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat h_j(x)</annotation></semantics></math>
-(colored), their lower envelope (solid black) and the upper confidence
-bound on that envelope (dashed black). Rejection of the CSPA null occurs
-when the dashed line is below zero anywhere.</p>
+(coloured), their lower envelope (solid black) and the upper confidence
+bound on that envelope (dashed black). The CSPA null is rejected when
+the dashed line falls below zero at any value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20260512</span><span class="op">)</span></span>
 <span></span>
@@ -262,26 +267,32 @@ when the dashed line is below zero anywhere.</p>
 </tbody>
 </table>
 <p>For AR(1) as benchmark the lower envelope sits well below zero across
-the VIX support and the dashed bound is below zero in the low-VIX region
-— strong CSPA rejection
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≈</mo><mo>−</mo><mn>0.24</mn></mrow><annotation encoding="application/x-tex">\theta \approx -0.24</annotation></semantics></math>,
-p &lt; 0.001). For HARQ as benchmark the envelope dips modestly below
-zero around VIX 25-40 and the dashed bound just barely follows
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≈</mo><mo>−</mo><mn>0.008</mn></mrow><annotation encoding="application/x-tex">\theta \approx -0.008</annotation></semantics></math>,
-p ≈ 0.01) — a borderline rejection at 5%. The paper notes HARQ belongs
-to the CSMS for 24 of the 28 assets, so for the other four HARQ is
-itself rejected; on this dataset, JNJ falls in that small minority.</p>
+the VIX support and the dashed bound is below zero in the low-VIX
+region. This is a strong CSPA rejection
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>θ</mi><mo accent="true">̂</mo></mover><mo>≈</mo><mo>−</mo><mn>0.24</mn></mrow><annotation encoding="application/x-tex">\hat\theta \approx -0.24</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&lt;</mo><mn>0.001</mn></mrow><annotation encoding="application/x-tex">p &lt; 0.001</annotation></semantics></math>).
+For HARQ as benchmark the envelope dips modestly below zero around
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">VIX</mtext><mo>∈</mo><mrow><mo stretchy="true" form="prefix">[</mo><mn>25</mn><mo>,</mo><mn>40</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\text{VIX} \in [25, 40]</annotation></semantics></math>
+and the dashed bound only just follows
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>θ</mi><mo accent="true">̂</mo></mover><mo>≈</mo><mo>−</mo><mn>0.008</mn></mrow><annotation encoding="application/x-tex">\hat\theta \approx -0.008</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>≈</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">p \approx 0.01</annotation></semantics></math>),
+giving a borderline rejection at the 5% level. The paper notes that HARQ
+belongs to the CSMS for 24 of the 28 assets, so HARQ is itself rejected
+on the other four; JNJ falls in that minority.</p>
 </div>
 <div class="section level2">
-<h2 id="table-4-panel-a-cross-stock-rejection-counts">Table 4 Panel A — cross-stock rejection counts<a class="anchor" aria-label="anchor" href="#table-4-panel-a-cross-stock-rejection-counts"></a>
+<h2 id="table-4-panel-a-cross-stock-rejection-counts">Table 4 Panel A: cross-stock rejection counts<a class="anchor" aria-label="anchor" href="#table-4-panel-a-cross-stock-rejection-counts"></a>
 </h2>
-<p>For each of 28 stocks, pairwise CSPA tests are run for every
-benchmark-competitor pair and rejections are tallied at the 5% level.
-Cell
+<p>For each of the 28 stocks we run pairwise CSPA tests over every
+benchmark-competitor pair and tally rejections at the 5% level. Cell
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>,</mo><mi>l</mi><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k, l)</annotation></semantics></math>
-counts the stocks where the null “benchmark <em>l</em> conditionally
-dominates alternative <em>k</em>” is rejected. Computed offline by
-<code>data-raw/llq2022_uv_cspa.R</code> (~5 min at R=10000).</p>
+counts the stocks for which the null “benchmark
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>l</mi><annotation encoding="application/x-tex">l</annotation></semantics></math>
+conditionally dominates alternative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>”
+is rejected. The matrix is precomputed in
+<code>data-raw/llq2022_uv_cspa.R</code> and takes about five minutes at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">R = 10{,}000</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span>,</span>
 <span>             caption <span class="op">=</span> <span class="st">"forecastdom::cspa_test, R = 10000"</span><span class="op">)</span></span></code></pre></div>
@@ -426,9 +437,9 @@ dominates alternative <em>k</em>” is rejected. Computed offline by
 </table>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">diff_mat</span> <span class="op">&lt;-</span> <span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">mine</span> <span class="op">-</span> <span class="va">llq2022_uv_cspa</span><span class="op">$</span><span class="va">paper</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">diff_mat</span>, caption <span class="op">=</span> <span class="st">"Difference (forecastdom − LLQ)"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">diff_mat</span>, caption <span class="op">=</span> <span class="st">"Difference (forecastdom minus LLQ)"</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Difference (forecastdom − LLQ)</caption>
+<caption>Difference (forecastdom minus LLQ)</caption>
 <thead><tr class="header">
 <th align="left"></th>
 <th align="right">AR1</th>
@@ -495,24 +506,27 @@ dominates alternative <em>k</em>” is rejected. Computed offline by
 </tr>
 </tbody>
 </table>
-<p>23 of the 30 off-diagonal cells match exactly; 29 are within ±1 and
-all 30 within ±2. Residual noise on boundary cells reflects the
-different bootstrap seed. The reading is identical to LLQ’s:</p>
+<p>23 of the 30 off-diagonal cells match exactly, 29 are within
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\pm 1</annotation></semantics></math>,
+and all 30 within
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math>.
+The residual noise on boundary cells comes from the bootstrap seed. The
+qualitative reading is identical to LLQ’s:</p>
 <ul>
 <li>
-<strong>HARQ as benchmark</strong> (column HARQ) — all 28 stocks
-reject every competitor except ARFIMA: HARQ is conditionally superior
+<strong>HARQ as benchmark</strong> (column HARQ): all 28 stocks
+reject every competitor except ARFIMA. HARQ is conditionally superior
 almost everywhere.</li>
 <li>
-<strong>HARQ / ARFIMA as alternative</strong> (rows HARQ, ARFIMA) —
+<strong>HARQ and ARFIMA as alternative</strong> (rows HARQ, ARFIMA):
 they reject every other benchmark.</li>
 <li>
-<strong>AR(22) as benchmark</strong> (column AR22) — uniformly
-rejected; the simple long-AR is the weakest model.</li>
+<strong>AR(22) as benchmark</strong> (column AR22): uniformly
+rejected. The simple long-AR is the weakest model.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="sp-500-confidence-set-for-the-most-superior-method">S&amp;P 500 — confidence set for the most superior method<a class="anchor" aria-label="anchor" href="#sp-500-confidence-set-for-the-most-superior-method"></a>
+<h2 id="sp-500-confidence-set-for-the-most-superior-method">S&amp;P 500: confidence set for the most superior method<a class="anchor" aria-label="anchor" href="#sp-500-confidence-set-for-the-most-superior-method"></a>
 </h2>
 <p>The same procedure on the S&amp;P 500 series.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -533,29 +547,29 @@ rejected; the simple long-AR is the weakest model.</li>
 <span><span class="co">#&gt; │ 90% Confidence Set: {HARQ}                         │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Per-method CSPA results:                           │</span></span>
-<span><span class="co">#&gt; │</span></span>
-<span><span class="co">#&gt; │  Method          Theta    P-value    In Set?   │ </span></span>
+<span><span class="co">#&gt; │                                                    │</span></span>
+<span><span class="co">#&gt; │  Method               Theta     P-value  In Set?   │</span></span>
 <span><span class="co">#&gt; │  ------------------------------------------------  │</span></span>
-<span><span class="co">#&gt; │  AR1           -0.2522     1.0000         No   │</span></span>
-<span><span class="co">#&gt; │  AR22          -0.0441     1.0000         No   │</span></span>
-<span><span class="co">#&gt; │  AR22_Lasso    -0.0887     1.0000         No   │</span></span>
-<span><span class="co">#&gt; │  HAR           -0.0310     1.0000         No   │</span></span>
-<span><span class="co">#&gt; │  HARQ           0.0153     0.4699        Yes   │</span></span>
-<span><span class="co">#&gt; │  ARFIMA        -0.0088     0.0057         No   │</span></span>
+<span><span class="co">#&gt; │  AR1                -0.2522      1.0000       No   │</span></span>
+<span><span class="co">#&gt; │  AR22               -0.0441      1.0000       No   │</span></span>
+<span><span class="co">#&gt; │  AR22_Lasso         -0.0887      1.0000       No   │</span></span>
+<span><span class="co">#&gt; │  HAR                -0.0310      1.0000       No   │</span></span>
+<span><span class="co">#&gt; │  HARQ                0.0153      0.4699      Yes   │</span></span>
+<span><span class="co">#&gt; │  ARFIMA             -0.0088      0.0057       No   │</span></span>
 <span><span class="co">#&gt; ╰────────────────────────────────────────────────────╯</span></span></code></pre></div>
-<p>The 90% CSMS collapses to <code>{HARQ}</code> on S&amp;P 500. ARFIMA
-is rejected here even though it survives in 22 of the 28 stocks in the
-cross-stock table above — SP500 falls in the reject group.</p>
+<p>The 90% CSMS on the S&amp;P 500 collapses to <code>{HARQ}</code>.
+ARFIMA is rejected here even though it survives in 22 of the 28
+individual stocks: SP500 belongs to the reject group.</p>
 </div>
 <div class="section level2">
 <h2 id="takeaway">Takeaway<a class="anchor" aria-label="anchor" href="#takeaway"></a>
 </h2>
 <p>Unconditional MSE rankings hide which model is <em>uniformly</em>
-best across volatility regimes. LLQ’s central empirical message — HARQ
-and ARFIMA cannot be ruled out as conditionally most superior on
-volatility forecasting — is reproduced at three levels: the JNJ figures
-(one-vs-one and one-vs-all CSPA), the 28-stock count table, and the
-SP500 CSMS.</p>
+best across volatility regimes. The central empirical message in LLQ,
+that HARQ and ARFIMA cannot be ruled out as conditionally most-superior
+on volatility forecasting, is reproduced here at three levels: the JNJ
+figures (one-vs-one and one-vs-all CSPA), the 28-stock count table, and
+the SP500 CSMS.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

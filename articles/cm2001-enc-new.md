@@ -92,18 +92,19 @@ rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
 tab <- do.call(rbind, rows)
 
 knitr::kable(
-  tab, digits = 3, row.names = FALSE,
-  col.names = c("$p$", "$T_{OOS}$", "$\\pi = P/R$",
-                "$MSFE_{AR}$", "$MSFE_{ARX}$",
-                "$R^2_{OS}$ (%)", "ENC-NEW"))
+  tab, digits = 3, row.names = FALSE, format = "html",
+  table.attr = "style='width:auto;'", escape = FALSE,
+  col.names = c("\\(p\\)", "\\(T_{OOS}\\)", "\\(\\pi = P/R\\)",
+                "\\(\\mathrm{MSFE}_{AR}\\)", "\\(\\mathrm{MSFE}_{ARX}\\)",
+                "\\(R^2_{OS}\\) (%)", "ENC-NEW"))
 ```
 
-| $p$ | $T_{OOS}$ | $\pi = P/R$ | $MSFE_{AR}$ | $MSFE_{ARX}$ | $R_{OS}^{2}$ (%) | ENC-NEW |
-|----:|----------:|------------:|------------:|-------------:|-----------------:|--------:|
-|   1 |       367 |        3.06 |       0.035 |        0.034 |            2.968 |  13.930 |
-|   3 |       365 |        3.04 |       0.033 |        0.032 |            2.184 |  11.412 |
-|   6 |       362 |        3.02 |       0.031 |        0.031 |            1.833 |  14.754 |
-|  12 |       356 |        2.97 |       0.032 |        0.033 |           -2.459 |  20.984 |
+| $p$ | $T_{OOS}$ | $\pi = P/R$ | ${MSFE}_{AR}$ | ${MSFE}_{ARX}$ | $R_{OS}^{2}$ (%) | ENC-NEW |
+|----:|----------:|------------:|--------------:|---------------:|-----------------:|--------:|
+|   1 |       367 |        3.06 |         0.035 |          0.034 |            2.968 |  13.930 |
+|   3 |       365 |        3.04 |         0.033 |          0.032 |            2.184 |  11.412 |
+|   6 |       362 |        3.02 |         0.031 |          0.031 |            1.833 |  14.754 |
+|  12 |       356 |        2.97 |         0.032 |          0.033 |           -2.459 |  20.984 |
 
 At every lag order the ARX model achieves a lower MSFE than the pure AR.
 That is, knowing past inflation reduces out-of-sample

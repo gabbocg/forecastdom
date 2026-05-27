@@ -167,67 +167,128 @@ remaining observations form the out-of-sample period.</p>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">rows</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
-<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"$p$"</span>, <span class="st">"$T_{OOS}$"</span>, <span class="st">"$\\pi = P/R$"</span>,</span>
-<span>                <span class="st">"$MSFE_{AR}$"</span>, <span class="st">"$MSFE_{ARX}$"</span>,</span>
-<span>                <span class="st">"$R^2_{OS}$ (%)"</span>, <span class="st">"ENC-NEW"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="5%">
-<col width="13%">
-<col width="16%">
-<col width="16%">
-<col width="17%">
-<col width="20%">
-<col width="10%">
-</colgroup>
-<thead><tr class="header">
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math></th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mrow><mi>O</mi><mi>O</mi><mi>S</mi></mrow></msub><annotation encoding="application/x-tex">T_{OOS}</annotation></semantics></math></th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mi>P</mi><mi>/</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">\pi = P/R</annotation></semantics></math></th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mi>S</mi><mi>F</mi><msub><mi>E</mi><mrow><mi>A</mi><mi>R</mi></mrow></msub></mrow><annotation encoding="application/x-tex">MSFE_{AR}</annotation></semantics></math></th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mi>S</mi><mi>F</mi><msub><mi>E</mi><mrow><mi>A</mi><mi>R</mi><mi>X</mi></mrow></msub></mrow><annotation encoding="application/x-tex">MSFE_{ARX}</annotation></semantics></math></th>
-<th align="right">
+<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>, format <span class="op">=</span> <span class="st">"html"</span>,</span>
+<span>  table.attr <span class="op">=</span> <span class="st">"style='width:auto;'"</span>, escape <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"\\(p\\)"</span>, <span class="st">"\\(T_{OOS}\\)"</span>, <span class="st">"\\(\\pi = P/R\\)"</span>,</span>
+<span>                <span class="st">"\\(\\mathrm{MSFE}_{AR}\\)"</span>, <span class="st">"\\(\\mathrm{MSFE}_{ARX}\\)"</span>,</span>
+<span>                <span class="st">"\\(R^2_{OS}\\) (%)"</span>, <span class="st">"ENC-NEW"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table style="width:auto;" class="table">
+<thead><tr>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mrow><mi>O</mi><mi>O</mi><mi>S</mi></mrow></msub><annotation encoding="application/x-tex">T_{OOS}</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mi>P</mi><mi>/</mi><mi>R</mi></mrow><annotation encoding="application/x-tex">\pi = P/R</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">F</mi><mi mathvariant="normal">E</mi></mrow><mrow><mi>A</mi><mi>R</mi></mrow></msub><annotation encoding="application/x-tex">\mathrm{MSFE}_{AR}</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">F</mi><mi mathvariant="normal">E</mi></mrow><mrow><mi>A</mi><mi>R</mi><mi>X</mi></mrow></msub><annotation encoding="application/x-tex">\mathrm{MSFE}_{ARX}</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{OS}</annotation></semantics></math>
-(%)</th>
-<th align="right">ENC-NEW</th>
+(%)
+</th>
+<th style="text-align:right;">
+ENC-NEW
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">367</td>
-<td align="right">3.06</td>
-<td align="right">0.035</td>
-<td align="right">0.034</td>
-<td align="right">2.968</td>
-<td align="right">13.930</td>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+367
+</td>
+<td style="text-align:right;">
+3.06
+</td>
+<td style="text-align:right;">
+0.035
+</td>
+<td style="text-align:right;">
+0.034
+</td>
+<td style="text-align:right;">
+2.968
+</td>
+<td style="text-align:right;">
+13.930
+</td>
 </tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">365</td>
-<td align="right">3.04</td>
-<td align="right">0.033</td>
-<td align="right">0.032</td>
-<td align="right">2.184</td>
-<td align="right">11.412</td>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+365
+</td>
+<td style="text-align:right;">
+3.04
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+2.184
+</td>
+<td style="text-align:right;">
+11.412
+</td>
 </tr>
-<tr class="odd">
-<td align="right">6</td>
-<td align="right">362</td>
-<td align="right">3.02</td>
-<td align="right">0.031</td>
-<td align="right">0.031</td>
-<td align="right">1.833</td>
-<td align="right">14.754</td>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+362
+</td>
+<td style="text-align:right;">
+3.02
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+1.833
+</td>
+<td style="text-align:right;">
+14.754
+</td>
 </tr>
-<tr class="even">
-<td align="right">12</td>
-<td align="right">356</td>
-<td align="right">2.97</td>
-<td align="right">0.032</td>
-<td align="right">0.033</td>
-<td align="right">-2.459</td>
-<td align="right">20.984</td>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+356
+</td>
+<td style="text-align:right;">
+2.97
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+-2.459
+</td>
+<td style="text-align:right;">
+20.984
+</td>
 </tr>
 </tbody>
 </table>

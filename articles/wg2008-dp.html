@@ -210,69 +210,124 @@ parameters (intercept plus predictor).</p>
 <span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">specs</span>, <span class="va">run_spec</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
-<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Spec"</span>, <span class="st">"$T$"</span>,</span>
-<span>                <span class="st">"$\\bar R^2_{OS}$ (%)"</span>,</span>
-<span>                <span class="st">"$\\Delta\\mathrm{RMSE}$ (%)"</span>,</span>
-<span>                <span class="st">"MSE-F"</span>, <span class="st">"ENC-NEW"</span>,</span>
-<span>                <span class="st">"CW stat"</span>, <span class="st">"CW $p$"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="6%">
-<col width="4%">
-<col width="23%">
-<col width="30%">
-<col width="8%">
-<col width="9%">
-<col width="9%">
-<col width="8%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">Spec</th>
-<th align="right"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math></th>
-<th align="right">
+<span>  <span class="va">tab</span>, digits <span class="op">=</span> <span class="fl">3</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span>, format <span class="op">=</span> <span class="st">"html"</span>,</span>
+<span>  table.attr <span class="op">=</span> <span class="st">"style='width:auto;'"</span>, escape <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"\\(\\bar R^2_{OS}\\) and \\(\\Delta\\mathrm{RMSE}\\) in percent."</span>,</span>
+<span>  col.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Spec"</span>, <span class="st">"\\(T\\)"</span>, <span class="st">"\\(\\bar R^2_{OS}\\)"</span>,</span>
+<span>                <span class="st">"\\(\\Delta\\mathrm{RMSE}\\)"</span>,</span>
+<span>                <span class="st">"MSE-F"</span>, <span class="st">"ENC-NEW"</span>, <span class="st">"CW"</span>, <span class="st">"CW \\(p\\)"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table style="width:auto;" class="table">
+<caption>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
-(%)</th>
-<th align="right">
+and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mrow><mi mathvariant="normal">R</mi><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">E</mi></mrow></mrow><annotation encoding="application/x-tex">\Delta\mathrm{RMSE}</annotation></semantics></math>
-(%)</th>
-<th align="right">MSE-F</th>
-<th align="right">ENC-NEW</th>
-<th align="right">CW stat</th>
-<th align="right">CW
+in percent.
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+Spec
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mover><mi>R</mi><mo accent="true">‾</mo></mover><mrow><mi>O</mi><mi>S</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\bar R^2_{OS}</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mrow><mi mathvariant="normal">R</mi><mi mathvariant="normal">M</mi><mi mathvariant="normal">S</mi><mi mathvariant="normal">E</mi></mrow></mrow><annotation encoding="application/x-tex">\Delta\mathrm{RMSE}</annotation></semantics></math>
+</th>
+<th style="text-align:right;">
+MSE-F
+</th>
+<th style="text-align:right;">
+ENC-NEW
+</th>
+<th style="text-align:right;">
+CW
+</th>
+<th style="text-align:right;">
+CW
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
 </th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">1892+</td>
-<td align="right">114</td>
-<td align="right">-2.061</td>
-<td align="right">-0.107</td>
-<td align="right">-1.305</td>
-<td align="right">0.479</td>
-<td align="right">0.370</td>
-<td align="right">0.356</td>
+<tr>
+<td style="text-align:left;">
+1892+
+</td>
+<td style="text-align:right;">
+114
+</td>
+<td style="text-align:right;">
+-2.061
+</td>
+<td style="text-align:right;">
+-0.107
+</td>
+<td style="text-align:right;">
+-1.305
+</td>
+<td style="text-align:right;">
+0.479
+</td>
+<td style="text-align:right;">
+0.370
+</td>
+<td style="text-align:right;">
+0.356
+</td>
 </tr>
-<tr class="even">
-<td align="left">1965+</td>
-<td align="right">41</td>
-<td align="right">-3.729</td>
-<td align="right">-0.088</td>
-<td align="right">-0.460</td>
-<td align="right">0.858</td>
-<td align="right">0.554</td>
-<td align="right">0.290</td>
+<tr>
+<td style="text-align:left;">
+1965+
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+-3.729
+</td>
+<td style="text-align:right;">
+-0.088
+</td>
+<td style="text-align:right;">
+-0.460
+</td>
+<td style="text-align:right;">
+0.858
+</td>
+<td style="text-align:right;">
+0.554
+</td>
+<td style="text-align:right;">
+0.290
+</td>
 </tr>
-<tr class="odd">
-<td align="left">1976+</td>
-<td align="right">30</td>
-<td align="right">-15.225</td>
-<td align="right">-0.765</td>
-<td align="right">-3.034</td>
-<td align="right">-0.527</td>
-<td align="right">-0.348</td>
-<td align="right">0.636</td>
+<tr>
+<td style="text-align:left;">
+1976+
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+-15.225
+</td>
+<td style="text-align:right;">
+-0.765
+</td>
+<td style="text-align:right;">
+-3.034
+</td>
+<td style="text-align:right;">
+-0.527
+</td>
+<td style="text-align:right;">
+-0.348
+</td>
+<td style="text-align:right;">
+0.636
+</td>
 </tr>
 </tbody>
 </table>

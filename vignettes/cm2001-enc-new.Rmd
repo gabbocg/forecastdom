@@ -100,10 +100,11 @@ rows <- lapply(c(1L, 3L, 6L, 12L), function(p) {
 tab <- do.call(rbind, rows)
 
 knitr::kable(
-  tab, digits = 3, row.names = FALSE,
-  col.names = c("$p$", "$T_{OOS}$", "$\\pi = P/R$",
-                "$MSFE_{AR}$", "$MSFE_{ARX}$",
-                "$R^2_{OS}$ (%)", "ENC-NEW"))
+  tab, digits = 3, row.names = FALSE, format = "html",
+  table.attr = "style='width:auto;'", escape = FALSE,
+  col.names = c("\\(p\\)", "\\(T_{OOS}\\)", "\\(\\pi = P/R\\)",
+                "\\(\\mathrm{MSFE}_{AR}\\)", "\\(\\mathrm{MSFE}_{ARX}\\)",
+                "\\(R^2_{OS}\\) (%)", "ENC-NEW"))
 ```
 
 At every lag order the ARX model achieves a lower MSFE than the pure AR. That is, knowing past inflation reduces out-of-sample unemployment-forecast error. The ENC-NEW values are large relative to the Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which are tabulated in $k_2$ (number of extra regressors, equal to $p$) and $\pi = P/R$. For $k_2 = 6$ and $\pi \approx 2$ the 5% critical value is about 8.6; for $k_2 = 12$ and $\pi \approx 2$ it is about 12.0. Our statistics exceed these benchmarks decisively at every specification, so the AR forecasts do **not** encompass the ARX: lagged inflation carries real predictive content for unemployment.

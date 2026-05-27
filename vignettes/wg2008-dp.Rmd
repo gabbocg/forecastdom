@@ -115,12 +115,12 @@ run_spec <- function(spec) {
 
 tab <- do.call(rbind, lapply(specs, run_spec))
 knitr::kable(
-  tab, digits = 3, row.names = FALSE,
-  col.names = c("Spec", "$T$",
-                "$\\bar R^2_{OS}$ (%)",
-                "$\\Delta\\mathrm{RMSE}$ (%)",
-                "MSE-F", "ENC-NEW",
-                "CW stat", "CW $p$"))
+  tab, digits = 3, row.names = FALSE, format = "html",
+  table.attr = "style='width:auto;'", escape = FALSE,
+  caption = "\\(\\bar R^2_{OS}\\) and \\(\\Delta\\mathrm{RMSE}\\) in percent.",
+  col.names = c("Spec", "\\(T\\)", "\\(\\bar R^2_{OS}\\)",
+                "\\(\\Delta\\mathrm{RMSE}\\)",
+                "MSE-F", "ENC-NEW", "CW", "CW \\(p\\)"))
 ```
 
 Compared to WG's reported d/p numbers:

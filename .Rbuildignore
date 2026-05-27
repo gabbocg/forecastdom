@@ -8,3 +8,5 @@
 ^LICENSE\.md$
 ^CLAUDE\.md$
 ^\.claude$
+^doc$
+^Meta$

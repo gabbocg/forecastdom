@@ -1,6 +1,6 @@
 # data-raw/wg2008.R
 # Build data/wg2008.rda from Welch and Goyal's original PredictorData.xls
-# (annual sheet) — the vintage shipped with WG (2008, RFS). The third
+# (annual sheet) — the vintage shipped with WG (2008). The third
 # sheet of the workbook holds the annual series.
 #
 # Run interactively: source("data-raw/wg2008.R")

@@ -1,5 +1,5 @@
 # data-raw/hl2005.R
-# Build data/hl2005.rda from the Hansen & Lunde (2005, JAE) replication
+# Build data/hl2005.rda from the Hansen & Lunde (2005) replication
 # archive: IBM 5-min realized variance and 330 GARCH-family forecasts.
 #
 # Run interactively: source("data-raw/hl2005.R")

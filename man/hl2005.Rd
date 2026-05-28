@@ -37,7 +37,7 @@ hl2005
 }
 \description{
 Daily IBM data from the replication archive of Hansen and Lunde
-(2005, JAE). Contains 254 trading days (1999-06-01 to 2000-05-31),
+(2005). Contains 254 trading days (1999-06-01 to 2000-05-31),
 8 realized-variance proxies of varying quality, and 330
 one-step-ahead conditional variance forecasts produced by GARCH-family
 models. The benchmark GARCH(1,1) with constant mean and Gaussian

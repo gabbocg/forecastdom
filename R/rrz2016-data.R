@@ -20,7 +20,7 @@
 #' }
 #'
 #' @source Replication archive of Rapach, Ringgenberg, and Zhou (2016):
-#'   \url{https://github.com/GabboCg/rrz2016}.
+#'   \url{https://github.com/gabbocg/rrz2016}.
 #'
 #' @references
 #' Rapach, D. E., Ringgenberg, M. C. and Zhou, G. (2016). Short interest

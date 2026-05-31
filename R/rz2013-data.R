@@ -4,7 +4,7 @@
 #' predictors used in Rapach and Zhou (2013), "Forecasting Stock
 #' Returns," Handbook of Economic Forecasting, Vol. 2A, Chapter 6.
 #' Sourced from the replication archive at
-#' \url{https://github.com/GabboCg/rz2013}.
+#' \url{https://github.com/gabbocg/rz2013}.
 #'
 #' @format A data frame with 1,009 rows and 16 variables. Sample period
 #' is 1926-12 to 2010-12 (monthly).
@@ -29,7 +29,7 @@
 #' }
 #'
 #' @source Replication archive of Rapach and Zhou (2013):
-#'   \url{https://github.com/GabboCg/rz2013}. The underlying data are from
+#'   \url{https://github.com/gabbocg/rz2013}. The underlying data are from
 #'   Amit Goyal's website
 #'   (\url{http://www.hec.unil.ch/agoyal/}).
 #'

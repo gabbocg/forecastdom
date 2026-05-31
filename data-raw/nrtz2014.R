@@ -9,7 +9,7 @@
 # Source file:
 #   data-raw/PredictorData2014.xls   (Goyal-Welch updated)
 # Originally from:
-#   https://github.com/GabboCg/nrtz2014
+#   https://github.com/gabbocg/nrtz2014
 #
 # We keep only the dependent variable (log equity premium) and the 14
 # technical-indicator predictors built from S&P 500 prices and volume:
@@ -19,7 +19,7 @@
 #
 # Sample: 1950-12 to 2011-12 inclusive (733 monthly observations).
 # Indicator construction follows the replication script in
-# https://github.com/GabboCg/nrtz2014/blob/main/load.R
+# https://github.com/gabbocg/nrtz2014/blob/main/load.R
 # =====================================================================
 
 library(readxl)

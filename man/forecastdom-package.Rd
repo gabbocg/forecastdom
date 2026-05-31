@@ -14,8 +14,8 @@ Tools for testing conditional superior predictive ability (CSPA) of forecasting 
 Useful links:
 \itemize{
   \item \url{https://gabbocg.github.io/forecastdom/}
-  \item \url{https://github.com/GabboCg/forecastdom}
-  \item Report bugs at \url{https://github.com/GabboCg/forecastdom/issues}
+  \item \url{https://github.com/gabbocg/forecastdom}
+  \item Report bugs at \url{https://github.com/gabbocg/forecastdom/issues}
 }
 
 }

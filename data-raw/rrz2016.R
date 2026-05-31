@@ -9,7 +9,7 @@
 # Source file:
 #   data-raw/PredictorData2016.xlsx
 # Originally from:
-#   https://github.com/GabboCg/rrz2016
+#   https://github.com/gabbocg/rrz2016
 #
 # We keep only what is needed to replicate Table A2 of the online
 # appendix (IVX-Wald and qLL tests):

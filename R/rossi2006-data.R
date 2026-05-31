@@ -4,7 +4,7 @@
 #' industrialised economies, used in the empirical exercise of
 #' Rossi (2006). Originally distributed as a Datastream extract in the
 #' replication archive at
-#' \url{https://github.com/GabboCg/rossi2006}.
+#' \url{https://github.com/gabbocg/rossi2006}.
 #'
 #' @format A data frame with 1,550 rows and 3 variables:
 #' \describe{
@@ -20,7 +20,7 @@
 #' }
 #'
 #' @source Replication archive of Rossi (2006):
-#'   \url{https://github.com/GabboCg/rossi2006}.
+#'   \url{https://github.com/gabbocg/rossi2006}.
 #'
 #' @references
 #' Rossi, B. (2006). Are exchange rates really random walks? Some

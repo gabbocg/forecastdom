@@ -8,7 +8,7 @@
 # Source file:
 #   data-raw/rz2013_data.rds
 # Originally from:
-#   https://github.com/GabboCg/rz2013
+#   https://github.com/gabbocg/rz2013
 #
 # The .rds is a list with several pre-built data frames. We keep
 # `data_log`: the log equity premium and the 14 Goyal-Welch macro

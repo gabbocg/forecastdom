@@ -20,7 +20,7 @@ monthly differences.}
 }
 \source{
 Replication archive of Rossi (2006):
-\url{https://github.com/GabboCg/rossi2006}.
+\url{https://github.com/gabbocg/rossi2006}.
 }
 \usage{
 rossi2006
@@ -30,7 +30,7 @@ Monthly nominal exchange rates against the U.S. dollar for five
 industrialised economies, used in the empirical exercise of
 Rossi (2006). Originally distributed as a Datastream extract in the
 replication archive at
-\url{https://github.com/GabboCg/rossi2006}.
+\url{https://github.com/gabbocg/rossi2006}.
 }
 \examples{
 data(rossi2006)

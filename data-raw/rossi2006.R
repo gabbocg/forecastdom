@@ -9,7 +9,7 @@
 # Source file:
 #   data-raw/PredictorData1998.txt
 # Originally from:
-#   https://github.com/GabboCg/rossi2006
+#   https://github.com/gabbocg/rossi2006
 #
 # The raw file is 310 monthly rows (1973:03 to 1998:12) by 29 unlabelled
 # columns. The replication script (table_1.R) only uses the five

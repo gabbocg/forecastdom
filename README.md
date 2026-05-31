@@ -1,13 +1,13 @@
 # forecastdom <img src="man/figures/logo.png" align="right" height="138" />
 
-**Author:** [Gabriel Cabrera](https://github.com/GabboCg)<br>
+**Author:** [Gabriel Cabrera](https://github.com/gabbocg)<br>
 **License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![R-CMD-check](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GabboCg/forecastdom/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![pkgdown](https://github.com/GabboCg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://gabbocg.github.io/forecastdom/)
+[![pkgdown](https://github.com/gabbocg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://gabbocg.github.io/forecastdom/)
 <!-- badges: end -->
 
 ## Overview
@@ -18,7 +18,7 @@
 
 ```r
 # install.packages("devtools")
-devtools::install_github("GabboCg/forecastdom")
+devtools::install_github("gabbocg/forecastdom")
 ```
 
 ## Tests
@@ -102,7 +102,7 @@ The CSPA test uses Rcpp / C++ for the two hot loops (Gaussian-process column max
 
 ## Getting help
 
-If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/GabboCg/forecastdom/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
+If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/gabbocg/forecastdom/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
 
 ## References
 

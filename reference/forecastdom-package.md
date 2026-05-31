@@ -14,9 +14,9 @@ Useful links:
 
 - <https://gabbocg.github.io/forecastdom/>
 
-- <https://github.com/GabboCg/forecastdom>
+- <https://github.com/gabbocg/forecastdom>
 
-- Report bugs at <https://github.com/GabboCg/forecastdom/issues>
+- Report bugs at <https://github.com/gabbocg/forecastdom/issues>
 
 ## Author
 

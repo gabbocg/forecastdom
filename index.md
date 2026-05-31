@@ -1,6 +1,6 @@
 # forecastdom
 
-**Author:** [Gabriel Cabrera](https://github.com/GabboCg)  
+**Author:** [Gabriel Cabrera](https://github.com/gabbocg)  
 **License:** [MIT](https://opensource.org/licenses/MIT) + file
 [LICENSE](https://gabbocg.github.io/forecastdom/LICENSE)
 
@@ -16,7 +16,7 @@ return predictability, and parameter instability.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("GabboCg/forecastdom")
+devtools::install_github("gabbocg/forecastdom")
 ```
 
 ## Tests
@@ -105,7 +105,7 @@ column maxima and the binary search over the p-value).
 ## Getting help
 
 If you encounter a bug, please file an issue with a minimal reproducible
-example on [GitHub](https://github.com/GabboCg/forecastdom/issues). For
+example on [GitHub](https://github.com/gabbocg/forecastdom/issues). For
 questions, email <gabriel.cabreraguzman@postgrad.manchester.ac.uk>.
 
 ## References

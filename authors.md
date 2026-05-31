@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/GabboCg/forecastdom/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/gabbocg/forecastdom/blob/main/DESCRIPTION)
 
 Cabrera G (2026). *forecastdom: Tools for (Un)conditional Forecast
 Dominance*. R package version 0.1.0,

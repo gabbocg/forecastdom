@@ -9,3 +9,5 @@
 ^\.claude$
 ^doc$
 ^Meta$
+^refs$
+^LICENSE\.md$

@@ -117,4 +117,3 @@ If you encounter a bug, please file an issue with a minimal reproducible example
 - Li, J., Liao, Z., and Quaedvlieg, R. (2022). Conditional Superior Predictive Ability. *Review of Economic Studies*, 89(2), 843-875.
 - McCracken, M.W. (2007). Asymptotics for Out of Sample Tests of Granger Causality. *Journal of Econometrics*, 140(2), 719-752.
 - Quaedvlieg, R. (2021). Multi-Horizon Forecast Comparison. *Journal of Business & Economic Statistics*, 39(1), 40-53.
-

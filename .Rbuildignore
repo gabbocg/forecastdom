@@ -11,3 +11,5 @@
 ^Meta$
 ^refs$
 ^LICENSE\.md$
+^\.DS_Store$
+^cran-comments\.md$

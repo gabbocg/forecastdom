@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Tools for testing conditional superior predictive ability (CSPA) of forecasting methods with respect to a benchmark, based on Li, Liao, and Quaedvlieg (2022) \doi{10.1093/restud/rdab056}. Implements the CSPA test using series-based nonparametric estimation with Legendre polynomials, Newey-West and pre-whitened HAC covariance estimation, and adaptive inequality selection.
+A unified toolkit for out-of-sample forecast dominance testing. Covers unconditional and conditional equal and superior predictive ability, encompassing, and nested-model comparison. Implements the Diebold-Mariano test with the Harvey, Leybourne, and Newbold (1997) \doi{10.1016/S0169-2070(96)00719-4} small-sample correction; the Clark-West MSFE-adjusted statistic (Clark and West, 2007) \doi{10.1016/j.jeconom.2006.05.023}; the ENC-NEW encompassing test of Clark and McCracken (2001) \doi{10.1016/S0304-4076(01)00071-9}; the Giacomini-White conditional equal predictive ability test (Giacomini and White, 2006) \doi{10.1111/j.1468-0262.2006.00718.x}; Hansen's superior predictive ability test (Hansen, 2005) \doi{10.1198/073500105000000063}; the conditional superior predictive ability test of Li, Liao, and Quaedvlieg (2022) \doi{10.1093/restud/rdab039}; and the uniform and average multi-horizon SPA tests of Quaedvlieg (2021) \doi{10.1080/07350015.2019.1620074}.
 }
 \seealso{
 Useful links:
@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Gabriel Cabrera \email{gcabrerag@fen.uchile.cl} (\href{https://orcid.org/0000-0001-8803-2338}{ORCID})
+\strong{Maintainer}: Gabriel Cabrera \email{gabriel.cabrera.guz@gmail.com} (\href{https://orcid.org/0000-0001-8803-2338}{ORCID})
 
 }
 \keyword{internal}

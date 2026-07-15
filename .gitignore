@@ -4,6 +4,15 @@
 .Ruserdata
 .DS_Store
 
+# Compiled Rcpp/C++ artifacts
+src/*.o
+src/*.so
+src/*.dll
+
+# Locally-built vignettes
+/doc/
+/Meta/
+
 CLAUDE.md
 .claude
 docs

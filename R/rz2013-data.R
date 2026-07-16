@@ -31,7 +31,7 @@
 #' @source Replication archive of Rapach and Zhou (2013):
 #'   \url{https://github.com/gabbocg/rz2013}. The underlying data are from
 #'   Amit Goyal's website
-#'   (\url{http://www.hec.unil.ch/agoyal/}).
+#'   (\url{https://sites.google.com/view/agoyal145}).
 #'
 #' @references
 #' Rapach, D. E. and Zhou, G. (2013). Forecasting stock returns. In

@@ -23,7 +23,7 @@ On-balance-volume signals \code{VOL(s,l)} for \eqn{s \in \{1,2,3\}},
 Replication archive of Neely et al. (2014):
 \url{https://github.com/gabbocg/nrtz2014}. The underlying price and
 volume data are from Amit Goyal's website
-(\url{http://www.hec.unil.ch/agoyal/}).
+(\url{https://sites.google.com/view/agoyal145}).
 }
 \usage{
 nrtz2014

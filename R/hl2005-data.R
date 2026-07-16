@@ -30,8 +30,8 @@
 #'     errors, used as the benchmark in the paper.}
 #' }
 #'
-#' @source JAE Data Archive,
-#'   \url{http://qed.econ.queensu.ca/jae/2005-v20.7/hansen-lunde/}.
+#' @source Journal of Applied Econometrics data archive for Hansen and
+#'   Lunde (2005), volume 20, issue 7.
 #'
 #' @references
 #' Hansen, P. R. and Lunde, A. (2005). A forecast comparison of

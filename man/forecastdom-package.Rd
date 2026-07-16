@@ -4,7 +4,7 @@
 \name{forecastdom-package}
 \alias{forecastdom}
 \alias{forecastdom-package}
-\title{forecastdom: Tools for (Un)conditional Forecast Dominance}
+\title{forecastdom: Tools for (Un)Conditional Forecast Dominance}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

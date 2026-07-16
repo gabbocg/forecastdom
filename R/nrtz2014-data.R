@@ -35,7 +35,7 @@
 #' @source Replication archive of Neely et al. (2014):
 #'   \url{https://github.com/gabbocg/nrtz2014}. The underlying price and
 #'   volume data are from Amit Goyal's website
-#'   (\url{http://www.hec.unil.ch/agoyal/}).
+#'   (\url{https://sites.google.com/view/agoyal145}).
 #'
 #' @references
 #' Neely, C. J., Rapach, D. E., Tu, J., and Zhou, G. (2014). Forecasting

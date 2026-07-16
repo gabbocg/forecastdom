@@ -10,12 +10,12 @@
 Source:
 [`DESCRIPTION`](https://github.com/gabbocg/forecastdom/blob/main/DESCRIPTION)
 
-Cabrera G (2026). *forecastdom: Tools for (Un)conditional Forecast
+Cabrera G (2026). *forecastdom: Tools for (Un)Conditional Forecast
 Dominance*. R package version 0.1.0,
 <https://gabbocg.github.io/forecastdom/>.
 
     @Manual{,
-      title = {forecastdom: Tools for (Un)conditional Forecast Dominance},
+      title = {forecastdom: Tools for (Un)Conditional Forecast Dominance},
       author = {Gabriel Cabrera},
       year = {2026},
       note = {R package version 0.1.0},

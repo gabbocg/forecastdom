@@ -1,4 +1,4 @@
-# forecastdom: Tools for (Un)conditional Forecast Dominance
+# forecastdom: Tools for (Un)Conditional Forecast Dominance
 
 A unified toolkit for out-of-sample forecast dominance testing. Covers
 unconditional and conditional equal and superior predictive ability,

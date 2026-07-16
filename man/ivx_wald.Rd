@@ -47,13 +47,11 @@ asymptotically chi-squared with \code{r} degrees of freedom,
 regardless of the persistence of the predictors.
 }
 \examples{
-\dontrun{
 set.seed(42)
 n <- 200
 x <- cumsum(rnorm(n))
 y <- 0.02 * x + rnorm(n)
 ivx_wald(y, as.matrix(x))
-}
 
 }
 \references{

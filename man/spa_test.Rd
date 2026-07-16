@@ -48,9 +48,9 @@ Hansen's (2005) consistent test uses a pre-selection step to remove
 clearly inferior competitors from the critical value computation.
 }
 \examples{
-\dontrun{
+\donttest{
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-spa_test(sim$Y, level = 0.05)
+spa_test(sim$Y, level = 0.05, B = 500)
 }
 
 }

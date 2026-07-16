@@ -43,9 +43,9 @@
 #' \emph{Econometrica}, 68(5), 1097-1126.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-#' spa_test(sim$Y, level = 0.05)
+#' spa_test(sim$Y, level = 0.05, B = 500)
 #' }
 #'
 #' @importFrom stats rnorm runif var

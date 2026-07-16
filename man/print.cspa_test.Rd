@@ -23,9 +23,9 @@ Displays a formatted summary of the CSPA test output, including the test
 statistic (theta), p-value, decision, and key estimation details.
 }
 \examples{
-\dontrun{
+\donttest{
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 print(result)
 }
 

@@ -39,13 +39,11 @@
 #' Economic Studies}, 73(4), 907-940.
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(42)
 #' n <- 200
 #' x <- matrix(rnorm(n * 2), n, 2)
 #' y <- x %*% c(0.5, -0.3) + rnorm(n)
 #' qll_hat(y, x)
-#' }
 #'
 #' @importFrom stats lm
 #' @export

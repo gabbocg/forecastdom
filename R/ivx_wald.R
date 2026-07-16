@@ -39,13 +39,11 @@
 #' Financial Studies}, 28(5), 1506-1553.
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(42)
 #' n <- 200
 #' x <- cumsum(rnorm(n))
 #' y <- 0.02 * x + rnorm(n)
 #' ivx_wald(y, as.matrix(x))
-#' }
 #'
 #' @importFrom stats lm pchisq
 #' @export

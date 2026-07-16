@@ -41,9 +41,9 @@
 #' Predictive Ability. \emph{Review of Economic Studies}, 89(2), 843-875.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 #' print(result)
 #' }
 #'
@@ -201,9 +201,9 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
 #' @return Invisibly returns \code{x}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 #' print(result)
 #' }
 #'
@@ -272,9 +272,9 @@ print.cspa_test <- function(x, digits = 4, ...) {
 #' @return Invisibly returns \code{object}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+#' result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 #' summary(result)
 #' }
 #'

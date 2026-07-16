@@ -59,12 +59,12 @@ with \code{j} as the benchmark. The confidence set is:
   \text{CSPA test with } j \text{ as benchmark does not reject}\}}
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(42)
 n <- 300
 X <- arima.sim(list(ar = 0.5), n = n, sd = sqrt(0.75))
 losses <- matrix(rnorm(n * 4), n, 4)
-csms(losses, X, level = 0.05, trim = 2)
+csms(losses, X, level = 0.05, trim = 2, R = 500L)
 }
 
 }

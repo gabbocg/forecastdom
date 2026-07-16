@@ -22,9 +22,9 @@ Provides a detailed summary of the CSPA test, including per-competitor
 diagnostics of the estimated conditional mean functions.
 }
 \examples{
-\dontrun{
+\donttest{
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 summary(result)
 }
 

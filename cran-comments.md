@@ -7,18 +7,18 @@ This is the first submission of forecastdom to CRAN.
 0 errors | 0 warnings | 1 note
 
 * checking CRAN incoming feasibility ... NOTE
-  Possibly misspelled words in DESCRIPTION:
-    Diebold, Giacomini, Leybourne, Liao, McCracken, Newbold, Quaedvlieg, MSFE
+  Maintainer: 'Gabriel Cabrera <gabriel.cabrera.guz@gmail.com>'
+  New submission
 
-  All flagged words are correctly spelled — the surnames are authors of the
-  cited tests, and MSFE is the standard acronym for Mean Squared Forecast
-  Error.
+`devtools::spell_check()` reports no spelling errors under `Language: en-GB`
+(all domain terms, author surnames, and acronyms are whitelisted in
+`inst/WORDLIST`).
 
 ## Test environments
 
 * local: macOS Sequoia 15.7.4, R 4.5.1 (aarch64-apple-darwin20)
-* win-builder: R-devel, R-release
-* R-hub: linux (r-devel), windows (r-devel), macOS (r-release)
+* mac-builder: R-release (aarch64-apple-darwin20) — Status: OK
+* R-hub v2 (GitHub Actions): linux (r-devel), windows (r-devel), macos (r-devel) — all Status: OK
 
 ## Downstream dependencies
 

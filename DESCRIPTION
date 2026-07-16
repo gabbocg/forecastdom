@@ -21,6 +21,7 @@ Description: A unified toolkit for out-of-sample forecast dominance testing.
     SPA tests of Quaedvlieg (2021) <doi:10.1080/07350015.2019.1620074>.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Language: en-GB
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 LinkingTo:

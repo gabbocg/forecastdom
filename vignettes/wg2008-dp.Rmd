@@ -137,7 +137,7 @@ The longest window matches WG **exactly to two decimals**. The two shorter windo
 
 The deterioration of DP through time is unmistakable: a small negative $R^2_{OS}$ in the long sample, more negative in 1965+, and substantially negative for 1976-2005. The McCracken (2004) and Clark-McCracken (2001) asymptotic 5% critical values for $k_2 = 1$ extra regressor are:
 
-| π = P/R | MSE-F (5%) | ENC-NEW (5%) |
+| $\pi$ = P/R | MSE-F (5%) | ENC-NEW (5%) |
 |---:|---:|---:|
 | 0.6  | 1.62 | 2.37 |
 | 1.0  | 1.71 | 2.52 |

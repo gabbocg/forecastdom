@@ -35,7 +35,7 @@
 #' \code{L_bench - L_comp} at horizon \code{h}, and \eqn{\hat\omega_h} is its
 #' Quadratic-Spectral HAC long-run variance estimate (Andrews, 1991).
 #'
-#' Critical values are obtained from a moving-block bootstrap that recenters
+#' Critical values are obtained from a moving-block bootstrap that recentres
 #' the loss differentials so the null is imposed (Quaedvlieg, 2021), with the
 #' "natural variance" estimator recomputed within each bootstrap replication.
 #' The resulting p-value is upper-tail: large positive values of the statistic

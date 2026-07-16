@@ -77,11 +77,29 @@ Economic Studies*, 73(4), 907-940.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 set.seed(42)
 n <- 200
 x <- matrix(rnorm(n * 2), n, 2)
 y <- x %*% c(0.5, -0.3) + rnorm(n)
 qll_hat(y, x)
-} # }
+#> 
+#> ╭────────────────────────────────────────────────────╮
+#> │ Elliott-Muller Test for Time-Varying Coefficients  │
+#> │             (Elliott and Muller, 2006)             │
+#> ├────────────────────────────────────────────────────┤
+#> │ H0: Constant coefficients (beta(t) = beta)         │
+#> │ H1: Time-varying coefficients                      │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Test Results:                                      │
+#> │  qLL-hat statistic: -13.8782                       │
+#> │  5% critical value: -10.64                         │
+#> │  Decision (5%): Rejected ***                       │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Details:                                           │
+#> │  Observations (T): 200                             │
+#> │  Time-varying coefficients (k): 2                  │
+#> │ Note: Non-standard distribution.                   │
+#> │ Reject when qLL-hat < critical value.              │
+#> ╰────────────────────────────────────────────────────╯
+#> 
 ```

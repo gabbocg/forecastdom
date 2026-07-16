@@ -32,9 +32,33 @@ Invisibly returns `x`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2)
+result <- cspa_test(sim$Y, sim$X, level = 0.05, trim = 2, R = 500L)
 print(result)
-} # }
+#> 
+#> ╭────────────────────────────────────────────────────╮
+#> │      Conditional Superior Predictive Ability       │
+#> │          (Li, Liao, and Quaedvlieg, 2022)          │
+#> ├────────────────────────────────────────────────────┤
+#> │ H0: Benchmark weakly dominates all competitors     │
+#> │     conditionally, uniformly across all states     │
+#> │ H1: Some competitor outperforms the benchmark      │
+#> │     in certain conditioning states                 │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Test Results:                                      │
+#> │  Theta: 0.3636                                     │
+#> │  P-value: 0.9240                                   │
+#> │  Significance level: 0.0500                        │
+#> │  Decision: Not rejected                            │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Estimation Details:                                │
+#> │  Observations (n): 244                             │
+#> │  Competitors (J): 3                                │
+#> │  Series terms (K): 4                               │
+#> │  HAC lag order: 1 (pre-whitened)                   │
+#> │  Selected (j,x) pairs: 732 / 732 (100.0%)          │
+#> ╰────────────────────────────────────────────────────╯
+#> 
+# }
 ```

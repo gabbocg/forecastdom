@@ -135,13 +135,33 @@ Financial Studies</em>, 28(5), 1506-1553.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">200</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">0.02</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ivx_wald</span><span class="op">(</span><span class="va">y</span>, <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╭────────────────────────────────────────────────────╮</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │      IVX-Wald Test for Predictive Regressions      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  (Kostakis, Magdalinos, and Stamatogiannis, 2015)  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├────────────────────────────────────────────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H0: No predictability (all coefficients = 0)       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H1: At least one predictor is significant          │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Test Results:                                      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  IVX-Wald statistic: 1.4730                        │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  P-value: 0.2249                                   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Details:                                           │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Observations (T): 200                             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Predictors (r): 1                                 │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Forecast horizon (K): 1                           │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Reference distribution: Chi-sq(1)                 │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ IVX Coefficients:                                  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │    beta_1: 0.0181                                  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╰────────────────────────────────────────────────────╯</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

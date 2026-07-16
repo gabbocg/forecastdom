@@ -152,13 +152,30 @@ Predictive Ability. <em>Review of Economic Studies</em>, 89(2), 843-875.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">300</span></span></span>
 <span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html" class="external-link">arima.sim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ar <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, n <span class="op">=</span> <span class="va">n</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">losses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">4</span><span class="op">)</span>, <span class="va">n</span>, <span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">csms</span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">csms</span><span class="op">(</span><span class="va">losses</span>, <span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span>, R <span class="op">=</span> <span class="fl">500L</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╭────────────────────────────────────────────────────╮</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │    Confidence Set for the Most Superior (CSMS)     │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │          (Li, Liao, and Quaedvlieg, 2022)          │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├────────────────────────────────────────────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ 95% Confidence Set: {M1, M2, M3, M4}               │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Per-method CSPA results:                           │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │                                                    │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Method               Theta     P-value  In Set?   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  ------------------------------------------------  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  M1                  0.1670      0.3800      Yes   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  M2                  0.0919      0.1300      Yes   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  M3                  0.0860      0.1640      Yes   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  M4                  0.1739      0.6600      Yes   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╰────────────────────────────────────────────────────╯</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

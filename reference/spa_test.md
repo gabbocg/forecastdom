@@ -92,8 +92,28 @@ White, H. (2000). A Reality Check for Data Snooping. *Econometrica*,
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 sim <- do_sim(J = 3, n = 250, a = 1, c = 0, rho_u = 0.4)
-spa_test(sim$Y, level = 0.05)
-} # }
+spa_test(sim$Y, level = 0.05, B = 500)
+#> 
+#> ╭────────────────────────────────────────────────────╮
+#> │          Superior Predictive Ability Test          │
+#> │                   (Hansen, 2005)                   │
+#> ├────────────────────────────────────────────────────┤
+#> │ H0: Benchmark is superior to all competitors       │
+#> │ H1: Some competitor outperforms the benchmark      │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Test Results:                                      │
+#> │  SPA statistic: 48.9787                            │
+#> │  P-value (bootstrap): 0.0020                       │
+#> │  Decision: Rejected ***                            │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Details:                                           │
+#> │  Observations (n): 250                             │
+#> │  Competitors (J): 3                                │
+#> │  Bootstrap replications: 500                       │
+#> │  Significance level: 0.0500                        │
+#> ╰────────────────────────────────────────────────────╯
+#> 
+# }
 ```

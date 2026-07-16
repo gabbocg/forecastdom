@@ -104,11 +104,28 @@ Predictive Ability. *Review of Economic Studies*, 89(2), 843-875.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 set.seed(42)
 n <- 300
 X <- arima.sim(list(ar = 0.5), n = n, sd = sqrt(0.75))
 losses <- matrix(rnorm(n * 4), n, 4)
-csms(losses, X, level = 0.05, trim = 2)
-} # }
+csms(losses, X, level = 0.05, trim = 2, R = 500L)
+#> 
+#> ╭────────────────────────────────────────────────────╮
+#> │    Confidence Set for the Most Superior (CSMS)     │
+#> │          (Li, Liao, and Quaedvlieg, 2022)          │
+#> ├────────────────────────────────────────────────────┤
+#> │ 95% Confidence Set: {M1, M2, M3, M4}               │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Per-method CSPA results:                           │
+#> │                                                    │
+#> │  Method               Theta     P-value  In Set?   │
+#> │  ------------------------------------------------  │
+#> │  M1                  0.1670      0.3800      Yes   │
+#> │  M2                  0.0919      0.1300      Yes   │
+#> │  M3                  0.0860      0.1640      Yes   │
+#> │  M4                  0.1739      0.6600      Yes   │
+#> ╰────────────────────────────────────────────────────╯
+#> 
+# }
 ```

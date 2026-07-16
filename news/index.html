@@ -46,11 +46,39 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="forecastdom-010">forecastdom 0.1.0<a class="anchor" aria-label="anchor" href="#forecastdom-010"></a></h2>
-<ul><li>Added <code><a href="../reference/mse_f_test.html">mse_f_test()</a></code>, the McCracken (2007) MSE-F equal-MSFE statistic for nested out-of-sample forecast comparison.</li>
-<li>Added <code><a href="../reference/uspa_mh_test.html">uspa_mh_test()</a></code> and <code><a href="../reference/aspa_mh_test.html">aspa_mh_test()</a></code>, the uniform and average multi-horizon SPA tests of Quaedvlieg (2021), implemented with a moving-block bootstrap.</li>
-<li>Bundled <code>cm2001</code>, <code>hl2005</code>, <code>gw2006</code>, <code>wg2008</code>, <code>quaedvlieg2021</code>, <code>llq2022</code>, <code>llq2022_jnj</code>, and <code>llq2022_uv_cspa</code> datasets used by the replication articles.</li>
+<p>Initial release. Provides a unified toolkit for out-of-sample forecast dominance testing.</p>
+<div class="section level3">
+<h3 id="tests-0-1-0">Tests<a class="anchor" aria-label="anchor" href="#tests-0-1-0"></a></h3>
+<ul><li>
+<code><a href="../reference/dm_test.html">dm_test()</a></code> — Diebold-Mariano (with Harvey, Leybourne, and Newbold
+<ol start="1997" style="list-style-type: decimal"><li>small-sample correction).</li>
+</ol></li>
+<li>
+<code><a href="../reference/cw_test.html">cw_test()</a></code> — Clark and West (2007) MSFE-adjusted statistic.</li>
+<li>
+<code><a href="../reference/mse_f_test.html">mse_f_test()</a></code> — McCracken (2007) MSE-F equal-MSFE statistic for nested out-of-sample comparison.</li>
+<li>
+<code><a href="../reference/enc_new.html">enc_new()</a></code> — ENC-NEW encompassing test of Clark and McCracken (2001).</li>
+<li>
+<code><a href="../reference/gw_test.html">gw_test()</a></code> — Giacomini and White (2006) conditional equal predictive ability test.</li>
+<li>
+<code><a href="../reference/spa_test.html">spa_test()</a></code> — Hansen (2005) test for superior predictive ability.</li>
+<li>
+<code><a href="../reference/cspa_test.html">cspa_test()</a></code> — Li, Liao, and Quaedvlieg (2022) test for conditional superior predictive ability, with the accompanying <code><a href="../reference/cspa_test_plot.html">cspa_test_plot()</a></code> visualisation and <code><a href="../reference/csms.html">csms()</a></code> confidence set for the most superior method.</li>
+<li>
+<code><a href="../reference/uspa_mh_test.html">uspa_mh_test()</a></code> and <code><a href="../reference/aspa_mh_test.html">aspa_mh_test()</a></code> — uniform and average multi-horizon SPA tests of Quaedvlieg (2021), implemented with a moving-block bootstrap.</li>
+<li>
+<code><a href="../reference/ivx_wald.html">ivx_wald()</a></code> — Kostakis, Magdalinos, and Stamatogiannis (2015) IVX-Wald statistic for predictive regressions with persistent regressors.</li>
+<li>
+<code><a href="../reference/qll_hat.html">qll_hat()</a></code> — Elliott and Muller (2006) qLL statistic for testing parameter time variation.</li>
 </ul></div>
-  </main></div>
+<div class="section level3">
+<h3 id="data-0-1-0">Data<a class="anchor" aria-label="anchor" href="#data-0-1-0"></a></h3>
+<p>Bundled <code>cm2001</code>, <code>hl2005</code>, <code>gw2006</code>, <code>wg2008</code>, <code>quaedvlieg2021</code>, <code>llq2022</code>, <code>llq2022_jnj</code>, <code>llq2022_uv_cspa</code>, <code>nrtz2014</code>, <code>rossi2006</code>, <code>rrz2016</code>, and <code>rz2013</code> datasets used by the replication vignettes.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

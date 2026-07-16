@@ -82,11 +82,43 @@ diagnostics of the estimated conditional mean functions.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">250</span>, a <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">Y</span>, <span class="va">sim</span><span class="op">$</span><span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="cspa_test.html">cspa_test</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">Y</span>, <span class="va">sim</span><span class="op">$</span><span class="va">X</span>, level <span class="op">=</span> <span class="fl">0.05</span>, trim <span class="op">=</span> <span class="fl">2</span>, R <span class="op">=</span> <span class="fl">500L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╭────────────────────────────────────────────────────╮</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │      Conditional Superior Predictive Ability       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │          (Li, Liao, and Quaedvlieg, 2022)          │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├────────────────────────────────────────────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H0: Benchmark weakly dominates all competitors     │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │     conditionally, uniformly across all states     │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H1: Some competitor outperforms the benchmark      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │     in certain conditioning states                 │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Test Results:                                      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Theta: 0.3200                                     │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  P-value: 0.9220                                   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Significance level: 0.0500                        │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Decision: Not rejected                            │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Estimation Details:                                │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Observations (n): 238                             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Competitors (J): 3                                │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Series terms (K): 4                               │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  HAC lag order: 0 (Newey-West)                     │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Selected (j,x) pairs: 714 / 714 (100.0%)          │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╰────────────────────────────────────────────────────╯</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Per-competitor diagnostics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Competitor      min h_j    max h_j   mean h_j Selected % </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   --------------------------------------------------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   j = 1           -0.1593     1.1349     0.2330     100.0%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   j = 2            0.0019     1.5655     0.3117     100.0%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   j = 3           -0.0114     2.1822     0.5327     100.0%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

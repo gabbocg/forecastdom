@@ -118,13 +118,31 @@ Economic Studies</em>, 73(4), 907-940.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">200</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, <span class="va">n</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">qll_hat</span><span class="op">(</span><span class="va">y</span>, <span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╭────────────────────────────────────────────────────╮</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Elliott-Muller Test for Time-Varying Coefficients  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │             (Elliott and Muller, 2006)             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├────────────────────────────────────────────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H0: Constant coefficients (beta(t) = beta)         │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H1: Time-varying coefficients                      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Test Results:                                      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  qLL-hat statistic: -13.8782                       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  5% critical value: -10.64                         │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Decision (5%): Rejected ***                       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Details:                                           │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Observations (T): 200                             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Time-varying coefficients (k): 2                  │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Note: Non-standard distribution.                   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Reject when qLL-hat &lt; critical value.              │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╰────────────────────────────────────────────────────╯</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -81,11 +81,31 @@ Financial Studies*, 28(5), 1506-1553.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 set.seed(42)
 n <- 200
 x <- cumsum(rnorm(n))
 y <- 0.02 * x + rnorm(n)
 ivx_wald(y, as.matrix(x))
-} # }
+#> 
+#> ╭────────────────────────────────────────────────────╮
+#> │      IVX-Wald Test for Predictive Regressions      │
+#> │  (Kostakis, Magdalinos, and Stamatogiannis, 2015)  │
+#> ├────────────────────────────────────────────────────┤
+#> │ H0: No predictability (all coefficients = 0)       │
+#> │ H1: At least one predictor is significant          │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Test Results:                                      │
+#> │  IVX-Wald statistic: 1.4730                        │
+#> │  P-value: 0.2249                                   │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ Details:                                           │
+#> │  Observations (T): 200                             │
+#> │  Predictors (r): 1                                 │
+#> │  Forecast horizon (K): 1                           │
+#> │  Reference distribution: Chi-sq(1)                 │
+#> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
+#> │ IVX Coefficients:                                  │
+#> │    beta_1: 0.0181                                  │
+#> ╰────────────────────────────────────────────────────╯
+#> 
 ```

@@ -133,10 +133,30 @@ clearly inferior competitors from the critical value computation.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="do_sim.html">do_sim</a></span><span class="op">(</span>J <span class="op">=</span> <span class="fl">3</span>, n <span class="op">=</span> <span class="fl">250</span>, a <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">0</span>, rho_u <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">spa_test</span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">Y</span>, level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">spa_test</span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">Y</span>, level <span class="op">=</span> <span class="fl">0.05</span>, B <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╭────────────────────────────────────────────────────╮</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │          Superior Predictive Ability Test          │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │                   (Hansen, 2005)                   │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├────────────────────────────────────────────────────┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H0: Benchmark is superior to all competitors       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ H1: Some competitor outperforms the benchmark      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Test Results:                                      │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  SPA statistic: 48.9787                            │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  P-value (bootstrap): 0.0020                       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Decision: Rejected ***                            │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │ Details:                                           │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Observations (n): 250                             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Competitors (J): 3                                │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Bootstrap replications: 500                       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Significance level: 0.0500                        │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ╰────────────────────────────────────────────────────╯</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

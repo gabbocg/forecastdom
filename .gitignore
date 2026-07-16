@@ -1,27 +1,25 @@
+# macOS
+.DS_Store
+
+# R
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-.DS_Store
 
-# Compiled Rcpp/C++ artifacts
+# Package build
+/doc/
+/Meta/
 src/*.o
 src/*.so
 src/*.dll
 
-# Locally-built vignettes
-/doc/
-/Meta/
-
+# Claude Code
 CLAUDE.md
 .claude
 docs
-data-raw/llq2022/cspa_zenodo.zip
-data-raw/llq2022/Replication_Code/
-data-raw/hl2005/
-data-raw/gw2006/
-data-raw/cm2001/
-data-raw/wg2008/
-refs/
-/doc/
-/Meta/
+
+# Package directories excluded from version control
+/docs/
+/data-raw/
+/refs/

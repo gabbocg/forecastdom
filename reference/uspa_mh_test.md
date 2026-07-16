@@ -84,7 +84,7 @@ The uniform multi-horizon SPA test statistic is \$\$t^{uSPA} = \min\_{1
 Quadratic-Spectral HAC long-run variance estimate (Andrews, 1991).
 
 Critical values are obtained from a moving-block bootstrap that
-recenters the loss differentials so the null is imposed (Quaedvlieg,
+recentres the loss differentials so the null is imposed (Quaedvlieg,
 2021), with the "natural variance" estimator recomputed within each
 bootstrap replication. The resulting p-value is upper-tail: large
 positive values of the statistic (i.e. the benchmark has higher loss

@@ -2,7 +2,7 @@
 
 Implements the average multi-horizon SPA test of Quaedvlieg (2021),
 which tests whether a weighted average of horizon-wise expected loss
-differentials favors the benchmark, allowing inferior performance at
+differentials favours the benchmark, allowing inferior performance at
 some horizons to be compensated by superior performance at others.
 Bootstrap follows Algorithm 1 (moving-block bootstrap, block length
 `L`).
@@ -50,7 +50,7 @@ The aSPA statistic is \$\$t^{aSPA} = \sqrt{T}\\ \bar d^w /
 \sqrt{\hat\omega^{QS}(\bar d^w)},\$\$ where \\d^w_t = \sum_h w_h
 d\_{h,t}\\ and \\\hat\omega^{QS}\\ is the Quadratic-Spectral HAC
 long-run variance (Andrews, 1991). Critical values are obtained via a
-moving-block bootstrap that recenters the weighted series under the
+moving-block bootstrap that recentres the weighted series under the
 null. The p-value is upper-tail (`mean(t < t_b)`); rejection requires
 the weighted-average differential to be large and positive (the
 benchmark loses on the weighted average).

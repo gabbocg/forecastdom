@@ -15,6 +15,10 @@ return predictability, and parameter instability.
 ## Installation
 
 ``` r
+# Install the released version from CRAN
+install.packages("forecastdom")
+
+# Or the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("gabbocg/forecastdom")
 ```

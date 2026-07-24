@@ -108,7 +108,7 @@ The CSPA test uses Rcpp / C++ for the two hot loops (Gaussian-process column max
 
 ## Getting help
 
-If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/gabbocg/forecastdom/issues). For questions, email gabriel.cabreraguzman@postgrad.manchester.ac.uk.
+If you encounter a bug, please file an issue with a minimal reproducible example on [GitHub](https://github.com/gabbocg/forecastdom/issues). For questions, email gabriel.cabrera.guz@gmail.com.
 
 ## References
 

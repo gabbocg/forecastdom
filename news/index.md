@@ -1,6 +1,14 @@
 # Changelog
 
+## forecastdom (development version)
+
+- Refined the package title and `DESCRIPTION` text per CRAN feedback:
+  removed the redundant “Tools for” prefix from the title and spelled
+  out acronyms (MSFE, SPA) on first use.
+
 ## forecastdom 0.1.0
+
+CRAN release: 2026-07-24
 
 Initial release. Provides a unified toolkit for out-of-sample forecast
 dominance testing.

@@ -4,6 +4,8 @@
 **License:** [MIT](https://opensource.org/licenses/MIT) + file [LICENSE](LICENSE)
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/forecastdom)](https://CRAN.R-project.org/package=forecastdom)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/forecastdom)](https://CRAN.R-project.org/package=forecastdom)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R-CMD-check](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -17,6 +19,10 @@
 ## Installation
 
 ```r
+# Install the released version from CRAN
+install.packages("forecastdom")
+
+# Or the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("gabbocg/forecastdom")
 ```

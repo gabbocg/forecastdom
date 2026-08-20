@@ -18,7 +18,7 @@ covnw <- function(data, nlag = NULL, demean = TRUE) {
 
   if (is.null(nlag)) {
     
-    nlag <- min(floor(1.2 * n^(1 / 3)), n)
+    nlag <- min(floor(1.2 * n ^ (1 / 3)), n)
     
   }
 

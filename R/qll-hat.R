@@ -92,16 +92,16 @@ qll_hat <- function(y, X, Z = NULL, L = 0L) {
   # Construct w_hat process
   r_bar <- 1 - 10 / TT
   w_hat <- matrix(0, nrow = TT, ncol = k)
-  w_hat[1, ] <- U_hat[1,]
+  w_hat[1, ] <- U_hat[1, ]
   
   for (t in 2:TT) {
     
-    w_hat[t,] <- r_bar * w_hat[t - 1,] + (U_hat[t,] - U_hat[t - 1,])
+    w_hat[t,] <- r_bar * w_hat[t - 1, ] + (U_hat[t, ] - U_hat[t - 1, ])
     
   }
 
   # Trend regressor
-  r_bar_trend <- r_bar^(seq_len(TT))
+  r_bar_trend <- r_bar ^ (seq_len(TT))
 
   # Sum of squared residuals
   SSR <- numeric(k)

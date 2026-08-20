@@ -47,7 +47,7 @@
   for (n in seq_len(N)) {
 
     blocks <- matrix(ydem[seq_len(K * L), n], nrow = K, ncol = L, byrow = FALSE)
-    omega[n] <- mean(rowSums(blocks)^2) / L
+    omega[n] <- mean(rowSums(blocks) ^ 2) / L
 
   }
 
@@ -59,7 +59,7 @@
 .qs_weights <- function(x) {
 
   a <- 6 * pi * x / 5
-  out <- (3 / a^2) * (sin(a) / a - cos(a))
+  out <- (3 / a ^ 2) * (sin(a) / a - cos(a))
   out[x == 0] <- 1
   out
 
@@ -72,7 +72,7 @@
   y <- as.matrix(y)
   T_ <- nrow(y)
   N  <- ncol(y)
-  bw <- 1.3 * T_^(1 / 5)
+  bw <- 1.3 * T_ ^ (1 / 5)
   w  <- .qs_weights(seq_len(T_ - 1L) / bw)
 
   omega <- numeric(N)
@@ -86,6 +86,7 @@
       cross <- cross + 2 * w[j] * sum(z[seq_len(T_ - j)] * z[(j + 1L):T_]) / T_
 
     }
+    
     omega[i] <- g0 + cross
 
   }

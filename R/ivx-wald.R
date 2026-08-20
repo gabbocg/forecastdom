@@ -147,6 +147,7 @@ ivx_wald <- function(y, X, K = 1L, M_n = 0L, beta = 0.95) {
   class(result) <- "ivx_wald"
   
   result
+  
 }
 
 #' @export

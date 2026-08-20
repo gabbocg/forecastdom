@@ -52,29 +52,37 @@
 #' @export
 cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
                       preselect = TRUE, R = 10000L) {
+
   Y <- as.matrix(Y)
   X <- as.numeric(X)
 
   if (length(X) != nrow(Y)) {
+
     stop("Y and X must have the same number of observations.")
+
   }
+
   if (NCOL(X) != 1 && !is.vector(X)) {
+
     stop("X must be a single conditioning variable (vector).")
+
   }
 
   # Trimming
   if (trim > 0) {
+
     mu_x <- mean(X)
     sd_x <- sqrt(var(X))
     keep <- which(X >= mu_x - trim * sd_x & X <= mu_x + trim * sd_x)
     X <- X[keep]
     Y <- Y[keep, , drop = FALSE]
+
   }
 
   n <- nrow(Y)
   J <- ncol(Y)
 
-  K <- max(4L, floor(n^(1 / 5)))
+  K <- max(4L, floor(n ^ (1 / 5)))
 
   gamma_n <- 1 - 0.1 / log(n)
 
@@ -92,25 +100,35 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
   # Construct Pu = kron(ones(1,J), P) .* kron(uhat, ones(1,K))
   Pu <- matrix(0, nrow = n, ncol = K * J)
   for (j in seq_len(J)) {
+
     cols <- ((j - 1) * K + 1):(j * K)
     Pu[, cols] <- P * uhat[, j]
+
   }
 
   # HAC estimation
   if (prewhiten == 0L) {
+
     Omega <- Qinv %*% covnw(Pu) %*% Qinv
     pw_order <- 0L
+
   } else {
+
     pw <- do_prewhiten(Pu, prewhiten)
     Omega_pw <- covnw(pw$resid)
     Ip <- diag(ncol(Pu))
+
     for (p in seq_len(pw$pstar)) {
+
       rows <- ((p - 1) * ncol(Pu) + 1):(p * ncol(Pu))
       Ip <- Ip - pw$Phi[rows, ]
+
     }
+
     Omega_rc <- solve(t(Ip)) %*% Omega_pw %*% solve(Ip)
     Omega <- Qinv %*% Omega_rc %*% Qinv
     pw_order <- pw$pstar
+
   }
 
   # Matrix square root of Omega
@@ -130,11 +148,13 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
   supT <- matrix(0, nrow = J, ncol = R)
 
   for (j in seq_len(J)) {
+
     idx <- ((j - 1) * K + 1):(j * K)
     Omega_jj <- Omega[idx, idx]
     sigma_jx[j, ] <- sqrt(pmax(rowSums((P %*% Omega_jj) * P), 0))
     tstat_j <- P %*% xi[idx, , drop = FALSE]  # BLAS
     supT[j, ] <- divide_colmax_cpp(tstat_j, sigma_jx[j, ])
+
   }
 
   # Adaptive inequality selection (Step 2 of Algorithm 1)
@@ -143,22 +163,30 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
 
   min_envelope <- min(h_hat + K_n_bar * t(sigma_jx) / sqrt(n))
   Vhat <- matrix(FALSE, nrow = J, ncol = n)
+
   for (j in seq_len(J)) {
+
     Vhat[j, ] <- h_hat[, j] <= (min_envelope + 2 * K_n_bar * sigma_jx[j, ] / sqrt(n))
+
   }
 
   if (!preselect) {
+
     Vhat[] <- TRUE
+    
   }
 
   # Compute critical value with selected set
   supT_ais <- matrix(0, nrow = J, ncol = R)
+
   for (j in seq_len(J)) {
+    
     idx <- ((j - 1) * K + 1):(j * K)
     tstat_j <- P %*% xi[idx, , drop = FALSE]  # BLAS
     supT_ais[j, ] <- divide_colmax_selected_cpp(
       tstat_j, sigma_jx[j, ], Vhat[j, ]
     )
+
   }
 
   max_supT_ais <- colmax_cpp(supT_ais)
@@ -183,8 +211,11 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
     K = K,
     prewhiten_order = pw_order
   )
+
   class(result) <- "cspa_test"
+
   result
+
 }
 
 #' Print Method for CSPA Test Results
@@ -209,6 +240,7 @@ cspa_test <- function(Y, X, level, trim = 0, prewhiten = -1L,
 #'
 #' @export
 print.cspa_test <- function(x, digits = 4, ...) {
+
   n <- nrow(x$Y)
   J <- ncol(x$Y)
   decision <- if (x$reject) "Rejected" else "Not rejected"
@@ -257,6 +289,7 @@ print.cspa_test <- function(x, digits = 4, ...) {
   cat("\n")
 
   invisible(x)
+
 }
 
 #' Summary Method for CSPA Test Results
@@ -280,6 +313,7 @@ print.cspa_test <- function(x, digits = 4, ...) {
 #'
 #' @export
 summary.cspa_test <- function(object, digits = 4, ...) {
+
   print(object, digits = digits)
 
   J <- ncol(object$Y)
@@ -293,6 +327,7 @@ summary.cspa_test <- function(object, digits = 4, ...) {
   cat("  ", paste(rep("-", nchar(header) - 2), collapse = ""), "\n", sep = "")
 
   for (j in seq_len(J)) {
+
     h_j <- object$h_hat[, j]
     sel_pct <- round(100 * sum(object$Vhat[j, ]) / n, 1)
     cat(sprintf("  %-12s %10s %10s %10s %9s%%\n",
@@ -301,28 +336,37 @@ summary.cspa_test <- function(object, digits = 4, ...) {
                 formatC(max(h_j), digits = digits, format = "f"),
                 formatC(mean(h_j), digits = digits, format = "f"),
                 formatC(sel_pct, format = "f", digits = 1)))
+
   }
+
   cat("\n")
 
   invisible(object)
+
 }
 
 # --- Internal formatting helpers ---
 
 .center_line <- function(text, width) {
+
   pad <- max(0, (width - nchar(text)) %/% 2)
   cat("\u2502", strrep(" ", pad), text,
       strrep(" ", width - nchar(text) - pad), "\u2502\n", sep = "")
+
 }
 
 .padded_line <- function(text, width) {
+
   cat("\u2502 ", text, strrep(" ", max(0, width - nchar(text) - 1)),
       "\u2502\n", sep = "")
+
 }
 
 .kv_line <- function(key, value, width) {
+
   value <- as.character(value)
   content <- paste0("  ", key, ": ", value)
   cat("\u2502", content, strrep(" ", max(0, width - nchar(content))),
       "\u2502\n", sep = "")
+      
 }

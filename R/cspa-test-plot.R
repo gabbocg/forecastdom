@@ -70,15 +70,20 @@ cspa_test_plot <- function(object = NULL, Y = NULL, X = NULL, level = 0.05,
   df_ci  <- data.frame(x = X_sorted, y = CI_sorted,      type = "Confidence Bound")
 
   if (single) {
+
     df_all <- rbind(df_env, df_ci)
     type_levels <- c(env_label, "Confidence Bound")
     df_all$type <- factor(df_all$type, levels = type_levels)
     line_colors <- setNames(c("black", "black"),    type_levels)
     line_types  <- setNames(c("solid", "dashed"),   type_levels)
     line_sizes  <- setNames(c(1.0,     0.8),        type_levels)
+
   } else {
+
     df_h <- do.call(rbind, lapply(seq_len(J), function(j) {
+
       data.frame(x = X_sorted, y = h_sorted[, j], type = paste0("h_", j))
+
     }))
     df_all <- rbind(df_env, df_ci, df_h)
 
@@ -97,13 +102,16 @@ cspa_test_plot <- function(object = NULL, Y = NULL, X = NULL, level = 0.05,
       line_types[nm]  <- "solid"
       line_sizes[nm]  <- 0.6
     }
+
   }
 
   # Render h_j legend entries as plotmath h[j] (subscript), and
   # convert spaces in other labels to ~ so they parse cleanly.
   legend_labels <- parse(text = vapply(type_levels, function(s) {
+
     if (grepl("^h_\\d+$", s)) sub("h_(\\d+)", "h[\\1]", s)
     else gsub(" ", "~", s)
+    
   }, character(1)))
 
   x <- y <- type <- NULL  # avoid R CMD check NOTE

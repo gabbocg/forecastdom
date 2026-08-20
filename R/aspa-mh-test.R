@@ -54,10 +54,15 @@ aspa_mh_test <- function(loss_diff, weights, L, B = 999L, level = 0.05) {
   H  <- ncol(loss_diff)
 
   if (length(weights) != H) {
+
     stop("length(weights) must equal ncol(loss_diff) (number of horizons).")
+
   }
+  
   if (!is.numeric(L) || length(L) != 1L || L < 1L || L > T_) {
+
     stop("L must be a positive integer with L <= nrow(loss_diff).")
+
   }
 
   weighted_ld <- as.matrix(loss_diff %*% weights)        # T x 1

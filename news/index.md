@@ -1,12 +1,12 @@
 # Changelog
 
-## forecastdom (development version)
+## forecastdom 0.1.1
 
 - [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)
   now follows Hansen (2005). It previously tested in the wrong direction
   (rejecting when the benchmark was best), scaled the statistic by an
   extra `sqrt(n)`, and did not use Hansen’s consistent recentring. The
-  hl2005 article is updated: GARCH(1,1) is not rejected under any
+  `hl2005` article is updated: GARCH(1,1) is not rejected under any
   realised-variance proxy at the 5% level.
 
 - [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md)

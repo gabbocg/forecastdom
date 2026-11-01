@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">forecastdom</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,8 +45,8 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="forecastdom-development-version">forecastdom (development version)<a class="anchor" aria-label="anchor" href="#forecastdom-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/spa_test.html">spa_test()</a></code> now follows Hansen (2005). It previously tested in the wrong direction (rejecting when the benchmark was best), scaled the statistic by an extra <code>sqrt(n)</code>, and did not use Hansen’s consistent recentring. The hl2005 article is updated: GARCH(1,1) is not rejected under any realised-variance proxy at the 5% level.</p></li>
+<h2 class="pkg-version" data-toc-text="0.1.1" id="forecastdom-011">forecastdom 0.1.1<a class="anchor" aria-label="anchor" href="#forecastdom-011"></a></h2>
+<ul><li><p><code><a href="../reference/spa_test.html">spa_test()</a></code> now follows Hansen (2005). It previously tested in the wrong direction (rejecting when the benchmark was best), scaled the statistic by an extra <code>sqrt(n)</code>, and did not use Hansen’s consistent recentring. The <code>hl2005</code> article is updated: GARCH(1,1) is not rejected under any realised-variance proxy at the 5% level.</p></li>
 <li><p><code><a href="../reference/cspa_test.html">cspa_test()</a></code> now reports the correct p-value when the null is rejected at every level (was 1, now 0) or at none (was 0, now 1). The <code>reject</code> decision was unaffected.</p></li>
 <li><p>Added tests for <code><a href="../reference/cspa_test.html">cspa_test()</a></code>, <code><a href="../reference/csms.html">csms()</a></code>, <code><a href="../reference/cspa_test_plot.html">cspa_test_plot()</a></code>, <code><a href="../reference/do_prewhiten.html">do_prewhiten()</a></code> and <code><a href="../reference/get_legendre.html">get_legendre()</a></code>.</p></li>
 <li><p>Refined the package title and <code>DESCRIPTION</code> text per CRAN feedback: removed the redundant “Tools for” prefix from the title and spelled out acronyms (MSFE, SPA) on first use.</p></li>

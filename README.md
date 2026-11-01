@@ -10,6 +10,7 @@
 [![R-CMD-check](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gabbocg/forecastdom/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![pkgdown](https://github.com/gabbocg/forecastdom/actions/workflows/pkgdown.yaml/badge.svg)](https://gabbocg.github.io/forecastdom/)
+[![Codecov test coverage](https://codecov.io/gh/gabbocg/forecastdom/graph/badge.svg)](https://app.codecov.io/gh/gabbocg/forecastdom)
 <!-- badges: end -->
 
 ## Overview

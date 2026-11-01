@@ -1,6 +1,6 @@
 Package: forecastdom
 Title: (Un)Conditional Forecast Dominance
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R:
     person("Gabriel", "Cabrera", , "gabriel.cabrera.guz@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8803-2338"))

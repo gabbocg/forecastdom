@@ -23,7 +23,7 @@ It also adds tests for these functions and refines the package title and
 
 * local: macOS Sequoia 15.7.4, R 4.5.1 (aarch64-apple-darwin20)
 * GitHub Actions (R-CMD-check)
-* R-hub v2 (GitHub Actions): RHUB_PENDING
+* R-hub v2 (GitHub Actions): linux (r-devel), windows (r-devel), macos (r-devel) — all Status: OK
 
 ## Downstream dependencies
 

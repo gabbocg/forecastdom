@@ -95,13 +95,14 @@ knitr::kable(
                 "Reject", "$n_{\\text{beat}}$"))
 ```
 
-The decision flips with proxy quality:
+The $p$-value falls as the proxy gets more accurate:
 
 - **Noisy proxy** (`sq_ccr`, squared close-to-close returns): $T^{SPA}$ is much smaller and the $p$-value is far from rejection. With a noisy target no model can be confidently ranked against any other.
-- **Coarse intraday proxies** (5-min linear / previous-tick): $p$-values hover near 0.07-0.08, just *failing* to reject GARCH(1,1).
-- **Fine intraday proxies** (1-min linear / previous-tick, Fourier, Spline-250): $p$-values fall below 5% and the SPA *does* reject. With a sufficiently accurate volatility proxy some competitor models can be shown to beat GARCH(1,1).
+- **Smoothed intraday proxies** (Spline-50, Spline-250, Fourier): $p$-values between roughly 0.07 and 0.10.
+- **Coarse intraday proxies** (5-min linear / previous-tick): $p$-values near 0.06-0.07.
+- **Fine intraday proxies** (1-min linear / previous-tick): $p$-values just above 5%, close to but still short of rejection.
 
-This is the nuanced answer of Hansen and Lunde: GARCH(1,1) is hard to beat in any *concrete* unconditional comparison, but the decision is sensitive to how cleanly we measure realised volatility.
+This is the answer of Hansen and Lunde: GARCH(1,1) is hard to beat in any *concrete* unconditional comparison, and how close the test comes to rejecting depends on how cleanly we measure realised volatility.
 
 ## Top 10 alternatives by mean loss (5-min proxy)
 

@@ -1,5 +1,11 @@
 # forecastdom (development version)
 
+* `spa_test()` now follows Hansen (2005). It previously tested in the wrong
+  direction (rejecting when the benchmark was best), scaled the statistic by
+  an extra `sqrt(n)`, and did not use Hansen's consistent recentring. The
+  hl2005 article is updated: GARCH(1,1) is not rejected under any
+  realised-variance proxy at the 5% level.
+
 * `cspa_test()` now reports the correct p-value when the null is rejected at
   every level (was 1, now 0) or at none (was 0, now 1). The `reject`
   decision was unaffected.

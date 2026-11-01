@@ -36,16 +36,20 @@ unconditional superior predictive ability over all competing alternatives,
 using Hansen's (2005) stationary bootstrap approach.
 }
 \details{
-The SPA test statistic is:
-\deqn{T^{SPA} = \max_{1 \le j \le J} \frac{\sqrt{n}\, \bar{d}_j}{\hat{\sigma}_j}}
-where \eqn{\bar{d}_j} is the mean loss differential for competitor \code{j}
-and \eqn{\hat{\sigma}_j} is its estimated standard deviation.
+Let \eqn{d_{j,t} = -Y_{j,t}}, so that positive values mean competitor
+\code{j} beats the benchmark. The SPA test statistic is:
+\deqn{T^{SPA} = \max\left(\max_{1 \le j \le J}
+  \frac{\sqrt{n}\, \bar{d}_j}{\hat{\omega}_j}, 0\right)}
+where \eqn{\bar{d}_j} is the sample mean of \eqn{d_{j,t}} and
+\eqn{\hat{\omega}_j^2} is its Newey-West long-run variance.
 
 The null hypothesis is rejected when the benchmark is not superior to all
 competitors, i.e., some competitor significantly outperforms it.
 
-Hansen's (2005) consistent test uses a pre-selection step to remove
-clearly inferior competitors from the critical value computation.
+The bootstrap distribution uses Hansen's (2005) consistent recentring:
+competitors with \eqn{\sqrt{n}\, \bar{d}_j / \hat{\omega}_j <
+-\sqrt{2 \log \log n}} are treated as clearly inferior and recentred at
+zero instead of \eqn{\bar{d}_j}, so they do not inflate the critical value.
 }
 \examples{
 \donttest{

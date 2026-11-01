@@ -24,16 +24,20 @@
 #'   \item{B}{Number of bootstrap replications.}
 #'
 #' @details
-#' The SPA test statistic is:
-#' \deqn{T^{SPA} = \max_{1 \le j \le J} \frac{\sqrt{n}\, \bar{d}_j}{\hat{\sigma}_j}}
-#' where \eqn{\bar{d}_j} is the mean loss differential for competitor \code{j}
-#' and \eqn{\hat{\sigma}_j} is its estimated standard deviation.
+#' Let \eqn{d_{j,t} = -Y_{j,t}}, so that positive values mean competitor
+#' \code{j} beats the benchmark. The SPA test statistic is:
+#' \deqn{T^{SPA} = \max\left(\max_{1 \le j \le J}
+#'   \frac{\sqrt{n}\, \bar{d}_j}{\hat{\omega}_j}, 0\right)}
+#' where \eqn{\bar{d}_j} is the sample mean of \eqn{d_{j,t}} and
+#' \eqn{\hat{\omega}_j^2} is its Newey-West long-run variance.
 #'
 #' The null hypothesis is rejected when the benchmark is not superior to all
 #' competitors, i.e., some competitor significantly outperforms it.
 #'
-#' Hansen's (2005) consistent test uses a pre-selection step to remove
-#' clearly inferior competitors from the critical value computation.
+#' The bootstrap distribution uses Hansen's (2005) consistent recentring:
+#' competitors with \eqn{\sqrt{n}\, \bar{d}_j / \hat{\omega}_j <
+#' -\sqrt{2 \log \log n}} are treated as clearly inferior and recentred at
+#' zero instead of \eqn{\bar{d}_j}, so they do not inflate the critical value.
 #'
 #' @references
 #' Hansen, P.R. (2005). A Test for Superior Predictive Ability.
@@ -51,50 +55,42 @@
 #' @importFrom stats rnorm runif var
 #' @export
 spa_test <- function(Y, level, B = 5000L, q = 0.25) {
-  
+
   Y <- as.matrix(Y)
   n <- nrow(Y)
   J <- ncol(Y)
 
-  d_bar <- colMeans(Y)
+  # Hansen's (2005) d_j = L_0 - L_j: positive when competitor j beats the benchmark
+  d <- -Y
+  d_bar <- colMeans(d)
 
-  # Estimate standard deviations using Newey-West
-  sigma_hat <- numeric(J)
+  # Newey-West long-run standard deviation of each d_j
   nlag <- floor(1.2 * n ^ (1 / 3))
-  for (j in seq_len(J)) {
-    
-    sigma_hat[j] <- sqrt(covnw(Y[, j, drop = FALSE], nlag = nlag) / n)
-    
-  }
+  omega <- vapply(seq_len(J), function(j) sqrt(covnw(d[, j, drop = FALSE], nlag = nlag)), numeric(1))
 
-  # Test statistic: max standardized mean
-  t_stat <- max(sqrt(n) * d_bar / sigma_hat)
+  t_j <- sqrt(n) * d_bar / omega
+  t_stat <- max(t_j, 0)
+
+  # Consistent recentring: clearly inferior competitors are centred at zero
+  mu_c <- d_bar * (t_j >= -sqrt(2 * log(log(n))))
 
   # Stationary bootstrap
   boot_stats <- numeric(B)
   for (b in seq_len(B)) {
-    
-    # Generate stationary bootstrap indices
+
     idx <- .stationary_bootstrap_indices(n, q)
-    Y_star <- Y[idx, , drop = FALSE]
-    d_bar_star <- colMeans(Y_star) - d_bar  # re-center under H0
+    z_bar <- colMeans(d[idx, , drop = FALSE]) - mu_c
+    boot_stats[b] <- max(sqrt(n) * z_bar / omega, 0)
 
-    # Consistent test: pre-select competitors
-    # Zero out clearly negative means (Hansen's approach)
-    d_bar_c <- pmax(d_bar_star, 0)
-
-    t_star <- max(sqrt(n) * d_bar_c / sigma_hat)
-    boot_stats[b] <- t_star
-    
   }
 
   pval <- mean(boot_stats >= t_stat)
 
-  result <- list(statistic = t_stat, pvalue = pval, reject = pval < level, level = level, d_bar = d_bar, n = n, J = J, B = B)
+  result <- list(statistic = t_stat, pvalue = pval, reject = pval < level, level = level, d_bar = colMeans(Y), n = n, J = J, B = B)
   class(result) <- "spa_test"
-  
+
   result
-  
+
 }
 
 #' @export

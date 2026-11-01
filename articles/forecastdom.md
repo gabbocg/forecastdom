@@ -140,9 +140,9 @@ spa_test(sim$Y, level = 0.05, B = 1000)
 #> │ H1: Some competitor outperforms the benchmark      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  SPA statistic: 50.4916                            │
-#> │  P-value (bootstrap): 0.0020                       │
-#> │  Decision: Rejected ***                            │
+#> │  SPA statistic: 0.0000                             │
+#> │  P-value (bootstrap): 1.0000                       │
+#> │  Decision: Not rejected                            │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 250                             │

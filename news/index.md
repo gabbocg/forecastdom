@@ -2,6 +2,26 @@
 
 ## forecastdom (development version)
 
+- [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)
+  now follows Hansen (2005). It previously tested in the wrong direction
+  (rejecting when the benchmark was best), scaled the statistic by an
+  extra `sqrt(n)`, and did not use Hansen’s consistent recentring. The
+  hl2005 article is updated: GARCH(1,1) is not rejected under any
+  realised-variance proxy at the 5% level.
+
+- [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md)
+  now reports the correct p-value when the null is rejected at every
+  level (was 1, now 0) or at none (was 0, now 1). The `reject` decision
+  was unaffected.
+
+- Added tests for
+  [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md),
+  [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md),
+  [`cspa_test_plot()`](https://gabbocg.github.io/forecastdom/reference/cspa_test_plot.md),
+  [`do_prewhiten()`](https://gabbocg.github.io/forecastdom/reference/do_prewhiten.md)
+  and
+  [`get_legendre()`](https://gabbocg.github.io/forecastdom/reference/get_legendre.md).
+
 - Refined the package title and `DESCRIPTION` text per CRAN feedback:
   removed the redundant “Tools for” prefix from the title and spelled
   out acronyms (MSFE, SPA) on first use.

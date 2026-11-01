@@ -70,16 +70,20 @@ A list with class `"spa_test"` containing:
 
 ## Details
 
-The SPA test statistic is: \$\$T^{SPA} = \max\_{1 \le j \le J}
-\frac{\sqrt{n}\\ \bar{d}\_j}{\hat{\sigma}\_j}\$\$ where \\\bar{d}\_j\\
-is the mean loss differential for competitor `j` and \\\hat{\sigma}\_j\\
-is its estimated standard deviation.
+Let \\d\_{j,t} = -Y\_{j,t}\\, so that positive values mean competitor
+`j` beats the benchmark. The SPA test statistic is: \$\$T^{SPA} =
+\max\left(\max\_{1 \le j \le J} \frac{\sqrt{n}\\
+\bar{d}\_j}{\hat{\omega}\_j}, 0\right)\$\$ where \\\bar{d}\_j\\ is the
+sample mean of \\d\_{j,t}\\ and \\\hat{\omega}\_j^2\\ is its Newey-West
+long-run variance.
 
 The null hypothesis is rejected when the benchmark is not superior to
 all competitors, i.e., some competitor significantly outperforms it.
 
-Hansen's (2005) consistent test uses a pre-selection step to remove
-clearly inferior competitors from the critical value computation.
+The bootstrap distribution uses Hansen's (2005) consistent recentring:
+competitors with \\\sqrt{n}\\ \bar{d}\_j / \hat{\omega}\_j \< -\sqrt{2
+\log \log n}\\ are treated as clearly inferior and recentred at zero
+instead of \\\bar{d}\_j\\, so they do not inflate the critical value.
 
 ## References
 
@@ -104,9 +108,9 @@ spa_test(sim$Y, level = 0.05, B = 500)
 #> │ H1: Some competitor outperforms the benchmark      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  SPA statistic: 48.9787                            │
-#> │  P-value (bootstrap): 0.0020                       │
-#> │  Decision: Rejected ***                            │
+#> │  SPA statistic: 0.0000                             │
+#> │  P-value (bootstrap): 1.0000                       │
+#> │  Decision: Not rejected                            │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 250                             │

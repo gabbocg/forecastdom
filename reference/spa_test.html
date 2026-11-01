@@ -114,14 +114,18 @@ in the stationary bootstrap. Controls the average block length
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The SPA test statistic is:
-$$T^{SPA} = \max_{1 \le j \le J} \frac{\sqrt{n}\, \bar{d}_j}{\hat{\sigma}_j}$$
-where \(\bar{d}_j\) is the mean loss differential for competitor <code>j</code>
-and \(\hat{\sigma}_j\) is its estimated standard deviation.</p>
+    <p>Let \(d_{j,t} = -Y_{j,t}\), so that positive values mean competitor
+<code>j</code> beats the benchmark. The SPA test statistic is:
+$$T^{SPA} = \max\left(\max_{1 \le j \le J}
+  \frac{\sqrt{n}\, \bar{d}_j}{\hat{\omega}_j}, 0\right)$$
+where \(\bar{d}_j\) is the sample mean of \(d_{j,t}\) and
+\(\hat{\omega}_j^2\) is its Newey-West long-run variance.</p>
 <p>The null hypothesis is rejected when the benchmark is not superior to all
 competitors, i.e., some competitor significantly outperforms it.</p>
-<p>Hansen's (2005) consistent test uses a pre-selection step to remove
-clearly inferior competitors from the critical value computation.</p>
+<p>The bootstrap distribution uses Hansen's (2005) consistent recentring:
+competitors with \(\sqrt{n}\, \bar{d}_j / \hat{\omega}_j &lt;
+-\sqrt{2 \log \log n}\) are treated as clearly inferior and recentred at
+zero instead of \(\bar{d}_j\), so they do not inflate the critical value.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -145,9 +149,9 @@ clearly inferior competitors from the critical value computation.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> │ H1: Some competitor outperforms the benchmark      │</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> │ Test Results:                                      │</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │  SPA statistic: 48.9787                            │</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │  P-value (bootstrap): 0.0020                       │</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │  Decision: Rejected ***                            │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  SPA statistic: 0.0000                             │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  P-value (bootstrap): 1.0000                       │</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │  Decision: Not rejected                            │</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> │ Details:                                           │</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> │  Observations (n): 250                             │</span>

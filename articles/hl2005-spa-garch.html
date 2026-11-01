@@ -142,8 +142,8 @@ what <code><a href="../reference/spa_test.html">spa_test()</a></code> answers.</
 <span><span class="co">#&gt; │ H1: Some competitor outperforms the benchmark      │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Test Results:                                      │</span></span>
-<span><span class="co">#&gt; │  SPA statistic: 40.5299                            │</span></span>
-<span><span class="co">#&gt; │  P-value (bootstrap): 0.0734                       │</span></span>
+<span><span class="co">#&gt; │  SPA statistic: 2.5143                             │</span></span>
+<span><span class="co">#&gt; │  P-value (bootstrap): 0.0690                       │</span></span>
 <span><span class="co">#&gt; │  Decision: Not rejected                            │</span></span>
 <span><span class="co">#&gt; ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤</span></span>
 <span><span class="co">#&gt; │ Details:                                           │</span></span>
@@ -199,63 +199,65 @@ robustness table.</p>
 <tbody>
 <tr class="odd">
 <td align="left">sq_ccr</td>
-<td align="right">18.341</td>
-<td align="right">0.798</td>
+<td align="right">1.995</td>
+<td align="right">0.326</td>
 <td align="left">FALSE</td>
 <td align="right">257</td>
 </tr>
 <tr class="even">
 <td align="left">spline_50_3min</td>
-<td align="right">40.427</td>
-<td align="right">0.076</td>
+<td align="right">2.327</td>
+<td align="right">0.103</td>
 <td align="left">FALSE</td>
 <td align="right">186</td>
 </tr>
 <tr class="odd">
 <td align="left">spline_250_2min</td>
-<td align="right">46.255</td>
-<td align="right">0.034</td>
-<td align="left">TRUE</td>
+<td align="right">2.301</td>
+<td align="right">0.104</td>
+<td align="left">FALSE</td>
 <td align="right">187</td>
 </tr>
 <tr class="even">
 <td align="left">fourier_M85</td>
-<td align="right">43.255</td>
-<td align="right">0.051</td>
+<td align="right">2.470</td>
+<td align="right">0.073</td>
 <td align="left">FALSE</td>
 <td align="right">195</td>
 </tr>
 <tr class="odd">
 <td align="left">linear_5min</td>
-<td align="right">40.530</td>
-<td align="right">0.073</td>
+<td align="right">2.514</td>
+<td align="right">0.069</td>
 <td align="left">FALSE</td>
 <td align="right">187</td>
 </tr>
 <tr class="even">
 <td align="left">prevtick_5min</td>
-<td align="right">41.068</td>
-<td align="right">0.068</td>
+<td align="right">2.518</td>
+<td align="right">0.064</td>
 <td align="left">FALSE</td>
 <td align="right">187</td>
 </tr>
 <tr class="odd">
 <td align="left">linear_1min</td>
-<td align="right">49.770</td>
-<td align="right">0.020</td>
-<td align="left">TRUE</td>
+<td align="right">2.609</td>
+<td align="right">0.058</td>
+<td align="left">FALSE</td>
 <td align="right">189</td>
 </tr>
 <tr class="even">
 <td align="left">prevtick_1min</td>
-<td align="right">49.784</td>
-<td align="right">0.021</td>
-<td align="left">TRUE</td>
+<td align="right">2.635</td>
+<td align="right">0.053</td>
+<td align="left">FALSE</td>
 <td align="right">189</td>
 </tr>
 </tbody>
 </table>
-<p>The decision flips with proxy quality:</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
+falls as the proxy gets more accurate:</p>
 <ul>
 <li>
 <strong>Noisy proxy</strong> (<code>sq_ccr</code>, squared
@@ -266,21 +268,25 @@ is much smaller and the
 is far from rejection. With a noisy target no model can be confidently
 ranked against any other.</li>
 <li>
+<strong>Smoothed intraday proxies</strong> (Spline-50, Spline-250,
+Fourier):
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
+between roughly 0.07 and 0.10.</li>
+<li>
 <strong>Coarse intraday proxies</strong> (5-min linear /
 previous-tick):
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
-hover near 0.07-0.08, just <em>failing</em> to reject GARCH(1,1).</li>
+near 0.06-0.07.</li>
 <li>
 <strong>Fine intraday proxies</strong> (1-min linear /
-previous-tick, Fourier, Spline-250):
+previous-tick):
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-values
-fall below 5% and the SPA <em>does</em> reject. With a sufficiently
-accurate volatility proxy some competitor models can be shown to beat
-GARCH(1,1).</li>
+just above 5%, close to but still short of rejection.</li>
 </ul>
-<p>This is the nuanced answer of Hansen and Lunde: GARCH(1,1) is hard to
-beat in any <em>concrete</em> unconditional comparison, but the decision
-is sensitive to how cleanly we measure realised volatility.</p>
+<p>This is the answer of Hansen and Lunde: GARCH(1,1) is hard to beat in
+any <em>concrete</em> unconditional comparison, and how close the test
+comes to rejecting depends on how cleanly we measure realised
+volatility.</p>
 </div>
 <div class="section level2">
 <h2 id="top-10-alternatives-by-mean-loss-5-min-proxy">Top 10 alternatives by mean loss (5-min proxy)<a class="anchor" aria-label="anchor" href="#top-10-alternatives-by-mean-loss-5-min-proxy"></a>

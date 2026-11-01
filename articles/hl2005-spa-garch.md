@@ -68,8 +68,8 @@ r
 #> │ H1: Some competitor outperforms the benchmark      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  SPA statistic: 40.5299                            │
-#> │  P-value (bootstrap): 0.0734                       │
+#> │  SPA statistic: 2.5143                             │
+#> │  P-value (bootstrap): 0.0690                       │
 #> │  Decision: Not rejected                            │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
@@ -117,30 +117,30 @@ knitr::kable(
 
 | Proxy           | $T^{SPA}$ | $p$-value | Reject | $n_{\text{beat}}$ |
 |:----------------|----------:|----------:|:-------|------------------:|
-| sq_ccr          |    18.341 |     0.798 | FALSE  |               257 |
-| spline_50_3min  |    40.427 |     0.076 | FALSE  |               186 |
-| spline_250_2min |    46.255 |     0.034 | TRUE   |               187 |
-| fourier_M85     |    43.255 |     0.051 | FALSE  |               195 |
-| linear_5min     |    40.530 |     0.073 | FALSE  |               187 |
-| prevtick_5min   |    41.068 |     0.068 | FALSE  |               187 |
-| linear_1min     |    49.770 |     0.020 | TRUE   |               189 |
-| prevtick_1min   |    49.784 |     0.021 | TRUE   |               189 |
+| sq_ccr          |     1.995 |     0.326 | FALSE  |               257 |
+| spline_50_3min  |     2.327 |     0.103 | FALSE  |               186 |
+| spline_250_2min |     2.301 |     0.104 | FALSE  |               187 |
+| fourier_M85     |     2.470 |     0.073 | FALSE  |               195 |
+| linear_5min     |     2.514 |     0.069 | FALSE  |               187 |
+| prevtick_5min   |     2.518 |     0.064 | FALSE  |               187 |
+| linear_1min     |     2.609 |     0.058 | FALSE  |               189 |
+| prevtick_1min   |     2.635 |     0.053 | FALSE  |               189 |
 
-The decision flips with proxy quality:
+The $p$-value falls as the proxy gets more accurate:
 
 - **Noisy proxy** (`sq_ccr`, squared close-to-close returns): $T^{SPA}$
   is much smaller and the $p$-value is far from rejection. With a noisy
   target no model can be confidently ranked against any other.
+- **Smoothed intraday proxies** (Spline-50, Spline-250, Fourier):
+  $p$-values between roughly 0.07 and 0.10.
 - **Coarse intraday proxies** (5-min linear / previous-tick): $p$-values
-  hover near 0.07-0.08, just *failing* to reject GARCH(1,1).
-- **Fine intraday proxies** (1-min linear / previous-tick, Fourier,
-  Spline-250): $p$-values fall below 5% and the SPA *does* reject. With
-  a sufficiently accurate volatility proxy some competitor models can be
-  shown to beat GARCH(1,1).
+  near 0.06-0.07.
+- **Fine intraday proxies** (1-min linear / previous-tick): $p$-values
+  just above 5%, close to but still short of rejection.
 
-This is the nuanced answer of Hansen and Lunde: GARCH(1,1) is hard to
-beat in any *concrete* unconditional comparison, but the decision is
-sensitive to how cleanly we measure realised volatility.
+This is the answer of Hansen and Lunde: GARCH(1,1) is hard to beat in
+any *concrete* unconditional comparison, and how close the test comes to
+rejecting depends on how cleanly we measure realised volatility.
 
 ## Top 10 alternatives by mean loss (5-min proxy)
 

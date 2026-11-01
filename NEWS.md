@@ -1,5 +1,11 @@
 # forecastdom (development version)
 
+* `cspa_test()` now reports the correct p-value when the null is rejected at
+  every level (was 1, now 0) or at none (was 0, now 1). The `reject`
+  decision was unaffected.
+* Added tests for `cspa_test()`, `csms()`, `cspa_test_plot()`,
+  `do_prewhiten()` and `get_legendre()`.
+
 * Refined the package title and `DESCRIPTION` text per CRAN feedback:
   removed the redundant "Tools for" prefix from the title and spelled out
   acronyms (MSFE, SPA) on first use.

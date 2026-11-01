@@ -119,20 +119,15 @@ double pvalue_search_cpp(const NumericMatrix& h_hat,
 
   // Check boundaries
   // At r=R (index R-1): largest kr
+  // theta is increasing in kr, so theta <= 0 at the largest kr means it is
+  // <= 0 everywhere: the null is rejected at every level.
   if (compute_theta(sorted_max[R - 1]) <= 0.0) {
-    // theta <= 0 even at largest kr => search linearly from top
-    // (this is the rare case where pvalue is very large)
-    for (int r = R - 2; r >= 0; r--) {
-      if (compute_theta(sorted_max[r]) > 0.0) {
-        return 1.0 - (double)(r + 1) / (double)R;
-      }
-    }
-    return 1.0;
+    return 0.0;
   }
 
-  // At r=1 (index 0): smallest kr
+  // At r=1 (index 0): smallest kr. theta > 0 everywhere: never rejected.
   if (compute_theta(sorted_max[0]) > 0.0) {
-    return 0.0;  // theta > 0 everywhere
+    return 1.0;
   }
 
   // Binary search: find largest index where theta <= 0

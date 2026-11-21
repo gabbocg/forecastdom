@@ -9,9 +9,12 @@
 #' @param h Integer; forecast horizon. Default \code{1}.
 #' @param loss Character; loss function to use. \code{"SE"} for squared error
 #'   (default), \code{"AE"} for absolute error.
-#' @param alternative Character; alternative hypothesis. \code{"two.sided"}
-#'   (default), \code{"less"} (model 2 is better), or \code{"greater"}
-#'   (model 1 is better).
+#' @param alternative Character; alternative hypothesis about the loss
+#'   differential \eqn{d_t = L(e_{1,t}) - L(e_{2,t})}. \code{"two.sided"}
+#'   (default); \code{"less"}, model 2 is less accurate than model 1
+#'   (\eqn{E[d_t] < 0}); or \code{"greater"}, model 2 is more accurate than
+#'   model 1 (\eqn{E[d_t] > 0}). This is the convention of
+#'   \code{forecast::dm.test()}.
 #' @param correction Logical; apply the Harvey, Leybourne, and Newbold (1997)
 #'   finite-sample correction? Default \code{TRUE}.
 #'
@@ -23,6 +26,14 @@
 #'   \item{h}{Forecast horizon.}
 #'   \item{n}{Number of observations.}
 #'   \item{loss}{Loss function used.}
+#'
+#' @details
+#' The long-run variance of \eqn{d_t} sums its autocovariances up to lag
+#' \eqn{h - 1} with equal weights, each divided by \eqn{n}, as in Diebold
+#' and Mariano (1995) and \code{forecast::dm.test()}. With the correction,
+#' the statistic equals that of \code{forecast::dm.test()}. For \eqn{h > 1}
+#' the estimate can be negative, and \code{dm_test()} then stops with an
+#' error.
 #'
 #' @references
 #' Diebold, F.X. and Mariano, R.S. (1995). Comparing Predictive Accuracy.
@@ -38,7 +49,7 @@
 #' e2 <- rnorm(100, mean = 0.1)
 #' dm_test(e1, e2)
 #'
-#' @importFrom stats pnorm pt var
+#' @importFrom stats pnorm pt
 #' @export
 dm_test <- function(e1, e2, h = 1L, loss = c("SE", "AE"),
                     alternative = c("two.sided", "less", "greater"),
@@ -56,6 +67,7 @@ dm_test <- function(e1, e2, h = 1L, loss = c("SE", "AE"),
   }
 
   n <- length(e1)
+  h <- .check_horizon(h, n)
 
   # Loss differentials
   if (loss == "SE") {
@@ -70,23 +82,20 @@ dm_test <- function(e1, e2, h = 1L, loss = c("SE", "AE"),
 
   d_bar <- mean(d)
 
-  # Long-run variance using Newey-West with h-1 lags
-  gamma_0 <- stats::var(d)
-  
-  if (h > 1) {
-    
-    gamma_k <- sapply(1:(h - 1), function(k) {
-      
-      mean((d[(k + 1):n] - d_bar) * (d[1:(n - k)] - d_bar))
-      
-    })
-    
-    V_d <- (gamma_0 + 2 * sum(gamma_k)) / n
-    
-  } else {
-    
-    V_d <- gamma_0 / n
-    
+  # Long-run variance: autocovariances at lags 0, ..., h-1, each divided by n
+  gamma <- vapply(0:(h - 1), function(k) {
+
+    sum((d[(k + 1):n] - d_bar) * (d[1:(n - k)] - d_bar)) / n
+
+  }, numeric(1))
+
+  V_d <- (gamma[1] + 2 * sum(gamma[-1])) / n
+
+  if (!(V_d > 0)) {
+
+    stop("The long-run variance estimate of the loss differential is not ",
+         "positive (", format(V_d), "); the test statistic is undefined.")
+
   }
 
   dm_stat <- d_bar / sqrt(V_d)
@@ -145,8 +154,8 @@ print.dm_test <- function(x, digits = 4, ...) {
 
   alt_text <- switch(x$alternative,
     "two.sided" = "H1: Methods have different predictive ability",
-    "less"      = "H1: Model 2 has superior predictive ability",
-    "greater"   = "H1: Model 1 has superior predictive ability"
+    "less"      = "H1: Model 2 is less accurate than model 1",
+    "greater"   = "H1: Model 2 is more accurate than model 1"
   )
   .padded_line("H0: Equal predictive ability", w)
   .padded_line(alt_text, w)

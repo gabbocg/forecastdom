@@ -144,7 +144,7 @@ knitr::kable(run_panel(2), row.names = FALSE,
              caption = "$DM_T$ statistic ($p$-value), AR(2) vs. RW")
 ```
 
-These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly. The statistics are typically positive (the random walk has the lower MSFE), and the two-sided $p$-values rarely fall below 5%. This is the classical Meese-Rogoff finding.
+These cells reproduce the OOS DM statistics of Rossi (2006) Table 1 to within 0.01. `dm_test()` divides the variance of the loss differential by $P$, as `forecast::dm.test()` does; Rossi divides by $P - 1$, so her statistics are smaller by the factor $\sqrt{(P-1)/P} \approx 0.997$. The statistics are typically positive (the random walk has the lower MSFE), and the two-sided $p$-values rarely fall below 5%. This is the classical Meese-Rogoff finding.
 
 ## Single-country deep dive: Japan, AR(1), recursive
 

@@ -23,9 +23,12 @@ dm_test(
 \item{loss}{Character; loss function to use. \code{"SE"} for squared error
 (default), \code{"AE"} for absolute error.}
 
-\item{alternative}{Character; alternative hypothesis. \code{"two.sided"}
-(default), \code{"less"} (model 2 is better), or \code{"greater"}
-(model 1 is better).}
+\item{alternative}{Character; alternative hypothesis about the loss
+differential \eqn{d_t = L(e_{1,t}) - L(e_{2,t})}. \code{"two.sided"}
+(default); \code{"less"}, model 2 is less accurate than model 1
+(\eqn{E[d_t] < 0}); or \code{"greater"}, model 2 is more accurate than
+model 1 (\eqn{E[d_t] > 0}). This is the convention of
+\code{forecast::dm.test()}.}
 
 \item{correction}{Logical; apply the Harvey, Leybourne, and Newbold (1997)
 finite-sample correction? Default \code{TRUE}.}
@@ -44,6 +47,14 @@ A list with class \code{"dm_test"} containing:
 Tests the null hypothesis that two forecasting methods have equal
 predictive ability (UEPA), with an optional small-sample correction
 by Harvey, Leybourne, and Newbold (1997).
+}
+\details{
+The long-run variance of \eqn{d_t} sums its autocovariances up to lag
+\eqn{h - 1} with equal weights, each divided by \eqn{n}, as in Diebold
+and Mariano (1995) and \code{forecast::dm.test()}. With the correction,
+the statistic equals that of \code{forecast::dm.test()}. For \eqn{h > 1}
+the estimate can be negative, and \code{dm_test()} then stops with an
+error.
 }
 \examples{
 set.seed(42)

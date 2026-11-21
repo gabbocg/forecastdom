@@ -4,7 +4,7 @@
 \alias{cw_test}
 \title{Clark-West Test for Predictive Ability of Nested Models}
 \usage{
-cw_test(e1, e2, f1, f2)
+cw_test(e1, e2, f1, f2, h = 1L, nlag = NULL)
 }
 \arguments{
 \item{e1}{Numeric vector of forecast errors from the benchmark
@@ -16,6 +16,12 @@ cw_test(e1, e2, f1, f2)
 \item{f1}{Numeric vector of forecasts from the benchmark model.}
 
 \item{f2}{Numeric vector of forecasts from the alternative model.}
+
+\item{h}{Integer; forecast horizon. Default \code{1}.}
+
+\item{nlag}{Non-negative integer; number of Newey-West lags. If
+\code{NULL} (default), uses \code{0} for \code{h = 1} and
+\code{floor(1.5 * h)} otherwise.}
 }
 \value{
 A list with class \code{"cw_test"} containing:
@@ -23,6 +29,8 @@ A list with class \code{"cw_test"} containing:
 \item{pvalue}{One-sided p-value (H1: alternative is better).}
 \item{r2os}{Out-of-sample \eqn{R^2_{OS}}{R2OS} in percent.}
 \item{n}{Number of observations.}
+\item{h}{Forecast horizon.}
+\item{nlag}{Number of Newey-West lags used.}
 }
 \description{
 Tests whether an alternative (unrestricted) model has superior
@@ -35,6 +43,16 @@ The MSFE-adjusted series is defined as:
 \deqn{\hat{f}_t = e_{1,t}^2 - \left(e_{2,t}^2 - (f_{1,t} - f_{2,t})^2\right)}
 The test regresses \eqn{\hat{f}_t} on a constant and uses the resulting
 t-statistic, compared to a standard normal distribution (one-sided).
+
+The standard error is Newey-West (Bartlett weights, autocovariances
+divided by \eqn{n}) with \code{nlag} lags. Overlapping \eqn{h}-step
+forecasts make \eqn{\hat{f}_t} serially correlated up to lag
+\eqn{h - 1}, which the least squares standard error ignores. The default
+bandwidth of \eqn{1.5h} follows Clark and West (2007, Section 5); with
+exactly \eqn{h - 1} lags the Bartlett weights shrink those
+autocovariances and the test over-rejects. For \code{h = 1} the standard
+error is the sample standard deviation over \eqn{\sqrt{n}}, which differs
+from the least squares one by the factor \eqn{\sqrt{(n - 1)/n}}.
 }
 \examples{
 set.seed(42)

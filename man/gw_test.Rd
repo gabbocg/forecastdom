@@ -4,7 +4,7 @@
 \alias{gw_test}
 \title{Conditional Equal Predictive Ability (CEPA) Test}
 \usage{
-gw_test(e1, e2, instruments = NULL, loss = c("SE", "AE"))
+gw_test(e1, e2, instruments = NULL, loss = c("SE", "AE"), h = 1L, nlag = NULL)
 }
 \arguments{
 \item{e1}{Numeric vector of forecast errors from model 1 (benchmark).}
@@ -12,11 +12,20 @@ gw_test(e1, e2, instruments = NULL, loss = c("SE", "AE"))
 \item{e2}{Numeric vector of forecast errors from model 2 (competitor).}
 
 \item{instruments}{An \code{n x q} matrix of instruments (conditioning
-variables) observed at the time of the forecast. If \code{NULL}
-(default), uses a constant and the lagged loss differential.}
+variables). Row \eqn{t} pairs with the loss differential \eqn{d_t} and
+must be known at that forecast's origin, \eqn{h} periods before
+\eqn{d_t} is observed. Column names, if any, label the instruments in
+error messages. If \code{NULL} (default), uses a constant and the loss
+differential lagged by \code{h}.}
 
 \item{loss}{Character; loss function. \code{"SE"} for squared error
 (default), \code{"AE"} for absolute error.}
+
+\item{h}{Integer; forecast horizon. Default \code{1}.}
+
+\item{nlag}{Non-negative integer; number of Newey-West lags. If
+\code{NULL} (default), uses \code{0} for \code{h = 1} and
+\code{floor(1.5 * h)} otherwise.}
 }
 \value{
 A list with class \code{"gw_test"} containing:
@@ -25,6 +34,8 @@ A list with class \code{"gw_test"} containing:
 \item{df}{Degrees of freedom (number of instruments).}
 \item{n}{Number of observations used.}
 \item{loss}{Loss function used.}
+\item{h}{Forecast horizon.}
+\item{nlag}{Number of Newey-West lags used.}
 }
 \description{
 Tests the null hypothesis of conditional equal predictive ability using
@@ -41,6 +52,19 @@ instruments measurable with respect to the conditioning information set.
 
 The test statistic follows a chi-squared distribution with \eqn{q}
 degrees of freedom, where \eqn{q} is the number of instruments.
+
+The covariance of \eqn{d_t W_t} is Newey-West (Bartlett weights,
+demeaned, autocovariances divided by \eqn{n}) with \code{nlag} lags. For
+\code{h = 1} the moments are a martingale difference under the null and
+the sample covariance suffices (Giacomini and White, 2006, Theorem 1).
+For \code{h > 1} they are serially correlated up to lag \eqn{h - 1}.
+Giacomini and White's code uses \eqn{h - 1} lags, but Bartlett weights then
+shrink those autocovariances and the test over-rejects, so the default is
+the \eqn{1.5h} bandwidth of Clark and West (2007); \code{nlag = h - 1}
+reproduces their code's choice.
+
+If the moment covariance is singular, the test stops and names the
+instruments whose moments are collinear.
 }
 \examples{
 set.seed(42)
@@ -52,4 +76,8 @@ gw_test(e1, e2)
 \references{
 Giacomini, R. and White, H. (2006). Tests of Conditional Predictive
 Ability. \emph{Econometrica}, 74(6), 1545-1578.
+
+Clark, T.E. and West, K.D. (2007). Approximately Normal Tests for Equal
+Predictive Accuracy in Nested Models. \emph{Journal of Econometrics},
+138(1), 291-311.
 }

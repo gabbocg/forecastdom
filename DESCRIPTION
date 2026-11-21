@@ -33,9 +33,11 @@ Imports:
     stats,
     ggplot2
 Suggests:
+    forecast,
     knitr,
     R.matlab,
     rmarkdown,
+    sandwich,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://gabbocg.github.io/forecastdom/,

@@ -11,18 +11,34 @@
 #'   (unrestricted) model.
 #' @param f1 Numeric vector of forecasts from the benchmark model.
 #' @param f2 Numeric vector of forecasts from the alternative model.
+#' @param h Integer; forecast horizon. Default \code{1}.
+#' @param nlag Non-negative integer; number of Newey-West lags. If
+#'   \code{NULL} (default), uses \code{0} for \code{h = 1} and
+#'   \code{floor(1.5 * h)} otherwise.
 #'
 #' @return A list with class \code{"cw_test"} containing:
 #'   \item{statistic}{The Clark-West t-statistic.}
 #'   \item{pvalue}{One-sided p-value (H1: alternative is better).}
 #'   \item{r2os}{Out-of-sample \eqn{R^2_{OS}}{R2OS} in percent.}
 #'   \item{n}{Number of observations.}
+#'   \item{h}{Forecast horizon.}
+#'   \item{nlag}{Number of Newey-West lags used.}
 #'
 #' @details
 #' The MSFE-adjusted series is defined as:
 #' \deqn{\hat{f}_t = e_{1,t}^2 - \left(e_{2,t}^2 - (f_{1,t} - f_{2,t})^2\right)}
 #' The test regresses \eqn{\hat{f}_t} on a constant and uses the resulting
 #' t-statistic, compared to a standard normal distribution (one-sided).
+#'
+#' The standard error is Newey-West (Bartlett weights, autocovariances
+#' divided by \eqn{n}) with \code{nlag} lags. Overlapping \eqn{h}-step
+#' forecasts make \eqn{\hat{f}_t} serially correlated up to lag
+#' \eqn{h - 1}, which the least squares standard error ignores. The default
+#' bandwidth of \eqn{1.5h} follows Clark and West (2007, Section 5); with
+#' exactly \eqn{h - 1} lags the Bartlett weights shrink those
+#' autocovariances and the test over-rejects. For \code{h = 1} the standard
+#' error is the sample standard deviation over \eqn{\sqrt{n}}, which differs
+#' from the least squares one by the factor \eqn{\sqrt{(n - 1)/n}}.
 #'
 #' @references
 #' Clark, T.E. and West, K.D. (2007). Approximately Normal Tests for Equal
@@ -39,9 +55,9 @@
 #' e2 <- actual - f2
 #' cw_test(e1, e2, f1, f2)
 #'
-#' @importFrom stats lm coef pnorm
+#' @importFrom stats pnorm
 #' @export
-cw_test <- function(e1, e2, f1, f2) {
+cw_test <- function(e1, e2, f1, f2, h = 1L, nlag = NULL) {
   
   e1 <- as.numeric(e1)
   e2 <- as.numeric(e2)
@@ -56,24 +72,28 @@ cw_test <- function(e1, e2, f1, f2) {
     
   }
 
+  h <- .check_horizon(h, n)
+  nlag <- .check_nlag(if (is.null(nlag)) .default_nlag(h) else nlag, n)
+
   # Out-of-sample R-squared
   r2os <- 100 * (1 - sum(e2 ^ 2) / sum(e1 ^ 2))
 
   # MSFE-adjusted series
   adj <- e1 ^ 2 - (e2 ^ 2 - (f1 - f2) ^ 2)
 
-  # Regress on constant, extract t-statistic
-  fit <- stats::lm(adj ~ 1)
-  tstat <- stats::coef(summary(fit))[, "t value"]
+  # t-statistic of the mean, with a Newey-West standard error
+  tstat <- mean(adj) / sqrt(covnw(adj, nlag = nlag)[1, 1] / n)
 
   # One-sided p-value (H1: alternative model is better, i.e. R2OS > 0)
-  pval <- 1 - stats::pnorm(tstat)
+  pval <- stats::pnorm(tstat, lower.tail = FALSE)
 
   result <- list(
-    statistic = as.numeric(tstat),
-    pvalue = as.numeric(pval),
+    statistic = tstat,
+    pvalue = pval,
     r2os = r2os,
-    n = n
+    n = n,
+    h = h,
+    nlag = nlag
   )
 
   class(result) <- "cw_test"
@@ -106,6 +126,8 @@ print.cw_test <- function(x, digits = 4, ...) {
 
   .padded_line("Details:", w)
   .kv_line("Observations (n)", x$n, w)
+  .kv_line("Forecast horizon (h)", x$h, w)
+  .kv_line("Newey-West lags", x$nlag, w)
   .kv_line("Reference distribution", "N(0,1)", w)
 
   cat("\u2570", dash, "\u256F\n", sep = "")

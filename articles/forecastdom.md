@@ -5,10 +5,10 @@
 **forecastdom** collects forecast evaluation tests under the taxonomy of
 Li, Liao, and Quaedvlieg (2022):
 
-|                   | **Equal accuracy**                                                        | **Superior accuracy**                                                         |
-|-------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **Unconditional** | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)   |
-| **Conditional**   | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) |
+|  | **Equal accuracy** | **Superior accuracy** |
+|----|----|----|
+| **Unconditional** | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md) |
+| **Conditional** | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) |
 
 It also bundles the tests usually paired with these in applied work:
 nested-model comparisons
@@ -45,8 +45,8 @@ dm_test(e1, e2)
 #> │ H1: Methods have different predictive ability      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  DM statistic: 0.2073                              │
-#> │  P-value: 0.8360                                   │
+#> │  DM statistic: 0.2078                              │
+#> │  P-value: 0.8356                                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 200                             │
@@ -57,15 +57,15 @@ dm_test(e1, e2)
 ```
 
 The default `correction = TRUE` applies the Harvey, Leybourne, and
-Newbold (1997) small-sample correction, which uses a $t$ distribution
-with $T - 1$ degrees of freedom in place of the asymptotic normal.
+Newbold (1997) small-sample correction, which uses a $`t`$ distribution
+with $`T - 1`$ degrees of freedom in place of the asymptotic normal.
 
 ### Clark-West test
 
 The standard DM test is undersized when the two models are nested. The
 Clark-West (2007) MSFE-adjusted statistic fixes this by adding a
 correction term for the extra parameters in the larger model and is
-approximately $N(0,1)$ under the null.
+approximately $`N(0,1)`$ under the null.
 
 ``` r
 actual <- rnorm(200)
@@ -81,12 +81,14 @@ cw_test(actual - f1, actual - f2, f1, f2)
 #> │ H1: Alternative model is superior (R2OS > 0)       │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  CW statistic: 9.1803                              │
+#> │  CW statistic: 9.2033                              │
 #> │  P-value (one-sided): 0.0000                       │
 #> │  R2OS (%): 10.18                                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 200                             │
+#> │  Forecast horizon (h): 1                           │
+#> │  Newey-West lags: 0                                │
 #> │  Reference distribution: N(0,1)                    │
 #> ╰────────────────────────────────────────────────────╯
 ```
@@ -108,12 +110,14 @@ gw_test(e1, e2)
 #> │ H1: Methods differ conditionally                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  Wald statistic: 1.3426                            │
-#> │  P-value: 0.5110                                   │
+#> │  Wald statistic: 1.3479                            │
+#> │  P-value: 0.5097                                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 199                             │
 #> │  Instruments (q): 2                                │
+#> │  Forecast horizon (h): 1                           │
+#> │  Newey-West lags: 0                                │
 #> │  Loss function: SE                                 │
 #> │  Reference distribution: Chi-sq(2)                 │
 #> ╰────────────────────────────────────────────────────╯
@@ -125,7 +129,7 @@ gw_test(e1, e2)
 
 Asks whether the benchmark has the lowest expected loss among all
 competitors. The null is that no competitor beats the benchmark on
-average; the bootstrap controls family-wise error across the $J$
+average; the bootstrap controls family-wise error across the $`J`$
 comparisons.
 
 ``` r
@@ -155,13 +159,15 @@ spa_test(sim$Y, level = 0.05, B = 1000)
 ### CSPA test
 
 Li, Liao, and Quaedvlieg (2022) ask the same question conditional on a
-state variable $X_{t}$. The null is
+state variable $`X_t`$. The null is
 
-$$H_{0}:\ \min\limits_{j}\,{\mathbb{E}}\left\lbrack L_{0,t} - L_{j,t} \mid X_{t} = x \right\rbrack \leq 0\quad{\text{for all}\mspace{6mu}}x,$$
+``` math
+H_0:\ \min_{j}\, \mathbb{E}[L_{0,t} - L_{j,t} \mid X_t = x] \le 0 \quad \text{for all } x,
+```
 
 i.e. there is no competitor and no state value where the benchmark is
 strictly worse. The test combines a Legendre-polynomial series estimate
-of the conditional mean differentials $h_{j}(x)$ with an HAC-based
+of the conditional mean differentials $`h_j(x)`$ with an HAC-based
 Gaussian-process critical value.
 
 ``` r
@@ -227,10 +233,10 @@ result
 ### Visualization
 
 [`cspa_test_plot()`](https://gabbocg.github.io/forecastdom/reference/cspa_test_plot.md)
-draws the estimated conditional means ${\widehat{h}}_{j}(x)$, their
-lower envelope, and the upper confidence bound on that envelope. The
-CSPA null is rejected when the dashed bound drops below zero anywhere on
-the support of $x$.
+draws the estimated conditional means $`\hat h_j(x)`$, their lower
+envelope, and the upper confidence bound on that envelope. The CSPA null
+is rejected when the dashed bound drops below zero anywhere on the
+support of $`x`$.
 
 ``` r
 cspa_test_plot(result)
@@ -243,7 +249,7 @@ cspa_test_plot(result)
 If no model is singled out as the benchmark,
 [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md) runs
 the CSPA test once per candidate and keeps the candidates that are *not*
-rejected. The resulting set is asymptotically a level-$(1 - \alpha)$
+rejected. The resulting set is asymptotically a level-$`(1-\alpha)`$
 confidence set for the conditionally most-superior method.
 
 ``` r
@@ -256,7 +262,7 @@ csms(losses, X, level = 0.05, trim = 2, method_names = c("AR1", "HAR", "HARQ", "
 
 Kostakis, Magdalinos, and Stamatogiannis (2015) build an instrument from
 a near-stationary transformation of the regressor so that the
-predictability test has a standard $\chi^{2}$ distribution even when the
+predictability test has a standard $`\chi^2`$ distribution even when the
 predictor is near-unit-root.
 
 ``` r
@@ -290,8 +296,8 @@ ivx_wald(y, as.matrix(x), K = 1, M_n = floor(n^(1/3)))
 
 ### Elliott-Muller test
 
-Tests $H_{0}:\ \beta_{t} = \beta$ for all $t$ against the alternative
-that the regression coefficient drifts. The statistic $\widehat{qLL}$
+Tests $`H_0:\ \beta_t = \beta`$ for all $`t`$ against the alternative
+that the regression coefficient drifts. The statistic $`\widehat{qLL}`$
 has a non-standard limit; critical values are tabulated in Elliott and
 Muller (2006, Table 1).
 

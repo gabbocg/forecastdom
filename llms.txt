@@ -27,25 +27,25 @@ devtools::install_github("gabbocg/forecastdom")
 
 ### Forecast Comparison
 
-| Function                                                                            | Test                                    | Reference                                                    |
-|-------------------------------------------------------------------------------------|-----------------------------------------|--------------------------------------------------------------|
-| [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)           | Diebold-Mariano (+ HLN correction)      | Diebold & Mariano (1995); Harvey, Leybourne & Newbold (1997) |
-| [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)           | Clark-West MSFE-adjusted                | Clark & West (2007)                                          |
-| [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)           | ENC-NEW Encompassing                    | Clark & McCracken (2001)                                     |
-| [`mse_f_test()`](https://gabbocg.github.io/forecastdom/reference/mse_f_test.md)     | McCracken MSE-F equal-MSFE              | McCracken (2007)                                             |
-| [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)           | Giacomini-White (CEPA)                  | Giacomini & White (2006)                                     |
-| [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)         | Hansen’s SPA (USPA)                     | Hansen (2005)                                                |
-| [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md)       | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022)                                 |
-| [`uspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.md) | Uniform Multi-Horizon SPA               | Quaedvlieg (2021)                                            |
-| [`aspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.md) | Average Multi-Horizon SPA               | Quaedvlieg (2021)                                            |
-| [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md)                 | Confidence Set for the Most Superior    | Li, Liao & Quaedvlieg (2022)                                 |
+| Function | Test | Reference |
+|----|----|----|
+| [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | Diebold-Mariano (+ HLN correction) | Diebold & Mariano (1995); Harvey, Leybourne & Newbold (1997) |
+| [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md) | Clark-West MSFE-adjusted | Clark & West (2007) |
+| [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md) | ENC-NEW Encompassing | Clark & McCracken (2001) |
+| [`mse_f_test()`](https://gabbocg.github.io/forecastdom/reference/mse_f_test.md) | McCracken MSE-F equal-MSFE | McCracken (2007) |
+| [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | Giacomini-White (CEPA) | Giacomini & White (2006) |
+| [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md) | Hansen’s SPA (USPA) | Hansen (2005) |
+| [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) | Conditional Superior Predictive Ability | Li, Liao & Quaedvlieg (2022) |
+| [`uspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.md) | Uniform Multi-Horizon SPA | Quaedvlieg (2021) |
+| [`aspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.md) | Average Multi-Horizon SPA | Quaedvlieg (2021) |
+| [`csms()`](https://gabbocg.github.io/forecastdom/reference/csms.md) | Confidence Set for the Most Superior | Li, Liao & Quaedvlieg (2022) |
 
 ### Predictive Regression & Parameter Instability
 
-| Function                                                                    | Test                                 | Reference                                    |
-|-----------------------------------------------------------------------------|--------------------------------------|----------------------------------------------|
-| [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md) | IVX-Wald for persistent predictors   | Kostakis, Magdalinos & Stamatogiannis (2015) |
-| [`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md)   | Elliott-Muller parameter instability | Elliott & Muller (2006)                      |
+| Function | Test | Reference |
+|----|----|----|
+| [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md) | IVX-Wald for persistent predictors | Kostakis, Magdalinos & Stamatogiannis (2015) |
+| [`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md) | Elliott-Muller parameter instability | Elliott & Muller (2006) |
 
 ## Usage
 
@@ -91,10 +91,10 @@ ivx_wald(returns, predictors, K = 1, M_n = floor(T ^ (1 / 3)))
 
 The four cells in Li, Liao, and Quaedvlieg (2022):
 
-|                   | **Equal accuracy**                                                        | **Superior accuracy**                                                         |
-|-------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **Unconditional** | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)   |
-| **Conditional**   | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) |
+|  | **Equal accuracy** | **Superior accuracy** |
+|----|----|----|
+| **Unconditional** | [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md) | [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md) |
+| **Conditional** | [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md) | [`cspa_test()`](https://gabbocg.github.io/forecastdom/reference/cspa_test.md) |
 
 Equal vs. superior asks whether forecasts have the same loss or whether
 one is strictly lower. Unconditional vs. conditional asks whether the

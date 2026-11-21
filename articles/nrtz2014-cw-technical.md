@@ -66,17 +66,17 @@ knitr::kable(
   col.names = c("Predictor", "$R^2_{OS}$ (%)", "CW stat", "$p$-value"))
 ```
 
-| Predictor | $R_{OS}^{2}$ (%) | CW stat | $p$-value |
-|:----------|-----------------:|--------:|----------:|
-| MA_1_9    |            0.235 |   0.981 |     0.163 |
-| MA_2_12   |            0.779 |   1.693 |     0.045 |
-| MOM_9     |            0.108 |   0.613 |     0.270 |
-| MOM_12    |            0.154 |   0.686 |     0.247 |
-| VOL_2_12  |            0.331 |   1.121 |     0.131 |
+| Predictor | $`R^2_{OS}`$ (%) | CW stat | $`p`$-value |
+|:----------|-----------------:|--------:|------------:|
+| MA_1_9    |            0.235 |   0.982 |       0.163 |
+| MA_2_12   |            0.779 |   1.694 |       0.045 |
+| MOM_9     |            0.108 |   0.614 |       0.270 |
+| MOM_12    |            0.154 |   0.686 |       0.246 |
+| VOL_2_12  |            0.331 |   1.122 |       0.131 |
 
 ## Takeaway
 
-Technical indicators deliver positive $R_{OS}^{2}$ with Clark-West
+Technical indicators deliver positive $`R^2_{OS}`$ with Clark-West
 statistics that are significant at conventional levels. This is the
 central finding of Neely et al. (2014): technical signals carry
 information beyond what macro variables provide.

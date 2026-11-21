@@ -1,6 +1,61 @@
 # Changelog
 
+## forecastdom (development version)
+
+- [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+  documents and prints `alternative` the way it tests, the convention of
+  [`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html):
+  `"less"` is the alternative that model 2 is less accurate than model
+  1, `"greater"` that it is more accurate. The docs and printed output
+  previously had them swapped.
+- [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+  divides every autocovariance of the loss differential by `n`, as
+  [`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html)
+  does; the lag-0 term used `n - 1`. With the correction its statistic
+  and p-value now equal
+  [`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html)’s.
+  It stops with an error when the long-run variance estimate is not
+  positive, where it returned `NaN`.
+- [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
+  gains `h` and `nlag` and uses a Newey-West standard error, so
+  overlapping multi-step forecasts no longer over-reject: on MA(4)
+  errors at `h = 5` the 5% test rejected 21% of the time under the null,
+  and now 7%. The default bandwidth is `0` lags for `h = 1` and
+  `floor(1.5 * h)` otherwise, after Clark and West (2007). At `h = 1`
+  the statistic is the previous one times `sqrt(n / (n - 1))`.
+- [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
+  gains `h` and `nlag`. The default instruments lag the loss
+  differential by `h`, the last one known at the forecast origin;
+  lagging it by one at `h > 1` rejected a true null almost always. The
+  covariance uses `0` Newey-West lags for `h = 1`, as Giacomini and
+  White (2006, Theorem 1) allow, and `floor(1.5 * h)` otherwise; it
+  previously used `floor(1.2 * n^(1/3))` lags whatever the horizon. A
+  singular moment covariance stops with an error naming the collinear
+  instruments, where the test fell back to a generalised inverse.
+- [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md),
+  [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
+  and
+  [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
+  check that `h` is a positive integer smaller than the number of
+  forecast errors.
+- Added value tests:
+  [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+  against
+  [`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html),
+  [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
+  and
+  [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
+  against least squares with
+  [`sandwich::NeweyWest()`](https://zeileis.codeberg.page/sandwich/reference/NeweyWest.html),
+  and a Monte Carlo of the size of
+  [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
+  and
+  [`gw_test()`](https://gabbocg.github.io/forecastdom/reference/gw_test.md)
+  on overlapping multi-step forecasts.
+
 ## forecastdom 0.1.1
+
+CRAN release: 2026-11-01
 
 - [`spa_test()`](https://gabbocg.github.io/forecastdom/reference/spa_test.md)
   now follows Hansen (2005). It previously tested in the wrong direction

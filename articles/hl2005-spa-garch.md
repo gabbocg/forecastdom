@@ -80,7 +80,7 @@ r
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-$T^{SPA}$ is large but the bootstrap $p$-value sits just above 5%.
+$`T^{SPA}`$ is large but the bootstrap $`p`$-value sits just above 5%.
 Conclusion: at the 5% level, with the 5-minute linear-interpolation
 proxy, *nothing significantly beats GARCH(1,1)*. This is Hansen and
 Lunde’s headline finding.
@@ -115,27 +115,28 @@ knitr::kable(
                 "Reject", "$n_{\\text{beat}}$"))
 ```
 
-| Proxy           | $T^{SPA}$ | $p$-value | Reject | $n_{\text{beat}}$ |
-|:----------------|----------:|----------:|:-------|------------------:|
-| sq_ccr          |     1.995 |     0.326 | FALSE  |               257 |
-| spline_50_3min  |     2.327 |     0.103 | FALSE  |               186 |
-| spline_250_2min |     2.301 |     0.104 | FALSE  |               187 |
-| fourier_M85     |     2.470 |     0.073 | FALSE  |               195 |
-| linear_5min     |     2.514 |     0.069 | FALSE  |               187 |
-| prevtick_5min   |     2.518 |     0.064 | FALSE  |               187 |
-| linear_1min     |     2.609 |     0.058 | FALSE  |               189 |
-| prevtick_1min   |     2.635 |     0.053 | FALSE  |               189 |
+| Proxy           | $`T^{SPA}`$ | $`p`$-value | Reject | $`n_{\text{beat}}`$ |
+|:----------------|------------:|------------:|:-------|--------------------:|
+| sq_ccr          |       1.995 |       0.326 | FALSE  |                 257 |
+| spline_50_3min  |       2.327 |       0.103 | FALSE  |                 186 |
+| spline_250_2min |       2.301 |       0.104 | FALSE  |                 187 |
+| fourier_M85     |       2.470 |       0.073 | FALSE  |                 195 |
+| linear_5min     |       2.514 |       0.069 | FALSE  |                 187 |
+| prevtick_5min   |       2.518 |       0.064 | FALSE  |                 187 |
+| linear_1min     |       2.609 |       0.058 | FALSE  |                 189 |
+| prevtick_1min   |       2.635 |       0.053 | FALSE  |                 189 |
 
-The $p$-value falls as the proxy gets more accurate:
+The $`p`$-value falls as the proxy gets more accurate:
 
-- **Noisy proxy** (`sq_ccr`, squared close-to-close returns): $T^{SPA}$
-  is much smaller and the $p$-value is far from rejection. With a noisy
-  target no model can be confidently ranked against any other.
+- **Noisy proxy** (`sq_ccr`, squared close-to-close returns):
+  $`T^{SPA}`$ is much smaller and the $`p`$-value is far from rejection.
+  With a noisy target no model can be confidently ranked against any
+  other.
 - **Smoothed intraday proxies** (Spline-50, Spline-250, Fourier):
-  $p$-values between roughly 0.07 and 0.10.
-- **Coarse intraday proxies** (5-min linear / previous-tick): $p$-values
-  near 0.06-0.07.
-- **Fine intraday proxies** (1-min linear / previous-tick): $p$-values
+  $`p`$-values between roughly 0.07 and 0.10.
+- **Coarse intraday proxies** (5-min linear / previous-tick):
+  $`p`$-values near 0.06-0.07.
+- **Fine intraday proxies** (1-min linear / previous-tick): $`p`$-values
   just above 5%, close to but still short of rejection.
 
 This is the answer of Hansen and Lunde: GARCH(1,1) is hard to beat in
@@ -165,9 +166,9 @@ data.frame(rank = 1:10,
 ```
 
 `mean_loss_diff` is the average of
-$L_{\text{competitor}} - L_{\text{GARCH(1,1)}}$. Negative values mean
+$`L_{\text{competitor}} - L_{\text{GARCH(1,1)}}`$. Negative values mean
 the competitor has lower mean MSE than GARCH(1,1). Columns 261-265
-correspond to the EGARCH family with constant mean and $t$-distributed
+correspond to the EGARCH family with constant mean and $`t`$-distributed
 errors (per the README’s grouping of the 330 specifications). These are
 the most consistent winners across proxies.
 

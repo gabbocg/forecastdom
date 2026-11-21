@@ -5,25 +5,28 @@ ability tests of Quaedvlieg (2021), implemented in **forecastdom** as
 [`uspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/uspa_mh_test.md)
 and
 [`aspa_mh_test()`](https://gabbocg.github.io/forecastdom/reference/aspa_mh_test.md).
-Both compare a whole *path* of forecasts at horizons $h = 1,\ldots,H$
+Both compare a whole *path* of forecasts at horizons $`h = 1, \dots, H`$
 rather than each horizon in isolation, and both use a moving-block
 bootstrap whose critical values absorb the serial dependence in the
 loss-differential path.
 
-- **Uniform SPA** ($uSPA$). The null is that the benchmark is at least
-  as good as the competitor at *every* horizon. The test statistic is
-  the minimum of the horizon-wise standardized loss differentials.
-- **Average SPA** ($aSPA$). The null is that the benchmark is at least
-  as good as the competitor on a user-specified weighted average of
-  horizons. The test statistic is the standardized weighted-average loss
-  differential.
+- **Uniform SPA** ($`\mathrm{uSPA}`$). The null is that the benchmark is
+  at least as good as the competitor at *every* horizon. The test
+  statistic is the minimum of the horizon-wise standardized loss
+  differentials.
+- **Average SPA** ($`\mathrm{aSPA}`$). The null is that the benchmark is
+  at least as good as the competitor on a user-specified weighted
+  average of horizons. The test statistic is the standardized
+  weighted-average loss differential.
 
 The loss differential is
 
-$$d_{h,t} = L_{\text{bench},h,t} - L_{\text{comp},h,t},$$
+``` math
+d_{h,t} = L_{\text{bench},h,t} - L_{\text{comp},h,t},
+```
 
 so a positive entry means the benchmark has *higher* loss (is worse) at
-horizon $h$. Either null is rejected when the benchmark is worse
+horizon $`h`$. Either null is rejected when the benchmark is worse
 uniformly (uSPA) or worse on average (aSPA).
 
 ``` r
@@ -37,7 +40,7 @@ str(quaedvlieg2021, max.level = 1)
 
 The bundled `quaedvlieg2021` object holds the two loss-differential
 matrices distributed with the paper’s replication archive: `$uspa` and
-`$aspa`, each $1000 \times 20$.
+`$aspa`, each $`1000 \times 20`$.
 
 ## Per-horizon picture
 
@@ -59,28 +62,28 @@ knitr::kable(
   col.names = c("$h$", "uSPA dataset", "aSPA dataset"))
 ```
 
-| $h$ | uSPA dataset | aSPA dataset |
-|----:|-------------:|-------------:|
-|   1 |        0.004 |       -0.014 |
-|   2 |        0.136 |        0.101 |
-|   3 |        0.182 |        0.140 |
-|   4 |        0.164 |        0.116 |
-|   5 |        0.135 |        0.082 |
-|   6 |        0.092 |        0.035 |
-|   7 |        0.185 |        0.124 |
-|   8 |        0.224 |        0.160 |
-|   9 |        0.260 |        0.193 |
-|  10 |        0.171 |        0.101 |
-|  11 |        0.272 |        0.199 |
-|  12 |        0.280 |        0.204 |
-|  13 |        0.262 |        0.184 |
-|  14 |        0.232 |        0.151 |
-|  15 |        0.274 |        0.191 |
-|  16 |        0.332 |        0.247 |
-|  17 |        0.383 |        0.295 |
-|  18 |        0.351 |        0.261 |
-|  19 |        0.411 |        0.319 |
-|  20 |        0.425 |        0.330 |
+| $`h`$ | uSPA dataset | aSPA dataset |
+|------:|-------------:|-------------:|
+|     1 |        0.004 |       -0.014 |
+|     2 |        0.136 |        0.101 |
+|     3 |        0.182 |        0.140 |
+|     4 |        0.164 |        0.116 |
+|     5 |        0.135 |        0.082 |
+|     6 |        0.092 |        0.035 |
+|     7 |        0.185 |        0.124 |
+|     8 |        0.224 |        0.160 |
+|     9 |        0.260 |        0.193 |
+|    10 |        0.171 |        0.101 |
+|    11 |        0.272 |        0.199 |
+|    12 |        0.280 |        0.204 |
+|    13 |        0.262 |        0.184 |
+|    14 |        0.232 |        0.151 |
+|    15 |        0.274 |        0.191 |
+|    16 |        0.332 |        0.247 |
+|    17 |        0.383 |        0.295 |
+|    18 |        0.351 |        0.261 |
+|    19 |        0.411 |        0.319 |
+|    20 |        0.425 |        0.330 |
 
 `$uspa` shows positive mean loss differentials at *every* horizon, so
 the benchmark is worse uniformly. `$aspa` shows positive means at most
@@ -169,7 +172,7 @@ standardized horizon-wise means is pulled down by that single horizon.
 
 ## Average multi-horizon SPA
 
-With uniform weights $w_{h} = 1/H$ the aSPA statistic is the
+With uniform weights $`w_h = 1/H`$ the aSPA statistic is the
 standardized unweighted average loss differential.
 
 ``` r
@@ -226,11 +229,11 @@ aspa_aspa
 #> ╰────────────────────────────────────────────────────╯
 ```
 
-The aSPA test rejects on *both* datasets. The slightly negative $h = 1$
-mean of `$aspa` is more than compensated by positive means at longer
-horizons, so the weighted average favours rejection. This is the power
-gain Quaedvlieg (2021) emphasises: by aggregating across the forecast
-path the average test detects model-level differences that
+The aSPA test rejects on *both* datasets. The slightly negative
+$`h = 1`$ mean of `$aspa` is more than compensated by positive means at
+longer horizons, so the weighted average favours rejection. This is the
+power gain Quaedvlieg (2021) emphasises: by aggregating across the
+forecast path the average test detects model-level differences that
 horizon-by-horizon Diebold-Mariano comparisons miss under the
 multiple-testing burden.
 
@@ -297,9 +300,9 @@ aspa_mh_test(quaedvlieg2021$aspa, weights = w_up, L = 3, B = 999)
 
 ## Block-length sensitivity
 
-The moving-block bootstrap depends on the block length $L$. The
-$p$-value is robust over a reasonable range: $L$ should be small enough
-to keep many blocks and large enough to capture the path’s serial
+The moving-block bootstrap depends on the block length $`L`$. The
+$`p`$-value is robust over a reasonable range: $`L`$ should be small
+enough to keep many blocks and large enough to capture the path’s serial
 dependence.
 
 ``` r
@@ -326,17 +329,17 @@ knitr::kable(
                 "aSPA stat", "aSPA $p$"))
 ```
 
-| $L$ | uSPA stat | uSPA $p$ | aSPA stat | aSPA $p$ |
-|----:|----------:|---------:|----------:|---------:|
-|   2 |      0.08 |    0.028 |     3.407 |    0.000 |
-|   3 |      0.08 |    0.020 |     3.407 |    0.002 |
-|   5 |      0.08 |    0.030 |     3.407 |    0.002 |
-|   8 |      0.08 |    0.036 |     3.407 |    0.002 |
-|  12 |      0.08 |    0.024 |     3.407 |    0.000 |
+| $`L`$ | uSPA stat | uSPA $`p`$ | aSPA stat | aSPA $`p`$ |
+|------:|----------:|-----------:|----------:|-----------:|
+|     2 |      0.08 |      0.028 |     3.407 |      0.000 |
+|     3 |      0.08 |      0.020 |     3.407 |      0.002 |
+|     5 |      0.08 |      0.030 |     3.407 |      0.002 |
+|     8 |      0.08 |      0.036 |     3.407 |      0.002 |
+|    12 |      0.08 |      0.024 |     3.407 |      0.000 |
 
-The statistics are independent of $L$ because they depend only on the QS
-HAC long-run variance, not on the bootstrap, and the $p$-values are
-stable across $L$ for this dataset.
+The statistics are independent of $`L`$ because they depend only on the
+QS HAC long-run variance, not on the bootstrap, and the $`p`$-values are
+stable across $`L`$ for this dataset.
 
 ## Takeaways
 

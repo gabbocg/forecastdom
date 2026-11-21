@@ -9,15 +9,18 @@ functions from **forecastdom**:
   the Kostakis, Magdalinos, and Stamatogiannis (2015) IVX-Wald test for
   return predictability with persistent regressors.
 - [`qll_hat()`](https://gabbocg.github.io/forecastdom/reference/qll_hat.md):
-  the Elliott and Müller (2006) $\widehat{qLL}$ test for time-varying
+  the Elliott and Müller (2006) $`\widehat{qLL}`$ test for time-varying
   coefficients.
 
 The predictive regression is
 
-$$r_{t:t + h} = \alpha + \beta\,{SII}_{t} + \varepsilon_{t:t + h},\qquad r_{t:t + h} = \frac{1}{h}\sum\limits_{j = 1}^{h}r_{t + j},$$
+``` math
+r_{t:t+h} = \alpha + \beta\,\mathrm{SII}_t + \varepsilon_{t:t+h}, \qquad r_{t:t+h} = \frac{1}{h}\sum_{j=1}^{h} r_{t+j},
+```
 
-at horizons $h \in \{ 1,3,6,12\}$. IVX-Wald tests $H_{0}:\beta = 0$. The
-$\widehat{qLL}$ statistic tests $H_{0}:\beta_{t} = \beta$ for all $t$.
+at horizons $`h \in \{1, 3, 6, 12\}`$. IVX-Wald tests
+$`H_0: \beta = 0`$. The $`\widehat{qLL}`$ statistic tests
+$`H_0: \beta_t = \beta`$ for all $`t`$.
 
 ``` r
 library(forecastdom)
@@ -47,7 +50,7 @@ ggplot(rrz2016, aes(date, SII)) +
 The original MATLAB program (`Compute_IVX_Wald.m` in the JFE data
 archive) calls the IVX-Wald with `beta = 0.99, M_n = 0` and the
 **negated** SII. RRZ hypothesise that SII negatively predicts returns,
-and the sign does not affect the Wald statistic. The $\widehat{qLL}$
+and the sign does not affect the Wald statistic. The $`\widehat{qLL}`$
 test is called with Newey-West truncation `L = h`. We pass the same
 arguments to
 [`ivx_wald()`](https://gabbocg.github.io/forecastdom/reference/ivx_wald.md)
@@ -77,24 +80,24 @@ knitr::kable(results, digits = 3, row.names = FALSE,
              col.names = c("$h$", "IVX-Wald", "$\\widehat{qLL}$"))
 ```
 
-| $h$ | IVX-Wald | $\widehat{qLL}$ |
-|----:|---------:|----------------:|
-|   1 |    3.377 |          -3.721 |
-|   3 |    4.513 |          -4.858 |
-|   6 |    4.603 |          -4.909 |
-|  12 |    3.669 |          -5.016 |
+| $`h`$ | IVX-Wald | $`\widehat{qLL}`$ |
+|------:|---------:|------------------:|
+|     1 |    3.377 |            -3.721 |
+|     3 |    4.513 |            -4.858 |
+|     6 |    4.603 |            -4.909 |
+|    12 |    3.669 |            -5.016 |
 
 Critical values (from RRZ 2016, online appendix):
 
 - IVX-Wald: 10% = 2.71, 5% = 3.84, 1% = 6.64.
-- $\widehat{qLL}$: 10% = $- 7.14$, 5% = $- 8.36$, 1% = $- 11.05$ (reject
-  for small values).
+- $`\widehat{qLL}`$: 10% = $`-7.14`$, 5% = $`-8.36`$, 1% = $`-11.05`$
+  (reject for small values).
 
 For comparison, the paper reports IVX-Wald = 3.38\*, 4.51\*\*, 4.60\*\*,
-3.67\* and qLL = $- 3.72$, $- 4.86$, $- 4.91$, $- 5.02$. Our values
+3.67\* and qLL = $`-3.72`$, $`-4.86`$, $`-4.91`$, $`-5.02`$. Our values
 match to two decimal places at every horizon. Conclusion: SII predicts
 the equity premium at all horizons (significant IVX-Wald) and constant
-$\beta$ is not rejected.
+$`\beta`$ is not rejected.
 
 ## References
 

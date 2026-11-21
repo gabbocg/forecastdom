@@ -38,8 +38,12 @@ dm_test(
 
 - alternative:
 
-  Character; alternative hypothesis. `"two.sided"` (default), `"less"`
-  (model 2 is better), or `"greater"` (model 1 is better).
+  Character; alternative hypothesis about the loss differential \\d_t =
+  L(e\_{1,t}) - L(e\_{2,t})\\. `"two.sided"` (default); `"less"`, model
+  2 is less accurate than model 1 (\\E\[d_t\] \< 0\\); or `"greater"`,
+  model 2 is more accurate than model 1 (\\E\[d_t\] \> 0\\). This is the
+  convention of
+  [`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html).
 
 - correction:
 
@@ -78,6 +82,17 @@ A list with class `"dm_test"` containing:
 
   Loss function used.
 
+## Details
+
+The long-run variance of \\d_t\\ sums its autocovariances up to lag
+\\h - 1\\ with equal weights, each divided by \\n\\, as in Diebold and
+Mariano (1995) and
+[`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html).
+With the correction, the statistic equals that of
+[`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html).
+For \\h \> 1\\ the estimate can be negative, and `dm_test()` then stops
+with an error.
+
 ## References
 
 Diebold, F.X. and Mariano, R.S. (1995). Comparing Predictive Accuracy.
@@ -102,8 +117,8 @@ dm_test(e1, e2)
 #> │ H1: Methods have different predictive ability      │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Test Results:                                      │
-#> │  DM statistic: 1.5039                              │
-#> │  P-value: 0.1358                                   │
+#> │  DM statistic: 1.5115                              │
+#> │  P-value: 0.1338                                   │
 #> ├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤
 #> │ Details:                                           │
 #> │  Observations (n): 100                             │

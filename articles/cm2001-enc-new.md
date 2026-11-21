@@ -99,32 +99,33 @@ knitr::kable(
                 "\\(R^2_{OS}\\) (%)", "ENC-NEW"))
 ```
 
-| $p$ | $T_{OOS}$ | $\pi = P/R$ | ${MSFE}_{AR}$ | ${MSFE}_{ARX}$ | $R_{OS}^{2}$ (%) | ENC-NEW |
-|----:|----------:|------------:|--------------:|---------------:|-----------------:|--------:|
-|   1 |       367 |        3.06 |         0.035 |          0.034 |            2.968 |  13.930 |
-|   3 |       365 |        3.04 |         0.033 |          0.032 |            2.184 |  11.412 |
-|   6 |       362 |        3.02 |         0.031 |          0.031 |            1.833 |  14.754 |
-|  12 |       356 |        2.97 |         0.032 |          0.033 |           -2.459 |  20.984 |
+| $`p`$ | $`T_{OOS}`$ | $`\pi = P/R`$ | $`\mathrm{MSFE}_{AR}`$ | $`\mathrm{MSFE}_{ARX}`$ | $`R^2_{OS}`$ (%) | ENC-NEW |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 367 | 3.06 | 0.035 | 0.034 | 2.968 | 13.930 |
+| 3 | 365 | 3.04 | 0.033 | 0.032 | 2.184 | 11.412 |
+| 6 | 362 | 3.02 | 0.031 | 0.031 | 1.833 | 14.754 |
+| 12 | 356 | 2.97 | 0.032 | 0.033 | -2.459 | 20.984 |
 
 At every lag order the ARX model achieves a lower MSFE than the pure AR.
 That is, knowing past inflation reduces out-of-sample
 unemployment-forecast error. The ENC-NEW values are large relative to
 the Clark-McCracken (2001) Table 2 asymptotic 5% critical values, which
-are tabulated in $k_{2}$ (number of extra regressors, equal to $p$) and
-$\pi = P/R$. For $k_{2} = 6$ and $\pi \approx 2$ the 5% critical value
-is about 8.6; for $k_{2} = 12$ and $\pi \approx 2$ it is about 12.0. Our
-statistics exceed these benchmarks decisively at every specification, so
-the AR forecasts do **not** encompass the ARX: lagged inflation carries
-real predictive content for unemployment.
+are tabulated in $`k_2`$ (number of extra regressors, equal to $`p`$)
+and $`\pi = P/R`$. For $`k_2 = 6`$ and $`\pi \approx 2`$ the 5% critical
+value is about 8.6; for $`k_2 = 12`$ and $`\pi \approx 2`$ it is about
+12.0. Our statistics exceed these benchmarks decisively at every
+specification, so the AR forecasts do **not** encompass the ARX: lagged
+inflation carries real predictive content for unemployment.
 
 ## Comparison with Clark-West MSFE-adjusted
 
 [`enc_new()`](https://gabbocg.github.io/forecastdom/reference/enc_new.md)
 answers the encompassing question.
 [`cw_test()`](https://gabbocg.github.io/forecastdom/reference/cw_test.md)
-answers the closely related “equal MSFE” question using a $t$-statistic
-that is approximately $N(0,1)$ under the null. The two tests typically
-point the same way, and reporting both is informative.
+answers the closely related “equal MSFE” question using a
+$`t`$-statistic that is approximately $`N(0, 1)`$ under the null. The
+two tests typically point the same way, and reporting both is
+informative.
 
 ``` r
 rows2 <- lapply(c(1L, 3L, 6L, 12L), function(p) {
@@ -145,12 +146,12 @@ knitr::kable(
   col.names = c("$p$", "CW stat", "CW $p$-value"))
 ```
 
-| $p$ | CW stat | CW $p$-value |
-|----:|--------:|-------------:|
-|   1 |   2.531 |        0.006 |
-|   3 |   2.295 |        0.011 |
-|   6 |   2.522 |        0.006 |
-|  12 |   2.489 |        0.006 |
+| $`p`$ | CW stat | CW $`p`$-value |
+|------:|--------:|---------------:|
+|     1 |   2.534 |          0.006 |
+|     3 |   2.298 |          0.011 |
+|     6 |   2.526 |          0.006 |
+|    12 |   2.493 |          0.006 |
 
 CW p-values are far below 5% for every lag order, agreeing with the
 ENC-NEW decision: the ARX model has significantly lower out-of-sample

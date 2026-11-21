@@ -37,26 +37,27 @@ ggplot(rossi2006, aes(date, log(fx))) +
 
 ## Forecasting setup
 
-Let $e_{t}$ denote the log exchange rate and
-$\Delta e_{t} = e_{t} - e_{t - 1}$ its monthly return. We compare two
-one-step-ahead forecasts of $\Delta e_{t + 1}$:
+Let $`e_t`$ denote the log exchange rate and
+$`\Delta e_t = e_t - e_{t-1}`$ its monthly return. We compare two
+one-step-ahead forecasts of $`\Delta e_{t+1}`$:
 
 - **Benchmark** (driftless random walk):
-  ${\widehat{\Delta e}}_{t + 1}^{RW} = 0$.
-- **Alternative** (AR($p$)):
-  ${\widehat{\Delta e}}_{t + 1}^{AR} = {\widehat{\alpha}}_{t} + \sum_{k = 1}^{p}{\widehat{\beta}}_{k,t}\,\Delta e_{t - k + 1}$,
+  $`\widehat{\Delta e}^{RW}_{t+1} = 0`$.
+- **Alternative** (AR($`p`$)):
+  $`\widehat{\Delta e}^{AR}_{t+1} = \hat\alpha_t + \sum_{k=1}^{p} \hat\beta_{k,t}\, \Delta e_{t-k+1}`$,
   with coefficients re-estimated each period.
 
 Following Rossi, AR(1) and AR(2) share the same usable sample of
-$n_{obs} = 307$ returns. The first $R = \lceil n_{obs}/2\rceil = 154$
-observations fit the initial model, and the remaining $P = 153$ are
-evaluated out of sample. Three estimation schemes are considered:
+$`n_{obs} = 307`$ returns. The first
+$`R = \lceil n_{obs}/2 \rceil = 154`$ observations fit the initial
+model, and the remaining $`P = 153`$ are evaluated out of sample. Three
+estimation schemes are considered:
 
-- **Split**: coefficients estimated once on $1:R$ and held fixed.
+- **Split**: coefficients estimated once on $`1{:}R`$ and held fixed.
 - **Recursive**: coefficients re-estimated each period using all
   available data.
 - **Rolling**: coefficients re-estimated each period using the most
-  recent $R$ observations.
+  recent $`R`$ observations.
 
 ``` r
 forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling")) {
@@ -103,11 +104,11 @@ forecast_oos <- function(log_fx, p, scheme = c("split", "recursive", "rolling"))
 
 We call
 [`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
-with `correction = FALSE` to match Rossi’s asymptotic $\chi^{2}(1)$
+with `correction = FALSE` to match Rossi’s asymptotic $`\chi^2(1)`$
 reference distribution. Rossi defines the loss differential as
-$f_{t} = u_{t}^{AR} - u_{t}^{RW}$, so a *positive* DM statistic means
-the random walk has the lower MSFE. To reproduce her sign convention we
-pass the AR errors as `e1` and the random-walk errors as `e2`.
+$`f_t = u^{AR}_t - u^{RW}_t`$, so a *positive* DM statistic means the
+random walk has the lower MSFE. To reproduce her sign convention we pass
+the AR errors as `e1` and the random-walk errors as `e2`.
 
 ``` r
 countries <- levels(rossi2006$country)
@@ -150,11 +151,11 @@ knitr::kable(run_panel(1), row.names = FALSE,
 
 | scheme    | Canada      | France      | Germany      | Italy       | Japan        |
 |:----------|:------------|:------------|:-------------|:------------|:-------------|
-| split     | 0.87 (0.38) | 1.38 (0.17) | -0.89 (0.38) | 0.80 (0.42) | -0.53 (0.60) |
-| recursive | 1.16 (0.25) | 2.24 (0.03) | 0.14 (0.89)  | 0.77 (0.44) | 0.00 (1.00)  |
-| rolling   | 2.15 (0.03) | 1.77 (0.08) | 0.93 (0.35)  | 0.60 (0.55) | 0.39 (0.69)  |
+| split     | 0.88 (0.38) | 1.38 (0.17) | -0.89 (0.37) | 0.80 (0.42) | -0.53 (0.60) |
+| recursive | 1.16 (0.25) | 2.25 (0.02) | 0.14 (0.89)  | 0.77 (0.44) | 0.00 (1.00)  |
+| rolling   | 2.16 (0.03) | 1.77 (0.08) | 0.94 (0.35)  | 0.60 (0.55) | 0.39 (0.69)  |
 
-$DM_{T}$ statistic ($p$-value), AR(1) vs. RW
+$`DM_T`$ statistic ($`p`$-value), AR(1) vs. RW
 
 ### AR(2)
 
@@ -165,16 +166,22 @@ knitr::kable(run_panel(2), row.names = FALSE,
 
 | scheme    | Canada      | France      | Germany      | Italy       | Japan        |
 |:----------|:------------|:------------|:-------------|:------------|:-------------|
-| split     | 1.97 (0.05) | 1.91 (0.06) | -0.03 (0.98) | 0.72 (0.47) | -0.64 (0.52) |
-| recursive | 1.94 (0.05) | 1.71 (0.09) | 0.37 (0.71)  | 0.73 (0.47) | 0.04 (0.97)  |
-| rolling   | 2.29 (0.02) | 1.74 (0.08) | 0.79 (0.43)  | 0.75 (0.45) | 0.41 (0.68)  |
+| split     | 1.98 (0.05) | 1.92 (0.06) | -0.03 (0.98) | 0.72 (0.47) | -0.64 (0.52) |
+| recursive | 1.95 (0.05) | 1.72 (0.09) | 0.37 (0.71)  | 0.73 (0.47) | 0.04 (0.97)  |
+| rolling   | 2.30 (0.02) | 1.75 (0.08) | 0.80 (0.43)  | 0.75 (0.45) | 0.41 (0.68)  |
 
-$DM_{T}$ statistic ($p$-value), AR(2) vs. RW
+$`DM_T`$ statistic ($`p`$-value), AR(2) vs. RW
 
-These cells reproduce the OOS DM panel of Rossi (2006) Table 1 exactly.
-The statistics are typically positive (the random walk has the lower
-MSFE), and the two-sided $p$-values rarely fall below 5%. This is the
-classical Meese-Rogoff finding.
+These cells reproduce the OOS DM statistics of Rossi (2006) Table 1 to
+within 0.01.
+[`dm_test()`](https://gabbocg.github.io/forecastdom/reference/dm_test.md)
+divides the variance of the loss differential by $`P`$, as
+[`forecast::dm.test()`](https://pkg.robjhyndman.com/forecast/reference/dm.test.html)
+does; Rossi divides by $`P - 1`$, so her statistics are smaller by the
+factor $`\sqrt{(P-1)/P} \approx 0.997`$. The statistics are typically
+positive (the random walk has the lower MSFE), and the two-sided
+$`p`$-values rarely fall below 5%. This is the classical Meese-Rogoff
+finding.
 
 ## Single-country deep dive: Japan, AR(1), recursive
 

@@ -6,9 +6,9 @@ the Giacomini and White (2006) test of conditional equal predictive
 ability (CEPA), to the Survey of Professional Forecasters’ mean CPI
 inflation forecasts. The benchmark is a naive random walk in inflation
 (next quarter’s forecast equals this quarter’s realised inflation). The
-alternative is the SPF mean at horizons $h \in \{ 0,1,2,3,4\}$ quarters.
-The bundled `gw2006` dataset extends GW’s quarterly sample to the
-present using the same Philadelphia Fed SPF source.
+alternative is the SPF mean at horizons $`h \in \{0, 1, 2, 3, 4\}`$
+quarters. The bundled `gw2006` dataset extends GW’s quarterly sample to
+the present using the same Philadelphia Fed SPF source.
 
 ``` r
 library(forecastdom)
@@ -37,7 +37,7 @@ run_h <- function(h) {
   d  <- gw2006[ok, ]
   e_spf <- d$infl - d[[spf_col]] # SPF errors
   e_rw  <- d$infl - d$infl_lag   # random-walk errors
-  r <- gw_test(e_spf, e_rw)      # default: constant + lagged loss diff
+  r <- gw_test(e_spf, e_rw, h = h + 1L) # SPF horizon h is an (h+1)-step forecast
 
   data.frame(h = h, n = nrow(d),
              mse_spf = mean(e_spf^2),
@@ -57,20 +57,20 @@ knitr::kable(
                 "Wald", "$p$-value", "Reject"))
 ```
 
-| $h$ | $n$ | $MSE_{SPF}$ | $MSE_{RW}$ |  Wald | $p$-value | Reject |
-|----:|----:|------------:|-----------:|------:|----------:|:-------|
-|   0 | 176 |       5.657 |      5.565 | 4.510 |     0.105 | FALSE  |
-|   1 | 176 |       4.906 |      5.565 | 1.206 |     0.547 | FALSE  |
-|   2 | 175 |       4.631 |      5.456 | 4.177 |     0.124 | FALSE  |
-|   3 | 174 |       4.708 |      5.434 | 3.581 |     0.167 | FALSE  |
-|   4 | 173 |       4.884 |      5.435 | 2.908 |     0.234 | FALSE  |
+| $`h`$ | $`n`$ | $`MSE_{SPF}`$ | $`MSE_{RW}`$ |  Wald | $`p`$-value | Reject |
+|------:|------:|--------------:|-------------:|------:|------------:|:-------|
+|     0 |   176 |         5.657 |        5.565 | 4.121 |       0.127 | FALSE  |
+|     1 |   176 |         4.906 |        5.565 | 3.111 |       0.211 | FALSE  |
+|     2 |   175 |         4.631 |        5.456 | 0.830 |       0.660 | FALSE  |
+|     3 |   174 |         4.708 |        5.434 | 0.604 |       0.739 | FALSE  |
+|     4 |   173 |         4.884 |        5.435 | 4.224 |       0.121 | FALSE  |
 
-At every horizon SPF has a lower mean squared error than the random-walk
-benchmark, yet the GW test fails to reject conditional equal predictive
-ability at the 5% level. The pattern matches Atkeson and Ohanian (2001):
-once the autocorrelation of the loss differential is taken into account,
-sophisticated inflation forecasts are hard to tell apart from a
-“no-change” benchmark in a formal test.
+At every horizon beyond the nowcast SPF has a lower mean squared error
+than the random-walk benchmark, yet the GW test fails to reject
+conditional equal predictive ability at the 5% level. The pattern
+matches Atkeson and Ohanian (2001): once the autocorrelation of the loss
+differential is taken into account, sophisticated inflation forecasts
+are hard to tell apart from a “no-change” benchmark in a formal test.
 
 ## Choice of instruments
 
@@ -79,7 +79,7 @@ uses two instruments by default: a constant and the lagged loss
 differential. Different instruments target different features of the
 conditioning information set. Below we replace the lag with the lagged
 inflation level (a regime indicator that captures high- and
-low-inflation environments) at horizon $h = 1$.
+low-inflation environments) at horizon $`h = 1`$.
 
 ``` r
 h <- 1L
@@ -89,17 +89,17 @@ e_spf <- d$infl - d[[paste0("spf_h", h)]]
 e_rw  <- d$infl - d$infl_lag
 
 # Default: constant + lagged loss differential
-r_default <- gw_test(e_spf, e_rw)
+r_default <- gw_test(e_spf, e_rw, h = h + 1L)
 
 # Custom: constant + lagged inflation level (padded with NA at t = 1
 # so that nrow(W) matches length(e1)).
 W_infl <- cbind(1, c(NA, head(d$infl_lag, -1)))
 keep   <- !is.na(W_infl[, 2])
 r_infl <- gw_test(e_spf[keep], e_rw[keep],
-                  instruments = W_infl[keep, , drop = FALSE])
+                  instruments = W_infl[keep, , drop = FALSE], h = h + 1L)
 
 # Absolute-error loss instead of squared-error
-r_ae <- gw_test(e_spf, e_rw, loss = "AE")
+r_ae <- gw_test(e_spf, e_rw, loss = "AE", h = h + 1L)
 
 tab2 <- data.frame(
   spec = c("Default (const + lagged Δloss)",
@@ -115,15 +115,17 @@ knitr::kable(
   col.names = c("Specification", "Wald", "df", "$p$-value"))
 ```
 
-| Specification                  |   Wald |  df | $p$-value |
-|:-------------------------------|-------:|----:|----------:|
-| Default (const + lagged Δloss) |  1.206 |   2 |     0.547 |
-| Const + lagged inflation       | 10.738 |   2 |     0.005 |
-| Absolute-error loss            |  1.957 |   2 |     0.376 |
+| Specification                  |  Wald |  df | $`p`$-value |
+|:-------------------------------|------:|----:|------------:|
+| Default (const + lagged Δloss) | 3.111 |   2 |       0.211 |
+| Const + lagged inflation       | 8.953 |   2 |       0.011 |
+| Absolute-error loss            | 2.019 |   2 |       0.364 |
 
-The decision is robust across all three specifications: SPF and the
-random walk cannot be statistically distinguished at the 5% level
-regardless of which conditioning instruments or loss function we choose.
+The decision depends on the conditioning information. With the default
+instruments or absolute-error loss, SPF and the random walk cannot be
+distinguished at the 5% level. Conditioning on lagged inflation does
+reject: the relative accuracy of SPF varies with the inflation regime,
+even though it is not different on average.
 
 ## Note on the original paper
 

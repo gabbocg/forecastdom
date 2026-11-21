@@ -16,10 +16,10 @@ models <- c("AR1", "AR22", "AR22_Lasso", "HAR", "HARQ", "ARFIMA")
 qlike  <- function(f, y) (f / y) - log(f / y) - 1
 ```
 
-Throughout we use the QLIKE loss $L(f,y) = f/y - \log(f/y) - 1$,
+Throughout we use the QLIKE loss $`L(f, y) = f/y - \log(f/y) - 1`$,
 one-day-lagged VIX as the conditioning variable, AIC pre-whitening
 (`prewhiten = -1`, equivalent to Ox `PreWhiten = 2`), no trimming, and
-$R = 10,000$ bootstrap replications. These settings match the call
+$`R = 10{,}000`$ bootstrap replications. These settings match the call
 signature in the paper’s `Empirics_Volatility.ox` script.
 
 ## Figure 2: JNJ, one-versus-one CSPA
@@ -88,27 +88,25 @@ knitr::kable(
   col.names = c("Competitor", "$\\theta$", "$p$-value", "Reject"))
 ```
 
-| Competitor | $\theta$ | $p$-value | Reject |
-|:-----------|---------:|----------:|:-------|
-| AR1        |   0.0033 |    0.0745 | FALSE  |
-| HARQ       |  -0.0095 |    0.0011 | TRUE   |
+| Competitor | $`\theta`$ | $`p`$-value | Reject |
+|:-----------|-----------:|------------:|:-------|
+| AR1        |     0.0033 |      0.0745 | FALSE  |
+| HARQ       |    -0.0095 |      0.0011 | TRUE   |
 
 In the left panel (AR(1) as the only competitor to HAR) the conditional
 loss differential stays above zero across the support of VIX, so the
 test does not reject. In the right panel (HARQ as competitor) the
-differential dips clearly below zero for
-$\text{VIX} \in \lbrack 13,19\rbrack$ and the confidence bound follows
-it, so the CSPA null is rejected. This matches Figure 2 of the paper and
-the accompanying text.
+differential dips clearly below zero for $`\text{VIX} \in [13, 19]`$ and
+the confidence bound follows it, so the CSPA null is rejected. This
+matches Figure 2 of the paper and the accompanying text.
 
 ## Figure 3: JNJ, one-versus-all CSPA
 
 Now all five other models are competitors against the same benchmark,
 simultaneously. The plot shows each conditional mean function
-${\widehat{h}}_{j}(x)$ (coloured), their lower envelope (solid black)
-and the upper confidence bound on that envelope (dashed black). The CSPA
-null is rejected when the dashed line falls below zero at any value of
-$x$.
+$`\hat h_j(x)`$ (coloured), their lower envelope (solid black) and the
+upper confidence bound on that envelope (dashed black). The CSPA null is
+rejected when the dashed line falls below zero at any value of $`x`$.
 
 ``` r
 set.seed(20260512)
@@ -163,18 +161,17 @@ knitr::kable(
   col.names = c("Benchmark", "$\\theta$", "$p$-value", "Reject"))
 ```
 
-| Benchmark | $\theta$ | $p$-value | Reject |
-|:----------|---------:|----------:|:-------|
-| AR1       |  -0.2377 |      0.00 | TRUE   |
-| HARQ      |  -0.0077 |      0.01 | TRUE   |
+| Benchmark | $`\theta`$ | $`p`$-value | Reject |
+|:----------|-----------:|------------:|:-------|
+| AR1       |    -0.2377 |        0.00 | TRUE   |
+| HARQ      |    -0.0077 |        0.01 | TRUE   |
 
 For AR(1) as benchmark the lower envelope sits well below zero across
 the VIX support and the dashed bound is below zero in the low-VIX
-region. This is a strong CSPA rejection
-($\widehat{\theta} \approx - 0.24$, $p < 0.001$). For HARQ as benchmark
-the envelope dips modestly below zero around
-$\text{VIX} \in \lbrack 25,40\rbrack$ and the dashed bound only just
-follows ($\widehat{\theta} \approx - 0.008$, $p \approx 0.01$), giving a
+region. This is a strong CSPA rejection ($`\hat\theta \approx -0.24`$,
+$`p < 0.001`$). For HARQ as benchmark the envelope dips modestly below
+zero around $`\text{VIX} \in [25, 40]`$ and the dashed bound only just
+follows ($`\hat\theta \approx -0.008`$, $`p \approx 0.01`$), giving a
 borderline rejection at the 5% level. The paper notes that HARQ belongs
 to the CSMS for 24 of the 28 assets, so HARQ is itself rejected on the
 other four; JNJ falls in that minority.
@@ -183,10 +180,10 @@ other four; JNJ falls in that minority.
 
 For each of the 28 stocks we run pairwise CSPA tests over every
 benchmark-competitor pair and tally rejections at the 5% level. Cell
-$(k,l)$ counts the stocks for which the null “benchmark $l$
-conditionally dominates alternative $k$” is rejected. The matrix is
+$`(k, l)`$ counts the stocks for which the null “benchmark $`l`$
+conditionally dominates alternative $`k`$” is rejected. The matrix is
 precomputed in `data-raw/llq2022_uv_cspa.R` and takes about five minutes
-at $R = 10,000$.
+at $`R = 10{,}000`$.
 
 ``` r
 knitr::kable(llq2022_uv_cspa$mine,
@@ -236,8 +233,8 @@ knitr::kable(diff_mat, caption = "Difference (forecastdom minus LLQ)")
 
 Difference (forecastdom minus LLQ)
 
-23 of the 30 off-diagonal cells match exactly, 29 are within $\pm 1$,
-and all 30 within $\pm 2$. The residual noise on boundary cells comes
+23 of the 30 off-diagonal cells match exactly, 29 are within $`\pm 1`$,
+and all 30 within $`\pm 2`$. The residual noise on boundary cells comes
 from the bootstrap seed. The qualitative reading is identical to LLQ’s:
 
 - **HARQ as benchmark** (column HARQ): all 28 stocks reject every
